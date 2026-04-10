@@ -22,14 +22,7 @@ function FinderIcon() {
       }}
     >
       <svg viewBox="0 0 100 100" className="w-full h-full p-1">
-        <rect
-          x="8"
-          y="20"
-          width="84"
-          height="65"
-          rx="10"
-          fill="rgba(255,255,255,0.15)"
-        />
+        <rect x="8" y="20" width="84" height="65" rx="10" fill="rgba(255,255,255,0.15)" />
         <circle cx="38" cy="45" r="14" fill="rgba(255,255,255,0.9)" />
         <circle cx="62" cy="45" r="14" fill="rgba(255,255,255,0.75)" />
         <ellipse cx="36" cy="43" rx="4" ry="5" fill="#1568e8" />
@@ -183,30 +176,9 @@ function TrashIcon() {
       }}
     >
       <svg viewBox="0 0 50 60" className="w-8 h-9">
-        <rect
-          x="6"
-          y="14"
-          width="38"
-          height="40"
-          rx="4"
-          fill="rgba(255,255,255,0.7)"
-        />
-        <rect
-          x="0"
-          y="10"
-          width="50"
-          height="6"
-          rx="3"
-          fill="rgba(255,255,255,0.9)"
-        />
-        <rect
-          x="18"
-          y="4"
-          width="14"
-          height="7"
-          rx="3"
-          fill="rgba(255,255,255,0.9)"
-        />
+        <rect x="6" y="14" width="38" height="40" rx="4" fill="rgba(255,255,255,0.7)" />
+        <rect x="0" y="10" width="50" height="6" rx="3" fill="rgba(255,255,255,0.9)" />
+        <rect x="18" y="4" width="14" height="7" rx="3" fill="rgba(255,255,255,0.9)" />
         <line
           x1="17"
           y1="22"
@@ -243,12 +215,54 @@ function TrashIcon() {
 function AppStoreWindow() {
   const { t } = useTranslation();
   const featured = [
-    { name: "Figma", icon: "🎨", rating: "4.8", category: t("appStore.categoryLabels.design"), price: t("appStore.free"), color: "#a259ff" },
-    { name: "Slack", icon: "💬", rating: "4.6", category: t("appStore.categoryLabels.work"), price: t("appStore.free"), color: "#4a154b" },
-    { name: "Notion", icon: "📋", rating: "4.7", category: t("appStore.categoryLabels.productivity"), price: t("appStore.free"), color: "#000" },
-    { name: "VS Code", icon: "💻", rating: "4.9", category: t("appStore.categoryLabels.dev"), price: t("appStore.free"), color: "#007acc" },
-    { name: "Spotify", icon: "🎵", rating: "4.5", category: t("appStore.categoryLabels.music"), price: t("appStore.free"), color: "#1db954" },
-    { name: "1Password", icon: "🔐", rating: "4.8", category: t("appStore.categoryLabels.utility"), price: "₩14,900", color: "#0076d1" },
+    {
+      name: "Figma",
+      icon: "🎨",
+      rating: "4.8",
+      category: t("appStore.categoryLabels.design"),
+      price: t("appStore.free"),
+      color: "#a259ff",
+    },
+    {
+      name: "Slack",
+      icon: "💬",
+      rating: "4.6",
+      category: t("appStore.categoryLabels.work"),
+      price: t("appStore.free"),
+      color: "#4a154b",
+    },
+    {
+      name: "Notion",
+      icon: "📋",
+      rating: "4.7",
+      category: t("appStore.categoryLabels.productivity"),
+      price: t("appStore.free"),
+      color: "#000",
+    },
+    {
+      name: "VS Code",
+      icon: "💻",
+      rating: "4.9",
+      category: t("appStore.categoryLabels.dev"),
+      price: t("appStore.free"),
+      color: "#007acc",
+    },
+    {
+      name: "Spotify",
+      icon: "🎵",
+      rating: "4.5",
+      category: t("appStore.categoryLabels.music"),
+      price: t("appStore.free"),
+      color: "#1db954",
+    },
+    {
+      name: "1Password",
+      icon: "🔐",
+      rating: "4.8",
+      category: t("appStore.categoryLabels.utility"),
+      price: "₩14,900",
+      color: "#0076d1",
+    },
   ];
   const [installed, setInstalled] = useState<string[]>([]);
 
@@ -262,10 +276,23 @@ function AppStoreWindow() {
         }}
       >
         {[
-          { label: t("appStore.browse"), items: [t("appStore.today"), t("appStore.games"), t("appStore.apps"), t("appStore.arcade")] },
+          {
+            label: t("appStore.browse"),
+            items: [
+              t("appStore.today"),
+              t("appStore.games"),
+              t("appStore.apps"),
+              t("appStore.arcade"),
+            ],
+          },
           {
             label: t("appStore.categories"),
-            items: [t("appStore.devTools"), t("appStore.graphicDesign"), t("appStore.productivity"), t("appStore.utilities")],
+            items: [
+              t("appStore.devTools"),
+              t("appStore.graphicDesign"),
+              t("appStore.productivity"),
+              t("appStore.utilities"),
+            ],
           },
         ].map((sec) => (
           <div key={sec.label} className="mb-2">
@@ -288,8 +315,7 @@ function AppStoreWindow() {
           <div
             className="rounded-2xl overflow-hidden mb-5 h-40 flex items-center justify-between px-8"
             style={{
-              background:
-                "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
+              background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
             }}
           >
             <div className="text-white">
@@ -301,9 +327,7 @@ function AppStoreWindow() {
                 <br />
                 {t("appStore.banner.title")}
               </p>
-              <p className="text-[12px] opacity-60 mt-1">
-                {t("appStore.banner.subtitle")}
-              </p>
+              <p className="text-[12px] opacity-60 mt-1">{t("appStore.banner.subtitle")}</p>
             </div>
             <div className="text-6xl">🚀</div>
           </div>
@@ -318,9 +342,7 @@ function AppStoreWindow() {
                 className="flex items-center gap-3 p-3 bg-white rounded-xl"
                 style={{ boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}
               >
-                <span className="text-[13px] text-gray-400 w-4 flex-shrink-0">
-                  {i + 1}
-                </span>
+                <span className="text-[13px] text-gray-400 w-4 flex-shrink-0">{i + 1}</span>
                 <div
                   className="w-11 h-11 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
                   style={{ background: app.color + "20" }}
@@ -328,9 +350,7 @@ function AppStoreWindow() {
                   {app.icon}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[13px] font-semibold text-gray-800">
-                    {app.name}
-                  </p>
+                  <p className="text-[13px] font-semibold text-gray-800">{app.name}</p>
                   <p className="text-[11px] text-gray-400">
                     {app.category} · ⭐ {app.rating}
                   </p>
@@ -370,11 +390,46 @@ function AppStoreWindow() {
 function MailWindow() {
   const { t } = useTranslation();
   const emails = [
-    { from: "Apple", subject: t("mail.emails.apple.subject"), body: t("mail.emails.apple.body"), time: "09:30", unread: true, avatar: "🍎" },
-    { from: "GitHub", subject: t("mail.emails.github.subject"), body: t("mail.emails.github.body"), time: "08:15", unread: true, avatar: "🐙" },
-    { from: "Slack", subject: t("mail.emails.slack.subject"), body: t("mail.emails.slack.body"), time: t("finder.time.yesterday"), unread: false, avatar: "💬" },
-    { from: "Google", subject: t("mail.emails.google.subject"), body: t("mail.emails.google.body"), time: t("finder.time.yesterday"), unread: false, avatar: "🔍" },
-    { from: "Netflix", subject: t("mail.emails.netflix.subject"), body: t("mail.emails.netflix.body"), time: t("finder.time.daysAgo", { count: 2 }), unread: false, avatar: "🎬" },
+    {
+      from: "Apple",
+      subject: t("mail.emails.apple.subject"),
+      body: t("mail.emails.apple.body"),
+      time: "09:30",
+      unread: true,
+      avatar: "🍎",
+    },
+    {
+      from: "GitHub",
+      subject: t("mail.emails.github.subject"),
+      body: t("mail.emails.github.body"),
+      time: "08:15",
+      unread: true,
+      avatar: "🐙",
+    },
+    {
+      from: "Slack",
+      subject: t("mail.emails.slack.subject"),
+      body: t("mail.emails.slack.body"),
+      time: t("finder.time.yesterday"),
+      unread: false,
+      avatar: "💬",
+    },
+    {
+      from: "Google",
+      subject: t("mail.emails.google.subject"),
+      body: t("mail.emails.google.body"),
+      time: t("finder.time.yesterday"),
+      unread: false,
+      avatar: "🔍",
+    },
+    {
+      from: "Netflix",
+      subject: t("mail.emails.netflix.subject"),
+      body: t("mail.emails.netflix.body"),
+      time: t("finder.time.daysAgo", { count: 2 }),
+      unread: false,
+      avatar: "🎬",
+    },
   ];
   const [selected, setSelected] = useState(0);
 
@@ -402,9 +457,7 @@ function MailWindow() {
               className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-black/5 transition-colors text-left"
             >
               <span className="text-base">{m.icon}</span>
-              <span className="flex-1 text-[13px] text-gray-700">
-                {m.name}
-              </span>
+              <span className="flex-1 text-[13px] text-gray-700">{m.name}</span>
               {m.count > 0 && (
                 <span className="text-[11px] bg-blue-500 text-white rounded-full px-1.5 py-0.5">
                   {m.count}
@@ -421,26 +474,19 @@ function MailWindow() {
               onClick={() => setSelected(i)}
               className="w-full text-left px-3 py-2.5 transition-colors"
               style={{
-                background:
-                  selected === i ? "rgba(0,100,255,0.1)" : "transparent",
+                background: selected === i ? "rgba(0,100,255,0.1)" : "transparent",
                 borderBottom: "1px solid rgba(0,0,0,0.04)",
               }}
             >
               <div className="flex items-center gap-2">
-                {e.unread && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0" />
-                )}
+                {e.unread && <div className="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0" />}
                 {!e.unread && <div className="w-1.5 h-1.5 flex-shrink-0" />}
                 <span className="text-[13px] font-semibold text-gray-800 flex-1 truncate">
                   {e.from}
                 </span>
-                <span className="text-[10px] text-gray-400 flex-shrink-0">
-                  {e.time}
-                </span>
+                <span className="text-[10px] text-gray-400 flex-shrink-0">{e.time}</span>
               </div>
-              <p className="text-[11px] text-gray-600 truncate pl-3.5">
-                {e.subject}
-              </p>
+              <p className="text-[11px] text-gray-600 truncate pl-3.5">{e.subject}</p>
             </button>
           ))}
         </div>
@@ -449,13 +495,8 @@ function MailWindow() {
       <div className="flex-1 flex flex-col min-w-0" style={{ background: "white" }}>
         {emails[selected] && (
           <>
-            <div
-              className="px-6 pt-5 pb-4"
-              style={{ borderBottom: "1px solid rgba(0,0,0,0.06)" }}
-            >
-              <h2 className="text-[18px] text-gray-900 mb-3">
-                {emails[selected].subject}
-              </h2>
+            <div className="px-6 pt-5 pb-4" style={{ borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
+              <h2 className="text-[18px] text-gray-900 mb-3">{emails[selected].subject}</h2>
               <div className="flex items-center gap-3">
                 <div
                   className="w-10 h-10 rounded-full flex items-center justify-center text-xl flex-shrink-0"
@@ -464,26 +505,19 @@ function MailWindow() {
                   {emails[selected].avatar}
                 </div>
                 <div className="flex-1">
-                  <p className="text-[13px] font-semibold text-gray-800">
-                    {emails[selected].from}
-                  </p>
+                  <p className="text-[13px] font-semibold text-gray-800">{emails[selected].from}</p>
                   <p className="text-[11px] text-gray-400">
                     {t("mail.recipient")} &lt;user@icloud.com&gt;
                   </p>
                 </div>
-                <span className="text-[11px] text-gray-400">
-                  {emails[selected].time}
-                </span>
+                <span className="text-[11px] text-gray-400">{emails[selected].time}</span>
               </div>
             </div>
             <div className="flex-1 p-6 overflow-y-auto">
               <p className="text-[14px] text-gray-700 leading-relaxed whitespace-pre-line">
                 {emails[selected].body}
               </p>
-              <div
-                className="mt-6 pt-6"
-                style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}
-              >
+              <div className="mt-6 pt-6" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
                 <button
                   className="px-4 py-2 rounded-lg text-[13px] text-white font-medium"
                   style={{ background: "#1d7af5" }}
@@ -509,10 +543,7 @@ interface AppWindow {
   isMinimized: boolean;
 }
 
-const APP_CONFIG: Record<
-  AppId,
-  { title: string; w: number; h: number; x: number; y: number }
-> = {
+const APP_CONFIG: Record<AppId, { title: string; w: number; h: number; x: number; y: number }> = {
   finder: { title: "Finder", w: 720, h: 480, x: 80, y: 60 },
   safari: { title: "Safari", w: 740, h: 540, x: 120, y: 80 },
   notes: { title: "메모", w: 620, h: 460, x: 160, y: 70 },
@@ -567,40 +598,29 @@ export default function App() {
     return zCounter.current;
   };
 
-  const openApp = useCallback(
-    (id: AppId) => {
-      const z = getTopZ();
-      setWindows((prev) => {
-        const ex = prev.find((w) => w.id === id);
-        if (ex)
-          return prev.map((w) =>
-            w.id === id
-              ? { ...w, isOpen: true, isMinimized: false, zIndex: z }
-              : w
-          );
-        return [...prev, { id, zIndex: z, isOpen: true, isMinimized: false }];
-      });
-      setActiveApp(APP_CONFIG[id].title);
-    },
-    []
-  );
+  const openApp = useCallback((id: AppId) => {
+    const z = getTopZ();
+    setWindows((prev) => {
+      const ex = prev.find((w) => w.id === id);
+      if (ex)
+        return prev.map((w) =>
+          w.id === id ? { ...w, isOpen: true, isMinimized: false, zIndex: z } : w
+        );
+      return [...prev, { id, zIndex: z, isOpen: true, isMinimized: false }];
+    });
+    setActiveApp(APP_CONFIG[id].title);
+  }, []);
 
-  const closeApp = (id: AppId) =>
-    setWindows((prev) => prev.filter((w) => w.id !== id));
+  const closeApp = (id: AppId) => setWindows((prev) => prev.filter((w) => w.id !== id));
   const minimizeApp = (id: AppId) =>
-    setWindows((prev) =>
-      prev.map((w) => (w.id === id ? { ...w, isMinimized: true } : w))
-    );
+    setWindows((prev) => prev.map((w) => (w.id === id ? { ...w, isMinimized: true } : w)));
   const focusApp = (id: AppId) => {
     const z = getTopZ();
-    setWindows((prev) =>
-      prev.map((w) => (w.id === id ? { ...w, zIndex: z } : w))
-    );
+    setWindows((prev) => prev.map((w) => (w.id === id ? { ...w, zIndex: z } : w)));
     setActiveApp(APP_CONFIG[id].title);
   };
 
-  const isDockOpen = (id: AppId) =>
-    windows.some((w) => w.id === id && w.isOpen);
+  const isDockOpen = (id: AppId) => windows.some((w) => w.id === id && w.isOpen);
 
   const dockApps = [
     {
@@ -660,9 +680,7 @@ export default function App() {
     if (["sep1", "sep2", "trash"].includes(id)) return;
     const win = windows.find((w) => w.id === id);
     if (win?.isMinimized)
-      setWindows((prev) =>
-        prev.map((w) => (w.id === id ? { ...w, isMinimized: false } : w))
-      );
+      setWindows((prev) => prev.map((w) => (w.id === id ? { ...w, isMinimized: false } : w)));
     else if (win?.isOpen) focusApp(id as AppId);
     else openApp(id as AppId);
   };
@@ -689,17 +707,12 @@ export default function App() {
     const already = widgets.find((w) => w.type === type);
     if (already) return;
     const pos = WIDGET_POSITIONS[type] ?? { x: 100, y: 100 };
-    setWidgets((prev) => [
-      ...prev,
-      { id: `${type}-${Date.now()}`, type, x: pos.x, y: pos.y },
-    ]);
+    setWidgets((prev) => [...prev, { id: `${type}-${Date.now()}`, type, x: pos.x, y: pos.y }]);
   };
-  const removeWidget = (id: string) =>
-    setWidgets((prev) => prev.filter((w) => w.id !== id));
+  const removeWidget = (id: string) => setWidgets((prev) => prev.filter((w) => w.id !== id));
   const activeWidgetTypes = widgets.map((w) => w.type);
 
-  const isMobileView =
-    typeof window !== "undefined" && window.innerWidth < 640;
+  const isMobileView = typeof window !== "undefined" && window.innerWidth < 640;
 
   return (
     <div
@@ -732,10 +745,7 @@ export default function App() {
       />
 
       {/* Control Center */}
-      <ControlCenter
-        isOpen={controlCenterOpen}
-        onClose={() => setControlCenterOpen(false)}
-      />
+      <ControlCenter isOpen={controlCenterOpen} onClose={() => setControlCenterOpen(false)} />
 
       {/* Desktop Widgets */}
       <Widgets widgets={widgets} onRemove={removeWidget} />
@@ -769,32 +779,25 @@ export default function App() {
       {isMobileView && (
         <div className="absolute inset-0 top-7 bottom-24 flex flex-col items-center justify-center px-6">
           <div className="grid grid-cols-4 gap-5">
-            {(
-              [
-                "finder",
-                "safari",
-                "notes",
-                "terminal",
-                "appstore",
-                "mail",
-              ] as AppId[]
-            ).map((id) => (
-              <button
-                key={id}
-                onClick={() => openApp(id)}
-                className="flex flex-col items-center gap-1.5"
-              >
-                <div className="w-14 h-14 rounded-[22%] overflow-hidden shadow-xl">
-                  {dockApps.find((a) => a.id === id)?.icon}
-                </div>
-                <span
-                  className="text-white text-[10px] font-medium"
-                  style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}
+            {(["finder", "safari", "notes", "terminal", "appstore", "mail"] as AppId[]).map(
+              (id) => (
+                <button
+                  key={id}
+                  onClick={() => openApp(id)}
+                  className="flex flex-col items-center gap-1.5"
                 >
-                  {APP_CONFIG[id].title}
-                </span>
-              </button>
-            ))}
+                  <div className="w-14 h-14 rounded-[22%] overflow-hidden shadow-xl">
+                    {dockApps.find((a) => a.id === id)?.icon}
+                  </div>
+                  <span
+                    className="text-white text-[10px] font-medium"
+                    style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}
+                  >
+                    {APP_CONFIG[id].title}
+                  </span>
+                </button>
+              )
+            )}
           </div>
         </div>
       )}
@@ -805,10 +808,7 @@ export default function App() {
         .map((win) => {
           const cfg = APP_CONFIG[win.id];
           const mv = typeof window !== "undefined" && window.innerWidth < 640;
-          const topWin = windows.reduce(
-            (max, w) => (w.zIndex > max.zIndex ? w : max),
-            windows[0]
-          );
+          const topWin = windows.reduce((max, w) => (w.zIndex > max.zIndex ? w : max), windows[0]);
           return (
             <Window
               key={win.id}

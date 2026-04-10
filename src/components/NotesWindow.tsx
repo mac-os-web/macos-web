@@ -93,10 +93,7 @@ export function NotesWindow() {
           style={{ borderBottom: "1px solid rgba(0,0,0,0.06)" }}
         >
           <span className="text-[12px] text-gray-500 font-semibold">{t("notes.title")}</span>
-          <button
-            onClick={addNote}
-            className="p-1 rounded hover:bg-black/10 transition-colors"
-          >
+          <button onClick={addNote} className="p-1 rounded hover:bg-black/10 transition-colors">
             <Plus size={14} className="text-gray-600" />
           </button>
         </div>
@@ -129,10 +126,7 @@ export function NotesWindow() {
                 key={note.id}
                 className="w-full text-left px-3 py-2 transition-colors group relative"
                 style={{
-                  background:
-                    selectedId === note.id
-                      ? "rgba(255,204,0,0.4)"
-                      : "transparent",
+                  background: selectedId === note.id ? "rgba(255,204,0,0.4)" : "transparent",
                   borderBottom: "1px solid rgba(0,0,0,0.04)",
                 }}
                 onClick={() => setSelectedId(note.id)}
@@ -148,16 +142,11 @@ export function NotesWindow() {
                     }}
                     className="opacity-0 group-hover:opacity-100 transition-opacity"
                   >
-                    <Trash2
-                      size={11}
-                      className="text-gray-400 hover:text-red-500"
-                    />
+                    <Trash2 size={11} className="text-gray-400 hover:text-red-500" />
                   </button>
                 </div>
                 <div className="flex items-center gap-2 mt-0.5">
-                  <span className="text-[11px] text-gray-400">
-                    {note.date}
-                  </span>
+                  <span className="text-[11px] text-gray-400">{note.date}</span>
                   <span className="text-[11px] text-gray-400 truncate">
                     {note.content.split("\n")[1] || note.content.slice(0, 30)}
                   </span>
@@ -168,10 +157,7 @@ export function NotesWindow() {
       </div>
 
       {/* Editor */}
-      <div
-        className="flex-1 flex flex-col"
-        style={{ background: "rgba(252,249,238,0.98)" }}
-      >
+      <div className="flex-1 flex flex-col" style={{ background: "rgba(252,249,238,0.98)" }}>
         {selectedNote ? (
           <>
             <div
@@ -197,9 +183,7 @@ export function NotesWindow() {
                   </button>
                 ))}
               </div>
-              <span className="text-[11px] text-gray-400">
-                {selectedNote.date}
-              </span>
+              <span className="text-[11px] text-gray-400">{selectedNote.date}</span>
             </div>
 
             <textarea
@@ -216,9 +200,7 @@ export function NotesWindow() {
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center">
               <div className="text-4xl mb-2">📝</div>
-              <p className="text-[14px] text-gray-400">
-                {t("notes.emptyState")}
-              </p>
+              <p className="text-[14px] text-gray-400">{t("notes.emptyState")}</p>
             </div>
           </div>
         )}

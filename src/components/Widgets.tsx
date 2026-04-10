@@ -11,13 +11,7 @@ interface WidgetShellProps {
   onRemove: (id: string) => void;
 }
 
-function WidgetShell({
-  id,
-  initialX,
-  initialY,
-  children,
-  onRemove,
-}: WidgetShellProps) {
+function WidgetShell({ id, initialX, initialY, children, onRemove }: WidgetShellProps) {
   const [pos, setPos] = useState({ x: initialX, y: initialY });
   const [hovered, setHovered] = useState(false);
   const dragRef = useRef({
@@ -29,8 +23,7 @@ function WidgetShell({
   });
 
   const onMouseDown = (e: React.MouseEvent) => {
-    if ((e.target as HTMLElement).closest("button, input, select, textarea"))
-      return;
+    if ((e.target as HTMLElement).closest("button, input, select, textarea")) return;
     e.preventDefault();
     dragRef.current = {
       dragging: true,
@@ -43,14 +36,8 @@ function WidgetShell({
     const onMove = (me: MouseEvent) => {
       if (!dragRef.current.dragging) return;
       setPos({
-        x: Math.max(
-          0,
-          dragRef.current.px + me.clientX - dragRef.current.startX
-        ),
-        y: Math.max(
-          28,
-          dragRef.current.py + me.clientY - dragRef.current.startY
-        ),
+        x: Math.max(0, dragRef.current.px + me.clientX - dragRef.current.startX),
+        y: Math.max(28, dragRef.current.py + me.clientY - dragRef.current.startY),
       });
     };
     const onUp = () => {
@@ -188,21 +175,17 @@ function WeatherWidget() {
     <div
       className="w-72 p-4"
       style={{
-        background:
-          "linear-gradient(160deg, rgba(30,120,220,0.88) 0%, rgba(80,160,255,0.88) 100%)",
+        background: "linear-gradient(160deg, rgba(30,120,220,0.88) 0%, rgba(80,160,255,0.88) 100%)",
         backdropFilter: "blur(20px)",
       }}
     >
       <div className="flex items-start justify-between mb-3">
         <div>
-          <p className="text-white/80 text-[11px] font-medium">
-            {t("widgets.weather.location")}
-          </p>
-          <span className="text-white text-[52px] leading-none font-thin">
-            23°
-          </span>
+          <p className="text-white/80 text-[11px] font-medium">{t("widgets.weather.location")}</p>
+          <span className="text-white text-[52px] leading-none font-thin">23°</span>
           <p className="text-white text-[13px] opacity-80 mt-0.5">
-            {t("widgets.weather.condition")} · {t("widgets.weather.high")} 26° {t("widgets.weather.low")} 15°
+            {t("widgets.weather.condition")} · {t("widgets.weather.high")} 26°{" "}
+            {t("widgets.weather.low")} 15°
           </p>
         </div>
         <div className="text-5xl mt-1">☀️</div>
@@ -221,22 +204,15 @@ function WeatherWidget() {
         </div>
         <div className="flex items-center gap-1">
           <Thermometer size={11} className="text-white/70" />
-          <span className="text-white/80 text-[11px]">
-            {t("widgets.weather.feelsLike")} 21°
-          </span>
+          <span className="text-white/80 text-[11px]">{t("widgets.weather.feelsLike")} 21°</span>
         </div>
       </div>
       <div className="flex gap-2 overflow-x-auto pb-1">
         {hourly.map((h) => (
-          <div
-            key={h.time}
-            className="flex flex-col items-center gap-0.5 flex-shrink-0"
-          >
+          <div key={h.time} className="flex flex-col items-center gap-0.5 flex-shrink-0">
             <span className="text-white/60 text-[10px]">{h.time}</span>
             <span className="text-base">{h.icon}</span>
-            <span className="text-white text-[12px] font-medium">
-              {h.temp}°
-            </span>
+            <span className="text-white text-[12px] font-medium">{h.temp}°</span>
           </div>
         ))}
       </div>
@@ -284,9 +260,7 @@ function CalendarWidget() {
           <p className="text-red-400 text-[11px] font-semibold uppercase tracking-wider">
             {today.toLocaleDateString(i18n.language, { month: "long" })}
           </p>
-          <p className="text-white text-[28px] font-thin leading-none">
-            {date}
-          </p>
+          <p className="text-white text-[28px] font-thin leading-none">{date}</p>
         </div>
         <p className="text-white/40 text-[11px]">{year}</p>
       </div>
@@ -311,12 +285,7 @@ function CalendarWidget() {
                 className="w-6 h-6 flex items-center justify-center rounded-full text-[11px] relative"
                 style={{
                   background: d === date ? "#ff3b30" : "transparent",
-                  color:
-                    d === date
-                      ? "white"
-                      : i % 7 === 0
-                        ? "#ff6b6b"
-                        : "rgba(255,255,255,0.75)",
+                  color: d === date ? "white" : i % 7 === 0 ? "#ff6b6b" : "rgba(255,255,255,0.75)",
                 }}
               >
                 {d}
@@ -328,13 +297,8 @@ function CalendarWidget() {
           </div>
         ))}
       </div>
-      <div
-        className="mt-3 pt-3"
-        style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}
-      >
-        <p className="text-white/40 text-[10px] mb-1.5">
-          {t("widgets.calendar.upcoming")}
-        </p>
+      <div className="mt-3 pt-3" style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}>
+        <p className="text-white/40 text-[10px] mb-1.5">{t("widgets.calendar.upcoming")}</p>
         {Object.entries(events)
           .filter(([d]) => Number(d) >= date)
           .slice(0, 2)
@@ -364,13 +328,8 @@ function NotesWidget() {
         backdropFilter: "blur(10px)",
       }}
     >
-      <div
-        className="px-4 py-2.5"
-        style={{ borderBottom: "1px solid rgba(0,0,0,0.08)" }}
-      >
-        <p className="text-[12px] font-semibold text-yellow-900">
-          {t("widgets.notes.header")}
-        </p>
+      <div className="px-4 py-2.5" style={{ borderBottom: "1px solid rgba(0,0,0,0.08)" }}>
+        <p className="text-[12px] font-semibold text-yellow-900">{t("widgets.notes.header")}</p>
       </div>
       <textarea
         value={text}
@@ -394,14 +353,8 @@ function SystemWidget() {
 
   function Bar({ value, color }: { value: number; color: string }) {
     return (
-      <div
-        className="w-full h-1.5 rounded-full"
-        style={{ background: "rgba(255,255,255,0.1)" }}
-      >
-        <div
-          className="h-full rounded-full"
-          style={{ width: `${value}%`, background: color }}
-        />
+      <div className="w-full h-1.5 rounded-full" style={{ background: "rgba(255,255,255,0.1)" }}>
+        <div className="h-full rounded-full" style={{ width: `${value}%`, background: color }} />
       </div>
     );
   }
@@ -416,9 +369,7 @@ function SystemWidget() {
     >
       <div className="flex items-center gap-2 mb-3">
         <Activity size={13} className="text-green-400" />
-        <p className="text-white text-[12px] font-semibold">
-          {t("widgets.system.title")}
-        </p>
+        <p className="text-white text-[12px] font-semibold">{t("widgets.system.title")}</p>
       </div>
       {[
         { label: "CPU", value: cpu, color: "#30d158", unit: "%" },
@@ -466,18 +417,18 @@ interface WidgetPickerProps {
   active: string[];
 }
 
-export function WidgetPicker({
-  isOpen,
-  onClose,
-  onAdd,
-  active,
-}: WidgetPickerProps) {
+export function WidgetPicker({ isOpen, onClose, onAdd, active }: WidgetPickerProps) {
   const { t } = useTranslation();
 
   const WIDGET_DEFS = [
     { id: "clock", name: t("widgets.clock.name"), icon: "🕐", desc: t("widgets.clock.desc") },
     { id: "weather", name: t("widgets.weather.name"), icon: "⛅", desc: t("widgets.weather.desc") },
-    { id: "calendar", name: t("widgets.calendar.name"), icon: "📅", desc: t("widgets.calendar.desc") },
+    {
+      id: "calendar",
+      name: t("widgets.calendar.name"),
+      icon: "📅",
+      desc: t("widgets.calendar.desc"),
+    },
     { id: "notes", name: t("widgets.notes.name"), icon: "📝", desc: t("widgets.notes.desc") },
     { id: "system", name: t("widgets.system.name"), icon: "📊", desc: t("widgets.system.desc") },
   ];
@@ -498,9 +449,7 @@ export function WidgetPicker({
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <p className="text-white text-[14px] font-semibold mb-3">
-          {t("widgets.addWidget")}
-        </p>
+        <p className="text-white text-[14px] font-semibold mb-3">{t("widgets.addWidget")}</p>
         <div className="space-y-1.5">
           {WIDGET_DEFS.map((w) => {
             const isActive = active.includes(w.id);
@@ -510,24 +459,18 @@ export function WidgetPicker({
                 onClick={() => onAdd(w.id)}
                 className="w-full flex items-center gap-3 p-3 rounded-xl transition-all text-left"
                 style={{
-                  background: isActive
-                    ? "rgba(255,255,255,0.06)"
-                    : "rgba(255,255,255,0.08)",
+                  background: isActive ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.08)",
                 }}
               >
                 <span className="text-2xl">{w.icon}</span>
                 <div className="flex-1">
-                  <p className="text-white text-[13px] font-medium">
-                    {w.name}
-                  </p>
+                  <p className="text-white text-[13px] font-medium">{w.name}</p>
                   <p className="text-white/50 text-[11px]">{w.desc}</p>
                 </div>
                 <div
                   className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
                   style={{
-                    background: isActive
-                      ? "rgba(255,255,255,0.15)"
-                      : "rgba(48,209,88,1)",
+                    background: isActive ? "rgba(255,255,255,0.15)" : "rgba(48,209,88,1)",
                   }}
                 >
                   {isActive ? (
@@ -579,13 +522,7 @@ export function Widgets({ widgets, onRemove }: WidgetsProps) {
   return (
     <>
       {widgets.map((w) => (
-        <WidgetShell
-          key={w.id}
-          id={w.id}
-          initialX={w.x}
-          initialY={w.y}
-          onRemove={onRemove}
-        >
+        <WidgetShell key={w.id} id={w.id} initialX={w.x} initialY={w.y} onRemove={onRemove}>
           {renderContent(w.type)}
         </WidgetShell>
       ))}

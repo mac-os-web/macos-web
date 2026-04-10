@@ -46,9 +46,7 @@ function DockItem({ app, onClick }: { app: DockApp; onClick: () => void }) {
         {app.icon}
       </button>
 
-      {app.isOpen && (
-        <div className="w-1 h-1 rounded-full bg-white/80 mt-0.5" />
-      )}
+      {app.isOpen && <div className="w-1 h-1 rounded-full bg-white/80 mt-0.5" />}
       {!app.isOpen && <div className="w-1 h-1 mt-0.5" />}
     </div>
   );
@@ -64,16 +62,11 @@ export function Dock({ apps, onAppClick }: DockProps) {
           backdropFilter: "blur(30px) saturate(180%)",
           WebkitBackdropFilter: "blur(30px) saturate(180%)",
           border: "1px solid rgba(255,255,255,0.35)",
-          boxShadow:
-            "0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.4)",
+          boxShadow: "0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.4)",
         }}
       >
         {apps.map((app) => (
-          <DockItem
-            key={app.id}
-            app={app}
-            onClick={() => onAppClick(app.id)}
-          />
+          <DockItem key={app.id} app={app} onClick={() => onAppClick(app.id)} />
         ))}
       </div>
     </div>

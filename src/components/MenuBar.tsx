@@ -8,13 +8,7 @@ interface MenuBarProps {
   activeApp: string;
 }
 
-
-
-
-
-
 function DropdownMenu({ items }: { items: (string | null)[] }) {
-  
   return (
     <div
       className="absolute top-full left-0 mt-1 w-52 rounded-xl overflow-hidden py-1"
@@ -23,8 +17,7 @@ function DropdownMenu({ items }: { items: (string | null)[] }) {
         backdropFilter: "blur(40px) saturate(200%)",
         WebkitBackdropFilter: "blur(40px) saturate(200%)",
         border: "1px solid rgba(255,255,255,0.55)",
-        boxShadow:
-          "0 20px 60px rgba(0,0,0,0.25), 0 0 0 0.5px rgba(0,0,0,0.08)",
+        boxShadow: "0 20px 60px rgba(0,0,0,0.25), 0 0 0 0.5px rgba(0,0,0,0.08)",
       }}
     >
       {items.map((item, i) =>
@@ -44,13 +37,7 @@ function DropdownMenu({ items }: { items: (string | null)[] }) {
   );
 }
 
-export function MenuBar({
-  onSpotlight,
-  onControlCenter,
-  activeApp,
-}: MenuBarProps) {
-
-
+export function MenuBar({ onSpotlight, onControlCenter, activeApp }: MenuBarProps) {
   const [time, setTime] = useState(new Date());
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [showAppleMenu, setShowAppleMenu] = useState(false);
@@ -62,38 +49,45 @@ export function MenuBar({
     return () => clearInterval(timer);
   }, []);
 
-    const menuItems: Record<string, string[]> = {
-  Finder: [t("menu.app.file"), t("menu.app.edit"), t("menu.app.view"), t("menu.app.go"), t("menu.app.window"), t("menu.app.help")],
+  const menuItems: Record<string, string[]> = {
+    Finder: [
+      t("menu.app.file"),
+      t("menu.app.edit"),
+      t("menu.app.view"),
+      t("menu.app.go"),
+      t("menu.app.window"),
+      t("menu.app.help"),
+    ],
   };
 
-const appleMenuItems = [
-  { label:  t("menu.apple.aboutMac"), divider: false },
-  { label: null, divider: true },
-  { label: t("menu.apple.preferences"), divider: false },
-  { label: t("menu.apple.appStore"), divider: false },
-  { label: null, divider: true },
-  { label: t("menu.apple.recentItems"), divider: false },
-  { label: null, divider: true },
-  { label: t("menu.apple.forceQuit"), divider: false },
-  { label: null, divider: true },
-  { label: t("menu.apple.sleep"), divider: false },
-  { label: t("menu.apple.restart"), divider: false },
-  { label: t("menu.apple.shutdown"), divider: false },
-  { label: null, divider: true },
-  { label: t("menu.apple.lockScreen"), divider: false },
-  { label: t("menu.apple.logout"), divider: false },
-];
+  const appleMenuItems = [
+    { label: t("menu.apple.aboutMac"), divider: false },
+    { label: null, divider: true },
+    { label: t("menu.apple.preferences"), divider: false },
+    { label: t("menu.apple.appStore"), divider: false },
+    { label: null, divider: true },
+    { label: t("menu.apple.recentItems"), divider: false },
+    { label: null, divider: true },
+    { label: t("menu.apple.forceQuit"), divider: false },
+    { label: null, divider: true },
+    { label: t("menu.apple.sleep"), divider: false },
+    { label: t("menu.apple.restart"), divider: false },
+    { label: t("menu.apple.shutdown"), divider: false },
+    { label: null, divider: true },
+    { label: t("menu.apple.lockScreen"), divider: false },
+    { label: t("menu.apple.logout"), divider: false },
+  ];
 
-const appSubMenus: (string | null)[] = [
-  t("menu.sub.newWindow"),
-  t("menu.sub.newTab"),
-  t("menu.sub.open"),
-  null,
-  t("menu.sub.save"),
-  t("menu.sub.saveAs"),
-  null,
-  t("menu.sub.close"),
-];
+  const appSubMenus: (string | null)[] = [
+    t("menu.sub.newWindow"),
+    t("menu.sub.newTab"),
+    t("menu.sub.open"),
+    null,
+    t("menu.sub.save"),
+    t("menu.sub.saveAs"),
+    null,
+    t("menu.sub.close"),
+  ];
 
   const formatTime = (date: Date) =>
     date.toLocaleTimeString("ko-KR", {
@@ -118,9 +112,7 @@ const appSubMenus: (string | null)[] = [
 
   return (
     <>
-      {(openMenu || showAppleMenu) && (
-        <div className="fixed inset-0 z-40" onClick={closeAll} />
-      )}
+      {(openMenu || showAppleMenu) && <div className="fixed inset-0 z-40" onClick={closeAll} />}
 
       <div
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-2 h-7"
@@ -155,8 +147,7 @@ const appSubMenus: (string | null)[] = [
                   background: "rgba(238,238,238,0.94)",
                   backdropFilter: "blur(40px) saturate(200%)",
                   border: "1px solid rgba(255,255,255,0.55)",
-                  boxShadow:
-                    "0 20px 60px rgba(0,0,0,0.25), 0 0 0 0.5px rgba(0,0,0,0.08)",
+                  boxShadow: "0 20px 60px rgba(0,0,0,0.25), 0 0 0 0.5px rgba(0,0,0,0.08)",
                 }}
                 onClick={(e) => e.stopPropagation()}
               >
@@ -189,10 +180,7 @@ const appSubMenus: (string | null)[] = [
                 <button
                   className="px-2 h-7 flex items-center rounded text-white text-[13px] transition-colors"
                   style={{
-                    background:
-                      openMenu === menu
-                        ? "rgba(255,255,255,0.22)"
-                        : "transparent",
+                    background: openMenu === menu ? "rgba(255,255,255,0.22)" : "transparent",
                   }}
                   onClick={(e) => {
                     e.stopPropagation();
@@ -203,10 +191,7 @@ const appSubMenus: (string | null)[] = [
                   {menu}
                 </button>
                 {openMenu === menu && (
-                  <div
-                    className="relative z-[60]"
-                    onClick={(e) => e.stopPropagation()}
-                  >
+                  <div className="relative z-[60]" onClick={(e) => e.stopPropagation()}>
                     <DropdownMenu items={appSubMenus} />
                   </div>
                 )}
@@ -228,7 +213,6 @@ const appSubMenus: (string | null)[] = [
             <Search size={13} className="text-white" />
           </button>
 
-
           <button
             className="hidden sm:flex px-2 h-7 items-center rounded hover:bg-white/20 transition-colors"
             onClick={(e) => {
@@ -236,10 +220,9 @@ const appSubMenus: (string | null)[] = [
               closeAll();
               const next = langs[(langs.indexOf(i18n.language) + 1) % langs.length];
               i18n.changeLanguage(next);
-
             }}
           >
-            <Globe  size={13} className="text-white" />
+            <Globe size={13} className="text-white" />
           </button>
 
           <button
@@ -250,7 +233,6 @@ const appSubMenus: (string | null)[] = [
             }}
             className="hidden sm:flex items-center gap-1.5 px-2 h-7 rounded hover:bg-white/20 transition-colors"
           >
-
             <Wifi size={13} className="text-white" />
             <Volume2 size={13} className="text-white" />
             <Battery size={13} className="text-white" />
@@ -265,9 +247,7 @@ const appSubMenus: (string | null)[] = [
             }}
           >
             <span className="text-white text-[12px] font-medium">
-              <span className="hidden sm:inline">
-                {formatDate(time)}&nbsp;&nbsp;
-              </span>
+              <span className="hidden sm:inline">{formatDate(time)}&nbsp;&nbsp;</span>
               {formatTime(time)}
             </span>
           </button>

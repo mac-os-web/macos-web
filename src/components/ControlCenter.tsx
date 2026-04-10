@@ -54,10 +54,7 @@ function Slider({
 }) {
   return (
     <div className="relative w-full h-1.5 bg-black/15 rounded-full">
-      <div
-        className="h-full rounded-full"
-        style={{ width: `${value}%`, background: color }}
-      />
+      <div className="h-full rounded-full" style={{ width: `${value}%`, background: color }} />
       <input
         type="range"
         min={0}
@@ -101,10 +98,7 @@ export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
       >
         {/* Row 1: WiFi, Bluetooth, AirDrop, Focus */}
         <div className="grid grid-cols-2 gap-2 mb-2">
-          <div
-            className="rounded-xl p-3"
-            style={{ background: "rgba(255,255,255,0.7)" }}
-          >
+          <div className="rounded-xl p-3" style={{ background: "rgba(255,255,255,0.7)" }}>
             <button
               onClick={() => setWifi(!wifi)}
               className="flex items-center gap-2.5 w-full mb-2.5"
@@ -115,15 +109,10 @@ export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
                   background: wifi ? "#1d7af5" : "rgba(0,0,0,0.12)",
                 }}
               >
-                <Wifi
-                  size={14}
-                  className={wifi ? "text-white" : "text-gray-500"}
-                />
+                <Wifi size={14} className={wifi ? "text-white" : "text-gray-500"} />
               </div>
               <div className="text-left">
-                <p className="text-[12px] font-semibold text-gray-800">
-                  Wi-Fi
-                </p>
+                <p className="text-[12px] font-semibold text-gray-800">Wi-Fi</p>
                 <p className="text-[10px] text-gray-500">
                   {wifi ? "HomeNetwork_5G" : t("controlCenter.off")}
                 </p>
@@ -140,11 +129,7 @@ export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
                   background: bluetooth ? "#1d7af5" : "rgba(0,0,0,0.12)",
                 }}
               >
-                <svg
-                  viewBox="0 0 24 24"
-                  className="w-4 h-4"
-                  fill={bluetooth ? "white" : "#888"}
-                >
+                <svg viewBox="0 0 24 24" className="w-4 h-4" fill={bluetooth ? "white" : "#888"}>
                   <path
                     d="M6.5 6.5l11 5-5.5 5.5V1l5.5 5.5-11 5"
                     strokeWidth="2"
@@ -156,9 +141,7 @@ export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
                 </svg>
               </div>
               <div className="text-left">
-                <p className="text-[12px] font-semibold text-gray-800">
-                  Bluetooth
-                </p>
+                <p className="text-[12px] font-semibold text-gray-800">Bluetooth</p>
                 <p className="text-[10px] text-gray-500">
                   {bluetooth ? t("controlCenter.on") : t("controlCenter.off")}
                 </p>
@@ -170,45 +153,31 @@ export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
             className="rounded-xl p-3 flex flex-col gap-2"
             style={{ background: "rgba(255,255,255,0.7)" }}
           >
-            <button
-              onClick={() => setAirdrop(!airdrop)}
-              className="flex items-center gap-2.5"
-            >
+            <button onClick={() => setAirdrop(!airdrop)} className="flex items-center gap-2.5">
               <div
                 className="w-8 h-8 rounded-full flex items-center justify-center"
                 style={{
                   background: airdrop ? "#1d7af5" : "rgba(0,0,0,0.12)",
                 }}
               >
-                <Airplay
-                  size={14}
-                  className={airdrop ? "text-white" : "text-gray-500"}
-                />
+                <Airplay size={14} className={airdrop ? "text-white" : "text-gray-500"} />
               </div>
               <div className="text-left">
-                <p className="text-[12px] font-semibold text-gray-800">
-                  AirDrop
-                </p>
+                <p className="text-[12px] font-semibold text-gray-800">AirDrop</p>
                 <p className="text-[10px] text-gray-500">
                   {airdrop ? t("controlCenter.everyone") : t("controlCenter.off")}
                 </p>
               </div>
             </button>
             <div className="h-px bg-gray-200" />
-            <button
-              onClick={() => setFocusMode(!focusMode)}
-              className="flex items-center gap-2.5"
-            >
+            <button onClick={() => setFocusMode(!focusMode)} className="flex items-center gap-2.5">
               <div
                 className="w-8 h-8 rounded-full flex items-center justify-center"
                 style={{
                   background: focusMode ? "#30d158" : "rgba(0,0,0,0.12)",
                 }}
               >
-                <Moon
-                  size={14}
-                  className={focusMode ? "text-white" : "text-gray-500"}
-                />
+                <Moon size={14} className={focusMode ? "text-white" : "text-gray-500"} />
               </div>
               <div className="text-left">
                 <p className="text-[12px] font-semibold text-gray-800">
@@ -223,44 +192,31 @@ export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
         </div>
 
         {/* Brightness */}
-        <div
-          className="rounded-xl p-3 mb-2"
-          style={{ background: "rgba(255,255,255,0.7)" }}
-        >
+        <div className="rounded-xl p-3 mb-2" style={{ background: "rgba(255,255,255,0.7)" }}>
           <div className="flex items-center gap-2 mb-2">
             <Sun size={14} className="text-gray-500 flex-shrink-0" />
             <span className="text-[12px] font-semibold text-gray-700">
               {t("controlCenter.brightness")}
             </span>
-            <span className="ml-auto text-[11px] text-gray-400">
-              {brightness}%
-            </span>
+            <span className="ml-auto text-[11px] text-gray-400">{brightness}%</span>
           </div>
           <Slider value={brightness} onChange={setBrightness} color="#FFB800" />
         </div>
 
         {/* Volume */}
-        <div
-          className="rounded-xl p-3 mb-2"
-          style={{ background: "rgba(255,255,255,0.7)" }}
-        >
+        <div className="rounded-xl p-3 mb-2" style={{ background: "rgba(255,255,255,0.7)" }}>
           <div className="flex items-center gap-2 mb-2">
             <Volume2 size={14} className="text-gray-500 flex-shrink-0" />
             <span className="text-[12px] font-semibold text-gray-700">
               {t("controlCenter.sound")}
             </span>
-            <span className="ml-auto text-[11px] text-gray-400">
-              {volume}%
-            </span>
+            <span className="ml-auto text-[11px] text-gray-400">{volume}%</span>
           </div>
           <Slider value={volume} onChange={setVolume} color="#1d7af5" />
         </div>
 
         {/* Now Playing */}
-        <div
-          className="rounded-xl p-3 mb-2"
-          style={{ background: "rgba(255,255,255,0.7)" }}
-        >
+        <div className="rounded-xl p-3 mb-2" style={{ background: "rgba(255,255,255,0.7)" }}>
           <div className="flex items-center gap-2 mb-2">
             <Music size={12} className="text-gray-400" />
             <span className="text-[10px] text-gray-400 uppercase tracking-wider">
@@ -277,9 +233,7 @@ export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
               🎵
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[13px] font-semibold text-gray-800 truncate">
-                Dynamite
-              </p>
+              <p className="text-[13px] font-semibold text-gray-800 truncate">Dynamite</p>
               <p className="text-[11px] text-gray-400 truncate">BTS</p>
             </div>
             <div className="flex items-center gap-2">
@@ -310,20 +264,11 @@ export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
             onClick={() => setDarkMode(!darkMode)}
             className="rounded-xl p-2 flex flex-col items-center gap-1 transition-colors"
             style={{
-              background: darkMode
-                ? "rgba(0,0,0,0.7)"
-                : "rgba(255,255,255,0.7)",
+              background: darkMode ? "rgba(0,0,0,0.7)" : "rgba(255,255,255,0.7)",
             }}
           >
-            <Moon
-              size={16}
-              className={darkMode ? "text-white" : "text-gray-600"}
-            />
-            <span
-              className="text-[10px]"
-              style={{ color: darkMode ? "white" : "#555" }}
-            >
-
+            <Moon size={16} className={darkMode ? "text-white" : "text-gray-600"} />
+            <span className="text-[10px]" style={{ color: darkMode ? "white" : "#555" }}>
               {t("controlCenter.darkMode")}
             </span>
           </button>

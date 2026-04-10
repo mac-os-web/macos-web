@@ -25,52 +25,166 @@ export function FinderWindow() {
     {
       section: t("finder.sidebar.favorites"),
       items: [
-        { key: "airdrop", name: t("finder.sidebar.airdrop"), icon: <span className="text-blue-500">📡</span> },
-        { key: "recent", name: t("finder.sidebar.recent"), icon: <span className="text-gray-500">🕐</span> },
+        {
+          key: "airdrop",
+          name: t("finder.sidebar.airdrop"),
+          icon: <span className="text-blue-500">📡</span>,
+        },
+        {
+          key: "recent",
+          name: t("finder.sidebar.recent"),
+          icon: <span className="text-gray-500">🕐</span>,
+        },
         { key: "applications", name: t("finder.sidebar.applications"), icon: <span>🗂️</span> },
-        { key: "desktop", name: t("finder.sidebar.desktop"), icon: <Home size={14} className="text-blue-400" /> },
-        { key: "downloads", name: t("finder.sidebar.downloads"), icon: <Download size={14} className="text-blue-400" /> },
-        { key: "photos", name: t("finder.sidebar.photos"), icon: <Image size={14} className="text-blue-400" /> },
-        { key: "music", name: t("finder.sidebar.music"), icon: <Music size={14} className="text-blue-400" /> },
-        { key: "videos", name: t("finder.sidebar.videos"), icon: <Film size={14} className="text-blue-400" /> },
+        {
+          key: "desktop",
+          name: t("finder.sidebar.desktop"),
+          icon: <Home size={14} className="text-blue-400" />,
+        },
+        {
+          key: "downloads",
+          name: t("finder.sidebar.downloads"),
+          icon: <Download size={14} className="text-blue-400" />,
+        },
+        {
+          key: "photos",
+          name: t("finder.sidebar.photos"),
+          icon: <Image size={14} className="text-blue-400" />,
+        },
+        {
+          key: "music",
+          name: t("finder.sidebar.music"),
+          icon: <Music size={14} className="text-blue-400" />,
+        },
+        {
+          key: "videos",
+          name: t("finder.sidebar.videos"),
+          icon: <Film size={14} className="text-blue-400" />,
+        },
       ],
     },
     {
       section: t("finder.sidebar.locations"),
       items: [
-        { key: "macintoshHD", name: t("finder.sidebar.macintoshHD"), icon: <HardDrive size={14} className="text-gray-500" /> },
-        { key: "network", name: t("finder.sidebar.network"), icon: <span className="text-gray-500">🌐</span> },
+        {
+          key: "macintoshHD",
+          name: t("finder.sidebar.macintoshHD"),
+          icon: <HardDrive size={14} className="text-gray-500" />,
+        },
+        {
+          key: "network",
+          name: t("finder.sidebar.network"),
+          icon: <span className="text-gray-500">🌐</span>,
+        },
       ],
     },
     {
       section: t("finder.sidebar.tags"),
       items: [
-        { key: "red", name: t("finder.tags.red"), icon: <div className="w-3 h-3 rounded-full bg-red-500" /> },
-        { key: "orange", name: t("finder.tags.orange"), icon: <div className="w-3 h-3 rounded-full bg-orange-400" /> },
-        { key: "yellow", name: t("finder.tags.yellow"), icon: <div className="w-3 h-3 rounded-full bg-yellow-400" /> },
-        { key: "green", name: t("finder.tags.green"), icon: <div className="w-3 h-3 rounded-full bg-green-500" /> },
-        { key: "blue", name: t("finder.tags.blue"), icon: <div className="w-3 h-3 rounded-full bg-blue-500" /> },
+        {
+          key: "red",
+          name: t("finder.tags.red"),
+          icon: <div className="w-3 h-3 rounded-full bg-red-500" />,
+        },
+        {
+          key: "orange",
+          name: t("finder.tags.orange"),
+          icon: <div className="w-3 h-3 rounded-full bg-orange-400" />,
+        },
+        {
+          key: "yellow",
+          name: t("finder.tags.yellow"),
+          icon: <div className="w-3 h-3 rounded-full bg-yellow-400" />,
+        },
+        {
+          key: "green",
+          name: t("finder.tags.green"),
+          icon: <div className="w-3 h-3 rounded-full bg-green-500" />,
+        },
+        {
+          key: "blue",
+          name: t("finder.tags.blue"),
+          icon: <div className="w-3 h-3 rounded-full bg-blue-500" />,
+        },
       ],
     },
   ];
 
   const files = [
-    { name: t("finder.files.photos"), icon: "📸", type: "folder", modified: t("finder.time.todayMorning", { time: "10:30" }), size: "-" },
-    { name: t("finder.files.projects"), icon: "📁", type: "folder", modified: t("finder.time.yesterday"), size: "-" },
-    { name: t("finder.files.downloads"), icon: "📥", type: "folder", modified: t("finder.time.yesterday"), size: "-" },
-    { name: t("finder.files.documents"), icon: "📄", type: "folder", modified: t("finder.time.daysAgo", { count: 2 }), size: "-" },
-    { name: t("finder.files.report"), icon: "📕", type: "file", modified: t("finder.time.todayMorning", { time: "9:12" }), size: "2.4 MB" },
-    { name: t("finder.files.presentation"), icon: "📊", type: "file", modified: t("finder.time.yesterday"), size: "8.1 MB" },
-    { name: t("finder.files.note"), icon: "📝", type: "file", modified: t("finder.time.daysAgo", { count: 3 }), size: "12 KB" },
-    { name: t("finder.files.photo001"), icon: "🖼️", type: "file", modified: t("finder.time.lastWeek"), size: "4.2 MB" },
-    { name: t("finder.files.music"), icon: "🎵", type: "file", modified: t("finder.time.lastWeek"), size: "6.8 MB" },
-    { name: t("finder.files.video"), icon: "🎬", type: "file", modified: t("finder.time.lastMonth"), size: "256 MB" },
+    {
+      name: t("finder.files.photos"),
+      icon: "📸",
+      type: "folder",
+      modified: t("finder.time.todayMorning", { time: "10:30" }),
+      size: "-",
+    },
+    {
+      name: t("finder.files.projects"),
+      icon: "📁",
+      type: "folder",
+      modified: t("finder.time.yesterday"),
+      size: "-",
+    },
+    {
+      name: t("finder.files.downloads"),
+      icon: "📥",
+      type: "folder",
+      modified: t("finder.time.yesterday"),
+      size: "-",
+    },
+    {
+      name: t("finder.files.documents"),
+      icon: "📄",
+      type: "folder",
+      modified: t("finder.time.daysAgo", { count: 2 }),
+      size: "-",
+    },
+    {
+      name: t("finder.files.report"),
+      icon: "📕",
+      type: "file",
+      modified: t("finder.time.todayMorning", { time: "9:12" }),
+      size: "2.4 MB",
+    },
+    {
+      name: t("finder.files.presentation"),
+      icon: "📊",
+      type: "file",
+      modified: t("finder.time.yesterday"),
+      size: "8.1 MB",
+    },
+    {
+      name: t("finder.files.note"),
+      icon: "📝",
+      type: "file",
+      modified: t("finder.time.daysAgo", { count: 3 }),
+      size: "12 KB",
+    },
+    {
+      name: t("finder.files.photo001"),
+      icon: "🖼️",
+      type: "file",
+      modified: t("finder.time.lastWeek"),
+      size: "4.2 MB",
+    },
+    {
+      name: t("finder.files.music"),
+      icon: "🎵",
+      type: "file",
+      modified: t("finder.time.lastWeek"),
+      size: "6.8 MB",
+    },
+    {
+      name: t("finder.files.video"),
+      icon: "🎬",
+      type: "file",
+      modified: t("finder.time.lastMonth"),
+      size: "256 MB",
+    },
   ];
 
   const filtered = searchValue
-    ? files.filter((f) =>
-        f.name.toLowerCase().includes(searchValue.toLowerCase())
-      )
+    ? files.filter((f) => f.name.toLowerCase().includes(searchValue.toLowerCase()))
     : files;
 
   return (
@@ -94,18 +208,12 @@ export function FinderWindow() {
                 className="w-full flex items-center gap-2 px-3 py-1 rounded-md mx-1 transition-colors text-left"
                 style={{
                   width: "calc(100% - 8px)",
-                  background:
-                    activeSection === item.key
-                      ? "rgba(0,100,255,0.15)"
-                      : "transparent",
-                  color:
-                    activeSection === item.key ? "#0064ff" : "#3d3d3d",
+                  background: activeSection === item.key ? "rgba(0,100,255,0.15)" : "transparent",
+                  color: activeSection === item.key ? "#0064ff" : "#3d3d3d",
                 }}
                 onClick={() => setActiveSection(item.key)}
               >
-                <span className="text-[13px] flex items-center">
-                  {item.icon}
-                </span>
+                <span className="text-[13px] flex items-center">{item.icon}</span>
                 <span className="text-[12px] truncate">{item.name}</span>
               </button>
             ))}
@@ -135,8 +243,7 @@ export function FinderWindow() {
               onClick={() => setView("grid")}
               className="p-1 rounded transition-colors"
               style={{
-                background:
-                  view === "grid" ? "rgba(0,0,0,0.12)" : "transparent",
+                background: view === "grid" ? "rgba(0,0,0,0.12)" : "transparent",
               }}
             >
               <Grid size={15} className="text-gray-600" />
@@ -145,8 +252,7 @@ export function FinderWindow() {
               onClick={() => setView("list")}
               className="p-1 rounded transition-colors"
               style={{
-                background:
-                  view === "list" ? "rgba(0,0,0,0.12)" : "transparent",
+                background: view === "list" ? "rgba(0,0,0,0.12)" : "transparent",
               }}
             >
               <List size={15} className="text-gray-600" />
@@ -203,10 +309,7 @@ export function FinderWindow() {
                     key={file.name}
                     className="cursor-pointer rounded"
                     style={{
-                      background:
-                        selected === file.name
-                          ? "rgba(0,100,255,0.15)"
-                          : "transparent",
+                      background: selected === file.name ? "rgba(0,100,255,0.15)" : "transparent",
                     }}
                     onClick={() => setSelected(file.name)}
                     onDoubleClick={() => setSelected(null)}
@@ -214,9 +317,7 @@ export function FinderWindow() {
                     <td className="py-1 pl-1">
                       <div className="flex items-center gap-2">
                         <span className="text-base">{file.icon}</span>
-                        <span className="text-[13px] text-gray-800">
-                          {file.name}
-                        </span>
+                        <span className="text-[13px] text-gray-800">{file.name}</span>
                       </div>
                     </td>
                     <td className="py-1 text-[11px] text-gray-500 hidden sm:table-cell">
@@ -236,10 +337,7 @@ export function FinderWindow() {
                   key={file.name}
                   className="flex flex-col items-center gap-1 p-2 rounded-lg transition-colors"
                   style={{
-                    background:
-                      selected === file.name
-                        ? "rgba(0,100,255,0.15)"
-                        : "transparent",
+                    background: selected === file.name ? "rgba(0,100,255,0.15)" : "transparent",
                   }}
                   onClick={() => setSelected(file.name)}
                 >

@@ -1,12 +1,5 @@
 import { useState } from "react";
-import {
-  ChevronLeft,
-  ChevronRight,
-  RefreshCw,
-  Lock,
-  Plus,
-  Share,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, RefreshCw, Lock, Plus, Share } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 const bookmarks = [
@@ -67,11 +60,7 @@ export function SafariWindow() {
         {tabs.map((tab) => (
           <button
             key={tab.id}
-            onClick={() =>
-              setTabs((prev) =>
-                prev.map((t) => ({ ...t, active: t.id === tab.id }))
-              )
-            }
+            onClick={() => setTabs((prev) => prev.map((t) => ({ ...t, active: t.id === tab.id })))}
             className="flex items-center gap-1.5 px-3 py-1 rounded-t-lg text-[12px] min-w-[120px] max-w-[180px] flex-shrink-0 transition-colors"
             style={{
               background: tab.active ? "rgba(255,255,255,0.9)" : "transparent",
@@ -171,9 +160,7 @@ export function SafariWindow() {
             className="flex items-center gap-1.5 px-2 py-0.5 rounded hover:bg-black/10 transition-colors flex-shrink-0"
           >
             <span className="text-[13px]">{bm.icon}</span>
-            <span className="text-[11px] text-gray-600 hidden sm:block">
-              {bm.name}
-            </span>
+            <span className="text-[11px] text-gray-600 hidden sm:block">{bm.name}</span>
           </button>
         ))}
       </div>
@@ -188,10 +175,7 @@ export function SafariWindow() {
             </h3>
             <div className="grid grid-cols-4 sm:grid-cols-6 gap-4">
               {bookmarks.map((bm) => (
-                <button
-                  key={bm.name}
-                  className="flex flex-col items-center gap-1.5 group"
-                >
+                <button key={bm.name} className="flex flex-col items-center gap-1.5 group">
                   <div
                     className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shadow-sm group-hover:shadow-md transition-shadow"
                     style={{ background: "rgba(0,0,0,0.05)" }}
@@ -228,9 +212,7 @@ export function SafariWindow() {
 
           {/* News */}
           <div>
-            <h3 className="text-[14px] text-gray-500 mb-3 font-semibold">
-              {t("safari.topNews")}
-            </h3>
+            <h3 className="text-[14px] text-gray-500 mb-3 font-semibold">{t("safari.topNews")}</h3>
             <div className="space-y-3">
               {news.map((article) => (
                 <div
@@ -245,16 +227,12 @@ export function SafariWindow() {
                     {article.image}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[13px] text-gray-800 leading-snug">
-                      {article.title}
-                    </p>
+                    <p className="text-[13px] text-gray-800 leading-snug">{article.title}</p>
                     <div className="flex items-center gap-2 mt-1">
                       <span className="text-[10px] text-blue-500 font-medium">
                         {article.category}
                       </span>
-                      <span className="text-[10px] text-gray-400">
-                        {article.time}
-                      </span>
+                      <span className="text-[10px] text-gray-400">{article.time}</span>
                     </div>
                   </div>
                 </div>

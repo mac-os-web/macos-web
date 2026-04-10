@@ -145,9 +145,7 @@ export function Window({
         <div
           className="flex items-center px-3 h-11 flex-shrink-0 select-none relative"
           style={{
-            background: isActive
-              ? "rgba(230,230,230,0.95)"
-              : "rgba(210,210,210,0.9)",
+            background: isActive ? "rgba(230,230,230,0.95)" : "rgba(210,210,210,0.9)",
             backdropFilter: "blur(20px)",
             borderBottom: "1px solid rgba(0,0,0,0.1)",
           }}
@@ -200,9 +198,7 @@ export function Window({
           {/* Title */}
           <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1.5">
             {icon && <span className="text-base">{icon}</span>}
-            <span className="text-[13px] text-gray-700 font-semibold">
-              {title}
-            </span>
+            <span className="text-[13px] text-gray-700 font-semibold">{title}</span>
           </div>
         </div>
 
@@ -215,8 +211,7 @@ export function Window({
             className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize"
             onMouseDown={handleResizeMouseDown}
             style={{
-              background:
-                "linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.15) 50%)",
+              background: "linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.15) 50%)",
             }}
           />
         )}

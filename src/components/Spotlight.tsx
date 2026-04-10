@@ -21,7 +21,12 @@ export function Spotlight({ isOpen, onClose, onOpenApp }: SpotlightProps) {
         { id: "finder", name: "Finder", names: ["Finder"], icon: "🗂️" },
         { id: "safari", name: "Safari", names: ["Safari"], icon: "🧭" },
         { id: "notes", name: t("dock.notes"), names: ["메모", "Notes", "メモ"], icon: "📝" },
-        { id: "terminal", name: t("dock.terminal"), names: ["터미널", "Terminal", "ターミナル"], icon: "⬛" },
+        {
+          id: "terminal",
+          name: t("dock.terminal"),
+          names: ["터미널", "Terminal", "ターミナル"],
+          icon: "⬛",
+        },
         { id: "appstore", name: "App Store", names: ["App Store"], icon: "🛍️" },
         { id: "mail", name: "Mail", names: ["Mail", "메일"], icon: "✉️" },
       ],
@@ -29,8 +34,18 @@ export function Spotlight({ isOpen, onClose, onOpenApp }: SpotlightProps) {
     {
       category: t("spotlight.categories.recent"),
       items: [
-        { id: "notes", name: t("spotlight.recentItems.todoList"), names: ["오늘의 할 일 목록", "Today's To-Do List", "今日のToDoリスト"], icon: "📄" },
-        { id: "finder", name: t("spotlight.recentItems.downloads"), names: ["다운로드", "Downloads", "ダウンロード"], icon: "📁" },
+        {
+          id: "notes",
+          name: t("spotlight.recentItems.todoList"),
+          names: ["오늘의 할 일 목록", "Today's To-Do List", "今日のToDoリスト"],
+          icon: "📄",
+        },
+        {
+          id: "finder",
+          name: t("spotlight.recentItems.downloads"),
+          names: ["다운로드", "Downloads", "ダウンロード"],
+          icon: "📁",
+        },
       ],
     },
   ];
@@ -54,8 +69,7 @@ export function Spotlight({ isOpen, onClose, onOpenApp }: SpotlightProps) {
     const handler = (e: KeyboardEvent) => {
       if (!isOpen) return;
       if (e.key === "Escape") onClose();
-      if (e.key === "ArrowDown")
-        setSelected((s) => Math.min(s + 1, filtered.length - 1));
+      if (e.key === "ArrowDown") setSelected((s) => Math.min(s + 1, filtered.length - 1));
       if (e.key === "ArrowUp") setSelected((s) => Math.max(s - 1, 0));
       if (e.key === "Enter" && filtered[selected]) {
         onOpenApp(filtered[selected].id);
@@ -111,20 +125,15 @@ export function Spotlight({ isOpen, onClose, onOpenApp }: SpotlightProps) {
                       {section.category}
                     </div>
                     {section.items.map((item, i) => {
-                      const globalIndex = allItems.findIndex(
-                        (a) => a === item
-                      );
+                      const globalIndex = allItems.findIndex((a) => a === item);
                       return (
                         <button
                           key={item.id + i}
                           className="w-full flex items-center gap-3 px-4 py-2 transition-colors text-left"
                           style={{
                             background:
-                              selected === globalIndex
-                                ? "rgba(0,106,255,0.85)"
-                                : "transparent",
-                            color:
-                              selected === globalIndex ? "white" : "inherit",
+                              selected === globalIndex ? "rgba(0,106,255,0.85)" : "transparent",
+                            color: selected === globalIndex ? "white" : "inherit",
                           }}
                           onMouseEnter={() => setSelected(globalIndex)}
                           onClick={() => {
@@ -132,16 +141,11 @@ export function Spotlight({ isOpen, onClose, onOpenApp }: SpotlightProps) {
                             onClose();
                           }}
                         >
-                          <span className="text-2xl w-8 text-center">
-                            {item.icon}
-                          </span>
+                          <span className="text-2xl w-8 text-center">{item.icon}</span>
                           <span
                             className="text-[14px]"
                             style={{
-                              color:
-                                selected === globalIndex
-                                  ? "white"
-                                  : "#1a1a1a",
+                              color: selected === globalIndex ? "white" : "#1a1a1a",
                             }}
                           >
                             {item.name}
@@ -156,10 +160,7 @@ export function Spotlight({ isOpen, onClose, onOpenApp }: SpotlightProps) {
                     key={item.id + i}
                     className="w-full flex items-center gap-3 px-4 py-2 transition-colors text-left"
                     style={{
-                      background:
-                        selected === i
-                          ? "rgba(0,106,255,0.85)"
-                          : "transparent",
+                      background: selected === i ? "rgba(0,106,255,0.85)" : "transparent",
                     }}
                     onMouseEnter={() => setSelected(i)}
                     onClick={() => {
@@ -167,9 +168,7 @@ export function Spotlight({ isOpen, onClose, onOpenApp }: SpotlightProps) {
                       onClose();
                     }}
                   >
-                    <span className="text-2xl w-8 text-center">
-                      {item.icon}
-                    </span>
+                    <span className="text-2xl w-8 text-center">{item.icon}</span>
                     <span
                       className="text-[14px]"
                       style={{ color: selected === i ? "white" : "#1a1a1a" }}

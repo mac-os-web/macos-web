@@ -139,12 +139,8 @@ Public`,
               <span style={{ color: "#f8f8f2" }}>{line.content}</span>
             </span>
           )}
-          {line.type === "output" && (
-            <span style={{ color: "#d4d4d4" }}>{line.content}</span>
-          )}
-          {line.type === "error" && (
-            <span style={{ color: "#ff5555" }}>{line.content}</span>
-          )}
+          {line.type === "output" && <span style={{ color: "#d4d4d4" }}>{line.content}</span>}
+          {line.type === "error" && <span style={{ color: "#ff5555" }}>{line.content}</span>}
         </div>
       ))}
 
