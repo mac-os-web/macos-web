@@ -7,7 +7,7 @@ interface Line {
 }
 
 export function TerminalWindow() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const commands: Record<string, string> = {
     help: `${t("terminal.help.title")}
@@ -25,7 +25,7 @@ Library         Movies     Music        Pictures
 Public`,
     pwd: `/Users/${t("terminal.user")}`,
     whoami: t("terminal.user"),
-    date: new Date().toLocaleString("ko-KR"),
+    date: Temporal.Now.plainDateTimeISO().toLocaleString(i18n.language),
     uname: "Darwin MacBook-Pro.local 24.4.0 Darwin Kernel Version 24.4.0",
     neofetch: `
                     'c.          ${t("terminal.user")}@MacBook-Pro

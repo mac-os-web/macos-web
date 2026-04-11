@@ -72,17 +72,17 @@ function WidgetShell({ id, initialX, initialY, children, onRemove }: WidgetShell
 
 // ─── Clock Widget ─────────────────────────────────────────────────────────────
 function ClockWidget() {
-  const [time, setTime] = useState(new Date());
+  const [now, setNow] = useState(() => Temporal.Now.plainDateTimeISO());
   const { i18n } = useTranslation();
 
   useEffect(() => {
-    const t = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(t);
-  }, []);
+  const t = setInterval(() => setNow(Temporal.Now.plainDateTimeISO()), 1000);
+  return () => clearInterval(t);
+}, []);
 
-  const sec = time.getSeconds();
-  const min = time.getMinutes();
-  const hr = time.getHours() % 12;
+  const sec = now.second;
+  const min = now.minute;
+  const hr = now.hour % 12;
   const secDeg = sec * 6;
   const minDeg = min * 6 + sec * 0.1;
   const hrDeg = hr * 30 + min * 0.5;
@@ -149,7 +149,7 @@ function ClockWidget() {
         <circle cx="40" cy="40" r="1.5" fill="#ff3b30" />
       </svg>
       <p className="text-white text-[11px] opacity-60">
-        {time.toLocaleDateString(i18n.language, {
+        {now.toLocaleString(i18n.language, {
           month: "short",
           day: "numeric",
           weekday: "short",
@@ -224,13 +224,14 @@ function WeatherWidget() {
 function CalendarWidget() {
   const { t, i18n } = useTranslation();
 
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth();
-  const date = today.getDate();
+  const today = Temporal.Now.plainDateISO();
+  const year = today.year;
+  const month = today.month;
+  const date = today.day;
 
-  const firstDay = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstOfMonth = today.with({ day: 1 });
+  const firstDay = firstOfMonth.dayOfWeek % 7; // 0: Sunday, 1: Monday, ..., 6: Saturday
+  const daysInMonth = today.daysInMonth;
   const days = Array.from({ length: 42 }, (_, i) => {
     const d = i - firstDay + 1;
     return d >= 1 && d <= daysInMonth ? d : null;
@@ -243,8 +244,8 @@ function CalendarWidget() {
   };
 
   const weekdays = Array.from({ length: 7 }, (_, i) => {
-    const d = new Date(2024, 0, i); // 2024-01-07 is Sunday
-    return d.toLocaleDateString(i18n.language, { weekday: "narrow" });
+    const d = Temporal.PlainDate.from("2024-01-07").add({ days: i }); // 2024-01-07 is Sunday
+    return d.toLocaleString(i18n.language, { weekday: "narrow" });
   });
 
   return (
@@ -258,7 +259,7 @@ function CalendarWidget() {
       <div className="flex items-center justify-between mb-3">
         <div>
           <p className="text-red-400 text-[11px] font-semibold uppercase tracking-wider">
-            {today.toLocaleDateString(i18n.language, { month: "long" })}
+            {today.toLocaleString(i18n.language, { month: "long" })}
           </p>
           <p className="text-white text-[28px] font-thin leading-none">{date}</p>
         </div>
@@ -306,7 +307,7 @@ function CalendarWidget() {
             <div key={d} className="flex items-center gap-2 mb-1">
               <div className="w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0" />
               <span className="text-white/70 text-[11px]">
-                {month + 1}/{d} · {name}
+                {month}/{d} · {name}
               </span>
             </div>
           ))}

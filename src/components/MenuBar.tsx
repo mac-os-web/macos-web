@@ -38,16 +38,23 @@ function DropdownMenu({ items }: { items: (string | null)[] }) {
 }
 
 export function MenuBar({ onSpotlight, onControlCenter, activeApp }: MenuBarProps) {
-  const [time, setTime] = useState(new Date());
+  const [now, setNow] = useState(() => Temporal.Now.plainDateTimeISO());
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [showAppleMenu, setShowAppleMenu] = useState(false);
   const { t, i18n } = useTranslation();
   const langs = ["ko", "en", "ja"];
 
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
+    const timer = setInterval(() => setNow(Temporal.Now.plainDateTimeISO()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  const formatTime = (dt: Temporal.PlainDateTime) =>
+    dt.toLocaleString(i18n.language, { hour: "2-digit", minute: "2-digit", hour12: false });
+
+  const formatDate = (dt: Temporal.PlainDateTime) =>
+    dt.toLocaleString(i18n.language, { month: "short", day: "numeric", weekday: "short" });
+
 
   const menuItems: Record<string, string[]> = {
     Finder: [
@@ -88,20 +95,6 @@ export function MenuBar({ onSpotlight, onControlCenter, activeApp }: MenuBarProp
     null,
     t("menu.sub.close"),
   ];
-
-  const formatTime = (date: Date) =>
-    date.toLocaleTimeString("ko-KR", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    });
-
-  const formatDate = (date: Date) =>
-    date.toLocaleDateString("ko-KR", {
-      month: "short",
-      day: "numeric",
-      weekday: "short",
-    });
 
   const currentMenus = menuItems[activeApp] ?? menuItems["Finder"];
 
@@ -247,8 +240,8 @@ export function MenuBar({ onSpotlight, onControlCenter, activeApp }: MenuBarProp
             }}
           >
             <span className="text-white text-[12px] font-medium">
-              <span className="hidden sm:inline">{formatDate(time)}&nbsp;&nbsp;</span>
-              {formatTime(time)}
+              <span className="hidden sm:inline">{formatDate(now)}&nbsp;&nbsp;</span>
+              {formatTime(now)}
             </span>
           </button>
         </div>
