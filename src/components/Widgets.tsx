@@ -231,7 +231,7 @@ function WeatherWidget() {
     ).then((data) => {
       setCityName(data.city || data.locality);
     }).catch(() => {});
-  }, [coords]);
+  }, [coords, i18n.language]);
 
   // データがない場合はローディング表示
   const current = weather?.current;
