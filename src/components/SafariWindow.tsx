@@ -1,6 +1,28 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, RefreshCw, Lock, Plus, Share } from "lucide-react";
+import { ChevronLeft, ChevronRight, RefreshCw, Lock, Plus, Share, WifiOff } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useNetwork } from '../contexts/network';
+
+function OfflinePage({ url }: { url: string }) {
+  return (
+    <div className="flex flex-col items-center justify-center h-full text-center px-8 py-12 select-none">
+      <div className="text-7xl mb-6" aria-hidden>🦖</div>
+      <WifiOff size={48} className="text-gray-300 mb-4" />
+      <h2 className="text-[20px] font-semibold text-gray-700 mb-2">
+        You are offline
+      </h2>
+      <p className="text-[13px] text-gray-500 mb-1">
+        Safari can't open the page because your computer isn't connected to the Internet.
+      </p>
+      <p className="text-[12px] text-gray-400 mb-8">
+        Could not connect to <span className="font-mono">{url || "the server"}</span>
+      </p>
+      <p className="text-[11px] text-gray-400">
+        Press <kbd className="px-1.5 py-0.5 rounded border border-gray-300 bg-gray-50 font-mono">Space</kbd> to play
+      </p>
+    </div>
+  );
+}
 
 const bookmarks = [
   { name: "Apple", url: "apple.com", icon: "🍎" },
@@ -19,6 +41,7 @@ export function SafariWindow() {
     { id: 2, title: "GitHub", url: "github.com", active: false },
   ]);
   const { t } = useTranslation();
+const { isOnline } = useNetwork();
 
   const news = [
     {
@@ -167,6 +190,7 @@ export function SafariWindow() {
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto" style={{ background: "white" }}>
+        {isOnline ? (
         <div className="p-6 max-w-3xl mx-auto">
           {/* Favorites */}
           <div className="mb-8">
@@ -240,6 +264,9 @@ export function SafariWindow() {
             </div>
           </div>
         </div>
+        ) : (
+          <OfflinePage url={inputUrl} />
+        )}
       </div>
     </div>
   );

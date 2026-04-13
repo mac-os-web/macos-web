@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { Wifi, Battery, Volume2, Search, Globe } from "lucide-react";
+import { Wifi,WifiOff, Battery, Volume2, Search, Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useNetwork } from '../contexts/network';
 
 interface MenuBarProps {
   onSpotlight: () => void;
@@ -102,6 +103,9 @@ export function MenuBar({ onSpotlight, onControlCenter, activeApp }: MenuBarProp
     setOpenMenu(null);
     setShowAppleMenu(false);
   };
+
+  const { isOnline } = useNetwork();
+
 
   return (
     <>
@@ -226,7 +230,11 @@ export function MenuBar({ onSpotlight, onControlCenter, activeApp }: MenuBarProp
             }}
             className="hidden sm:flex items-center gap-1.5 px-2 h-7 rounded hover:bg-white/20 transition-colors"
           >
-            <Wifi size={13} className="text-white" />
+            {isOnline ? (
+              <Wifi size={13} className="text-white" />
+            ) : (
+              <WifiOff size={13} className="text-white" />
+            )}
             <Volume2 size={13} className="text-white" />
             <Battery size={13} className="text-white" />
           </button>
