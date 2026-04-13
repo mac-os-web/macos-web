@@ -21,6 +21,8 @@ function MailOffline() {
 export function MailWindow() {
   const { t } = useTranslation();
   const { isOnline } = useNetwork();
+  const [selected, setSelected] = useState(0);
+
   if (!isOnline) return <MailOffline />;
 
   const emails = [
@@ -65,7 +67,6 @@ export function MailWindow() {
       avatar: "🎬",
     },
   ];
-  const [selected, setSelected] = useState(0);
 
   return (
     <div className="flex h-full">

@@ -21,6 +21,8 @@ function AppStoreOffline() {
 export function AppStoreWindow() {
   const { t } = useTranslation();
   const { isOnline } = useNetwork();
+  const [installed, setInstalled] = useState<string[]>([]);
+
   if (!isOnline) return <AppStoreOffline />;
 
   const featured = [
@@ -73,7 +75,6 @@ export function AppStoreWindow() {
       color: "#0076d1",
     },
   ];
-  const [installed, setInstalled] = useState<string[]>([]);
 
   return (
     <div className="h-full flex" style={{ background: "#f5f5f7" }}>
