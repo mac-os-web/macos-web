@@ -43,6 +43,8 @@ export function MenuBar({ onSpotlight, onControlCenter, activeApp }: MenuBarProp
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [showAppleMenu, setShowAppleMenu] = useState(false);
   const { t, i18n } = useTranslation();
+  const { isOnline } = useNetwork();
+
   const langs = ["ko", "en", "ja"];
 
   useEffect(() => {
@@ -103,9 +105,6 @@ export function MenuBar({ onSpotlight, onControlCenter, activeApp }: MenuBarProp
     setOpenMenu(null);
     setShowAppleMenu(false);
   };
-
-  const { isOnline } = useNetwork();
-
 
   return (
     <>

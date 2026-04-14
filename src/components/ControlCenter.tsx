@@ -115,7 +115,7 @@ export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
               <div className="text-left">
                 <p className="text-[12px] font-semibold text-gray-800">Wi-Fi</p>
                 <p className="text-[10px] text-gray-500">
-                  {isOnline ? "HomeNetwork_5G" : t("controlCenter.off")}
+                  {isOnline ? t("controlCenter.connectedNetwork") : t("controlCenter.off")}
                 </p>
               </div>
             </button>

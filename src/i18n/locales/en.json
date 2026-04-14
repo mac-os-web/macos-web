@@ -75,7 +75,8 @@
     "mirroring": "Mirroring",
     "on": "On",
     "off": "Off",
-    "everyone": "Everyone"
+    "everyone": "Everyone",
+    "connectedNetwork": "HomeNetwork_5G"
   },
   "finder": {
     "sidebar": {

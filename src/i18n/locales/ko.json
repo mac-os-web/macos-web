@@ -75,7 +75,8 @@
     "mirroring": "미러링",
     "on": "켜짐",
     "off": "꺼짐",
-    "everyone": "모두에게"
+    "everyone": "모두에게",
+    "connectedNetwork": "HomeNetwork_5G"
   },
   "finder": {
     "sidebar": {
