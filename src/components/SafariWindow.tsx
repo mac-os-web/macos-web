@@ -115,7 +115,12 @@ export function SafariWindow() {
           onClick={() =>
             setTabs((prev) => [
               ...prev.map((x) => ({ ...x, active: false })),
-              { id: Date.now(), title: t("safari.newTab"), url: "", active: true },
+              {
+                id: Temporal.Now.instant().epochMilliseconds,
+                title: t("safari.newTab"),
+                url: "",
+                active: true,
+              },
             ])
           }
         >

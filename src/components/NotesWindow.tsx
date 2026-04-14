@@ -48,7 +48,7 @@ export function NotesWindow() {
 
   const addNote = () => {
     const newNote = {
-      id: Date.now(),
+      id: Temporal.Now.instant().epochMilliseconds,
       title: t("notes.newNote"),
       content: "",
       date: t("notes.justNow"),

@@ -41,14 +41,18 @@ function shouldLog(level: LogLevel): boolean {
   return LOG_LEVELS[level] >= LOG_LEVELS[minLevel];
 }
 
+// ─── タイムスタンプフォーマット設定 ─────────────────────────────────────────
+const TIMESTAMP_LOCALE = "en-US";
+const TIMESTAMP_OPTIONS = {
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+  hour12: false,
+} as const;
+
 // ─── タイムスタンプ ──────────────────────────────────────────────────────────
 function timestamp(): string {
-  return Temporal.Now.plainDateTimeISO().toLocaleString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-  });
+  return Temporal.Now.plainDateTimeISO().toLocaleString(TIMESTAMP_LOCALE, TIMESTAMP_OPTIONS);
 }
 
 // ─── ロガー本体 ──────────────────────────────────────────────────────────────

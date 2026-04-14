@@ -387,7 +387,10 @@ export default function App() {
     const already = widgets.find((w) => w.type === type);
     if (already) return;
     const pos = WIDGET_POSITIONS[type] ?? { x: 100, y: 100 };
-    setWidgets((prev) => [...prev, { id: `${type}-${Date.now()}`, type, x: pos.x, y: pos.y }]);
+    setWidgets((prev) => [
+      ...prev,
+      { id: `${type}-${Temporal.Now.instant().epochMilliseconds}`, type, x: pos.x, y: pos.y },
+    ]);
   };
   const removeWidget = (id: string) => setWidgets((prev) => prev.filter((w) => w.id !== id));
   const activeWidgetTypes = widgets.map((w) => w.type);
