@@ -1,17 +1,17 @@
-import { useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
-  Grid,
-  List,
-  Search,
-  Home,
   Download,
-  Image,
-  Music,
   Film,
+  Grid,
   HardDrive,
+  Home,
+  Image,
+  List,
+  Music,
+  Search,
 } from "lucide-react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export function FinderWindow() {
@@ -84,27 +84,27 @@ export function FinderWindow() {
         {
           key: "red",
           name: t("finder.tags.red"),
-          icon: <div className="w-3 h-3 rounded-full bg-red-500" />,
+          icon: <div className="h-3 w-3 rounded-full bg-red-500" />,
         },
         {
           key: "orange",
           name: t("finder.tags.orange"),
-          icon: <div className="w-3 h-3 rounded-full bg-orange-400" />,
+          icon: <div className="h-3 w-3 rounded-full bg-orange-400" />,
         },
         {
           key: "yellow",
           name: t("finder.tags.yellow"),
-          icon: <div className="w-3 h-3 rounded-full bg-yellow-400" />,
+          icon: <div className="h-3 w-3 rounded-full bg-yellow-400" />,
         },
         {
           key: "green",
           name: t("finder.tags.green"),
-          icon: <div className="w-3 h-3 rounded-full bg-green-500" />,
+          icon: <div className="h-3 w-3 rounded-full bg-green-500" />,
         },
         {
           key: "blue",
           name: t("finder.tags.blue"),
-          icon: <div className="w-3 h-3 rounded-full bg-blue-500" />,
+          icon: <div className="h-3 w-3 rounded-full bg-blue-500" />,
         },
       ],
     },
@@ -191,7 +191,7 @@ export function FinderWindow() {
     <div className="flex h-full" style={{ background: "#f5f5f5" }}>
       {/* Sidebar */}
       <div
-        className="w-44 flex-shrink-0 flex flex-col pt-2 overflow-y-auto"
+        className="flex w-44 flex-shrink-0 flex-col overflow-y-auto pt-2"
         style={{
           background: "rgba(235,235,235,0.9)",
           borderRight: "1px solid rgba(0,0,0,0.08)",
@@ -199,13 +199,13 @@ export function FinderWindow() {
       >
         {sidebarItems.map((section) => (
           <div key={section.section} className="mb-2">
-            <div className="px-3 py-1 text-[10px] text-gray-400 uppercase tracking-wider font-semibold">
+            <div className="px-3 py-1 text-[10px] font-semibold tracking-wider text-gray-400 uppercase">
               {section.section}
             </div>
             {section.items.map((item) => (
               <button
                 key={item.key}
-                className="w-full flex items-center gap-2 px-3 py-1 rounded-md mx-1 transition-colors text-left"
+                className="mx-1 flex w-full items-center gap-2 rounded-md px-3 py-1 text-left transition-colors"
                 style={{
                   width: "calc(100% - 8px)",
                   background: activeSection === item.key ? "rgba(0,100,255,0.15)" : "transparent",
@@ -213,8 +213,8 @@ export function FinderWindow() {
                 }}
                 onClick={() => setActiveSection(item.key)}
               >
-                <span className="text-[13px] flex items-center">{item.icon}</span>
-                <span className="text-[12px] truncate">{item.name}</span>
+                <span className="flex items-center text-[13px]">{item.icon}</span>
+                <span className="truncate text-[12px]">{item.name}</span>
               </button>
             ))}
           </div>
@@ -222,26 +222,26 @@ export function FinderWindow() {
       </div>
 
       {/* Main area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex min-w-0 flex-1 flex-col">
         {/* Toolbar */}
         <div
-          className="flex items-center gap-2 px-3 py-2 flex-shrink-0"
+          className="flex flex-shrink-0 items-center gap-2 px-3 py-2"
           style={{
             background: "rgba(235,235,235,0.95)",
             borderBottom: "1px solid rgba(0,0,0,0.08)",
           }}
         >
-          <button className="p-1 rounded hover:bg-black/10 transition-colors text-gray-500">
+          <button className="rounded p-1 text-gray-500 transition-colors hover:bg-black/10">
             <ChevronLeft size={16} />
           </button>
-          <button className="p-1 rounded hover:bg-black/10 transition-colors text-gray-400">
+          <button className="rounded p-1 text-gray-400 transition-colors hover:bg-black/10">
             <ChevronRight size={16} />
           </button>
 
-          <div className="flex items-center gap-1 ml-2">
+          <div className="ml-2 flex items-center gap-1">
             <button
               onClick={() => setView("grid")}
-              className="p-1 rounded transition-colors"
+              className="rounded p-1 transition-colors"
               style={{
                 background: view === "grid" ? "rgba(0,0,0,0.12)" : "transparent",
               }}
@@ -250,7 +250,7 @@ export function FinderWindow() {
             </button>
             <button
               onClick={() => setView("list")}
-              className="p-1 rounded transition-colors"
+              className="rounded p-1 transition-colors"
               style={{
                 background: view === "list" ? "rgba(0,0,0,0.12)" : "transparent",
               }}
@@ -260,7 +260,7 @@ export function FinderWindow() {
           </div>
 
           <div
-            className="ml-auto flex items-center gap-1.5 px-2 py-1 rounded-lg"
+            className="ml-auto flex items-center gap-1.5 rounded-lg px-2 py-1"
             style={{ background: "rgba(0,0,0,0.08)" }}
           >
             <Search size={12} className="text-gray-400" />
@@ -268,7 +268,7 @@ export function FinderWindow() {
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
               placeholder={t("finder.toolbar.search")}
-              className="bg-transparent outline-none text-[12px] text-gray-700 w-24 placeholder-gray-400"
+              className="w-24 bg-transparent text-[12px] text-gray-700 placeholder-gray-400 outline-none"
             />
           </div>
         </div>
@@ -282,7 +282,7 @@ export function FinderWindow() {
           <span>›</span>
           <span>{t("finder.path.users")}</span>
           <span>›</span>
-          <span className="text-gray-700 font-medium">{t("finder.path.userFolder")}</span>
+          <span className="font-medium text-gray-700">{t("finder.path.userFolder")}</span>
         </div>
 
         {/* Content */}
@@ -294,11 +294,11 @@ export function FinderWindow() {
                   className="text-[11px] text-gray-400"
                   style={{ borderBottom: "1px solid rgba(0,0,0,0.08)" }}
                 >
-                  <th className="text-left pb-1 font-medium pl-1">{t("finder.table.name")}</th>
-                  <th className="text-left pb-1 font-medium hidden sm:table-cell">
+                  <th className="pb-1 pl-1 text-left font-medium">{t("finder.table.name")}</th>
+                  <th className="hidden pb-1 text-left font-medium sm:table-cell">
                     {t("finder.table.modified")}
                   </th>
-                  <th className="text-left pb-1 font-medium hidden sm:table-cell">
+                  <th className="hidden pb-1 text-left font-medium sm:table-cell">
                     {t("finder.table.size")}
                   </th>
                 </tr>
@@ -320,10 +320,10 @@ export function FinderWindow() {
                         <span className="text-[13px] text-gray-800">{file.name}</span>
                       </div>
                     </td>
-                    <td className="py-1 text-[11px] text-gray-500 hidden sm:table-cell">
+                    <td className="hidden py-1 text-[11px] text-gray-500 sm:table-cell">
                       {file.modified}
                     </td>
-                    <td className="py-1 text-[11px] text-gray-500 hidden sm:table-cell">
+                    <td className="hidden py-1 text-[11px] text-gray-500 sm:table-cell">
                       {file.size}
                     </td>
                   </tr>
@@ -331,18 +331,18 @@ export function FinderWindow() {
               </tbody>
             </table>
           ) : (
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
+            <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-5">
               {filtered.map((file) => (
                 <button
                   key={file.name}
-                  className="flex flex-col items-center gap-1 p-2 rounded-lg transition-colors"
+                  className="flex flex-col items-center gap-1 rounded-lg p-2 transition-colors"
                   style={{
                     background: selected === file.name ? "rgba(0,100,255,0.15)" : "transparent",
                   }}
                   onClick={() => setSelected(file.name)}
                 >
                   <span className="text-4xl">{file.icon}</span>
-                  <span className="text-[11px] text-gray-700 text-center leading-tight">
+                  <span className="text-center text-[11px] leading-tight text-gray-700">
                     {file.name}
                   </span>
                 </button>
@@ -353,7 +353,7 @@ export function FinderWindow() {
 
         {/* Status bar */}
         <div
-          className="px-4 py-1.5 text-[11px] text-gray-500 flex justify-between"
+          className="flex justify-between px-4 py-1.5 text-[11px] text-gray-500"
           style={{
             borderTop: "1px solid rgba(0,0,0,0.06)",
             background: "rgba(240,240,240,0.5)",

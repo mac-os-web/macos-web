@@ -1,21 +1,21 @@
+import { WifiOff } from "lucide-react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNetwork } from "../contexts/network";
-import { useState } from "react";
-import { WifiOff } from "lucide-react";
 
 function AppStoreOffline() {
   const { t } = useTranslation();
   return (
     <div
-      className="h-full flex flex-col items-center justify-center text-center p-8"
+      className="flex h-full flex-col items-center justify-center p-8 text-center"
       style={{ background: "#f5f5f7" }}
     >
-      <div className="text-6xl mb-4">🛍️</div>
-      <WifiOff size={40} className="text-gray-300 mb-4" />
-      <h2 className="text-[18px] font-semibold text-gray-700 mb-2">
+      <div className="mb-4 text-6xl">🛍️</div>
+      <WifiOff size={40} className="mb-4 text-gray-300" />
+      <h2 className="mb-2 text-[18px] font-semibold text-gray-700">
         {t("appStore.offline.title")}
       </h2>
-      <p className="text-[13px] text-gray-500 max-w-sm">{t("appStore.offline.description")}</p>
+      <p className="max-w-sm text-[13px] text-gray-500">{t("appStore.offline.description")}</p>
     </div>
   );
 }
@@ -79,7 +79,7 @@ export function AppStoreWindow() {
   ];
 
   return (
-    <div className="h-full flex" style={{ background: "#f5f5f7" }}>
+    <div className="flex h-full" style={{ background: "#f5f5f7" }}>
       <div
         className="w-44 flex-shrink-0 pt-2"
         style={{
@@ -108,13 +108,13 @@ export function AppStoreWindow() {
           },
         ].map((sec) => (
           <div key={sec.label} className="mb-2">
-            <p className="px-3 py-1 text-[10px] text-gray-400 uppercase font-semibold tracking-wider">
+            <p className="px-3 py-1 text-[10px] font-semibold tracking-wider text-gray-400 uppercase">
               {sec.label}
             </p>
             {sec.items.map((item) => (
               <button
                 key={item}
-                className="w-full text-left px-4 py-1.5 text-[13px] text-gray-600 hover:bg-black/5 transition-colors rounded"
+                className="w-full rounded px-4 py-1.5 text-left text-[13px] text-gray-600 transition-colors hover:bg-black/5"
               >
                 {item}
               </button>
@@ -125,43 +125,43 @@ export function AppStoreWindow() {
       <div className="flex-1 overflow-y-auto">
         <div className="p-5">
           <div
-            className="rounded-2xl overflow-hidden mb-5 h-40 flex items-center justify-between px-8"
+            className="mb-5 flex h-40 items-center justify-between overflow-hidden rounded-2xl px-8"
             style={{
               background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
             }}
           >
             <div className="text-white">
-              <p className="text-[11px] opacity-60 uppercase tracking-wider mb-1">
+              <p className="mb-1 text-[11px] tracking-wider uppercase opacity-60">
                 {t("appStore.editorsChoice")}
               </p>
-              <p className="text-[22px] font-semibold leading-tight">
+              <p className="text-[22px] leading-tight font-semibold">
                 {t("appStore.banner.year")}
                 <br />
                 {t("appStore.banner.title")}
               </p>
-              <p className="text-[12px] opacity-60 mt-1">{t("appStore.banner.subtitle")}</p>
+              <p className="mt-1 text-[12px] opacity-60">{t("appStore.banner.subtitle")}</p>
             </div>
             <div className="text-6xl">🚀</div>
           </div>
 
-          <h3 className="text-[17px] text-gray-800 font-semibold mb-3">
+          <h3 className="mb-3 text-[17px] font-semibold text-gray-800">
             {t("appStore.popularFree")}
           </h3>
           <div className="grid grid-cols-1 gap-2">
             {featured.map((app, i) => (
               <div
                 key={app.name}
-                className="flex items-center gap-3 p-3 bg-white rounded-xl"
+                className="flex items-center gap-3 rounded-xl bg-white p-3"
                 style={{ boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}
               >
-                <span className="text-[13px] text-gray-400 w-4 flex-shrink-0">{i + 1}</span>
+                <span className="w-4 flex-shrink-0 text-[13px] text-gray-400">{i + 1}</span>
                 <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
+                  className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl text-2xl"
                   style={{ background: app.color + "20" }}
                 >
                   {app.icon}
                 </div>
-                <div className="flex-1 min-w-0">
+                <div className="min-w-0 flex-1">
                   <p className="text-[13px] font-semibold text-gray-800">{app.name}</p>
                   <p className="text-[11px] text-gray-400">
                     {app.category} · ⭐ {app.rating}
@@ -175,7 +175,7 @@ export function AppStoreWindow() {
                         : [...prev, app.name]
                     )
                   }
-                  className="px-3.5 py-1.5 rounded-full text-[12px] font-semibold transition-all"
+                  className="rounded-full px-3.5 py-1.5 text-[12px] font-semibold transition-all"
                   style={{
                     background: installed.includes(app.name)
                       ? "rgba(0,0,0,0.06)"

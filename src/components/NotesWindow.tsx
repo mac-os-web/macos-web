@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { Plus, Search, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export function NotesWindow() {
@@ -82,7 +82,7 @@ export function NotesWindow() {
     <div className="flex h-full">
       {/* Sidebar */}
       <div
-        className="w-52 flex-shrink-0 flex flex-col"
+        className="flex w-52 flex-shrink-0 flex-col"
         style={{
           background: "rgba(242,238,230,0.95)",
           borderRight: "1px solid rgba(0,0,0,0.08)",
@@ -92,15 +92,15 @@ export function NotesWindow() {
           className="flex items-center justify-between px-3 py-2"
           style={{ borderBottom: "1px solid rgba(0,0,0,0.06)" }}
         >
-          <span className="text-[12px] text-gray-500 font-semibold">{t("notes.title")}</span>
-          <button onClick={addNote} className="p-1 rounded hover:bg-black/10 transition-colors">
+          <span className="text-[12px] font-semibold text-gray-500">{t("notes.title")}</span>
+          <button onClick={addNote} className="rounded p-1 transition-colors hover:bg-black/10">
             <Plus size={14} className="text-gray-600" />
           </button>
         </div>
 
         <div className="px-2 py-1.5">
           <div
-            className="flex items-center gap-1.5 px-2 py-1 rounded-lg"
+            className="flex items-center gap-1.5 rounded-lg px-2 py-1"
             style={{ background: "rgba(0,0,0,0.08)" }}
           >
             <Search size={11} className="text-gray-400" />
@@ -108,14 +108,14 @@ export function NotesWindow() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t("notes.search")}
-              className="flex-1 bg-transparent outline-none text-[12px] text-gray-700 placeholder-gray-400"
+              className="flex-1 bg-transparent text-[12px] text-gray-700 placeholder-gray-400 outline-none"
             />
           </div>
         </div>
 
         <div className="flex-1 overflow-y-auto">
           {search === "" && notes.some((n) => n.pinned) && (
-            <div className="px-3 py-1 text-[10px] text-gray-400 uppercase font-semibold">
+            <div className="px-3 py-1 text-[10px] font-semibold text-gray-400 uppercase">
               {t("notes.pinned")}
             </div>
           )}
@@ -124,7 +124,7 @@ export function NotesWindow() {
             .map((note) => (
               <button
                 key={note.id}
-                className="w-full text-left px-3 py-2 transition-colors group relative"
+                className="group relative w-full px-3 py-2 text-left transition-colors"
                 style={{
                   background: selectedId === note.id ? "rgba(255,204,0,0.4)" : "transparent",
                   borderBottom: "1px solid rgba(0,0,0,0.04)",
@@ -132,7 +132,7 @@ export function NotesWindow() {
                 onClick={() => setSelectedId(note.id)}
               >
                 <div className="flex items-start justify-between">
-                  <span className="text-[13px] text-gray-800 font-medium truncate pr-4">
+                  <span className="truncate pr-4 text-[13px] font-medium text-gray-800">
                     {note.title}
                   </span>
                   <button
@@ -140,14 +140,14 @@ export function NotesWindow() {
                       e.stopPropagation();
                       deleteNote(note.id);
                     }}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="opacity-0 transition-opacity group-hover:opacity-100"
                   >
                     <Trash2 size={11} className="text-gray-400 hover:text-red-500" />
                   </button>
                 </div>
-                <div className="flex items-center gap-2 mt-0.5">
+                <div className="mt-0.5 flex items-center gap-2">
                   <span className="text-[11px] text-gray-400">{note.date}</span>
-                  <span className="text-[11px] text-gray-400 truncate">
+                  <span className="truncate text-[11px] text-gray-400">
                     {note.content.split("\n")[1] || note.content.slice(0, 30)}
                   </span>
                 </div>
@@ -157,7 +157,7 @@ export function NotesWindow() {
       </div>
 
       {/* Editor */}
-      <div className="flex-1 flex flex-col" style={{ background: "rgba(252,249,238,0.98)" }}>
+      <div className="flex flex-1 flex-col" style={{ background: "rgba(252,249,238,0.98)" }}>
         {selectedNote ? (
           <>
             <div
@@ -168,16 +168,16 @@ export function NotesWindow() {
                 {["B", "I", "U"].map((fmt) => (
                   <button
                     key={fmt}
-                    className="w-6 h-6 rounded flex items-center justify-center text-[12px] text-gray-600 hover:bg-black/10 font-medium transition-colors"
+                    className="flex h-6 w-6 items-center justify-center rounded text-[12px] font-medium text-gray-600 transition-colors hover:bg-black/10"
                   >
                     {fmt}
                   </button>
                 ))}
-                <div className="w-px h-4 bg-gray-300" />
+                <div className="h-4 w-px bg-gray-300" />
                 {["≡", "•", "#"].map((fmt) => (
                   <button
                     key={fmt}
-                    className="w-6 h-6 rounded flex items-center justify-center text-[12px] text-gray-600 hover:bg-black/10 transition-colors"
+                    className="flex h-6 w-6 items-center justify-center rounded text-[12px] text-gray-600 transition-colors hover:bg-black/10"
                   >
                     {fmt}
                   </button>
@@ -189,7 +189,7 @@ export function NotesWindow() {
             <textarea
               value={selectedNote.content}
               onChange={(e) => updateContent(e.target.value)}
-              className="flex-1 p-5 bg-transparent outline-none resize-none text-[14px] text-gray-800 leading-relaxed"
+              className="flex-1 resize-none bg-transparent p-5 text-[14px] leading-relaxed text-gray-800 outline-none"
               placeholder={t("notes.placeholder")}
               style={{
                 fontFamily: "system-ui, -apple-system, sans-serif",
@@ -197,9 +197,9 @@ export function NotesWindow() {
             />
           </>
         ) : (
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex flex-1 items-center justify-center">
             <div className="text-center">
-              <div className="text-4xl mb-2">📝</div>
+              <div className="mb-2 text-4xl">📝</div>
               <p className="text-[14px] text-gray-400">{t("notes.emptyState")}</p>
             </div>
           </div>

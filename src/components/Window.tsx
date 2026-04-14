@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useCallback, useRef, useState } from "react";
 
 interface WindowProps {
   id: string;
@@ -131,10 +131,10 @@ export function Window({
         opacity: show ? 1 : 0,
         transition: "transform 0.2s ease-out, opacity 0.2s ease-out",
       }}
-      className="flex flex-col rounded-xl overflow-hidden"
+      className="flex flex-col overflow-hidden rounded-xl"
     >
       <div
-        className="flex flex-col w-full h-full rounded-xl overflow-hidden"
+        className="flex h-full w-full flex-col overflow-hidden rounded-xl"
         style={{
           boxShadow: isActive
             ? "0 25px 60px rgba(0,0,0,0.45), 0 0 0 0.5px rgba(255,255,255,0.2)"
@@ -143,7 +143,7 @@ export function Window({
       >
         {/* Title Bar */}
         <div
-          className="flex items-center px-3 h-11 flex-shrink-0 select-none relative"
+          className="relative flex h-11 flex-shrink-0 items-center px-3 select-none"
           style={{
             background: isActive ? "rgba(230,230,230,0.95)" : "rgba(210,210,210,0.9)",
             backdropFilter: "blur(20px)",
@@ -153,9 +153,9 @@ export function Window({
           onDoubleClick={handleMaximize}
         >
           {/* Traffic Lights */}
-          <div className="flex items-center gap-1.5 group z-10">
+          <div className="group z-10 flex items-center gap-1.5">
             <button
-              className="w-3 h-3 rounded-full flex items-center justify-center"
+              className="flex h-3 w-3 items-center justify-center rounded-full"
               style={{ background: "#FF5F57" }}
               onClick={(e) => {
                 e.stopPropagation();
@@ -163,12 +163,12 @@ export function Window({
               }}
               title="닫기"
             >
-              <span className="opacity-0 group-hover:opacity-100 text-[8px] text-red-900 font-bold leading-none">
+              <span className="text-[8px] leading-none font-bold text-red-900 opacity-0 group-hover:opacity-100">
                 ✕
               </span>
             </button>
             <button
-              className="w-3 h-3 rounded-full flex items-center justify-center"
+              className="flex h-3 w-3 items-center justify-center rounded-full"
               style={{ background: "#FEBC2E" }}
               onClick={(e) => {
                 e.stopPropagation();
@@ -176,12 +176,12 @@ export function Window({
               }}
               title="최소화"
             >
-              <span className="opacity-0 group-hover:opacity-100 text-[8px] text-yellow-900 font-bold leading-none">
+              <span className="text-[8px] leading-none font-bold text-yellow-900 opacity-0 group-hover:opacity-100">
                 −
               </span>
             </button>
             <button
-              className="w-3 h-3 rounded-full flex items-center justify-center"
+              className="flex h-3 w-3 items-center justify-center rounded-full"
               style={{ background: "#28C840" }}
               onClick={(e) => {
                 e.stopPropagation();
@@ -189,16 +189,16 @@ export function Window({
               }}
               title="최대화"
             >
-              <span className="opacity-0 group-hover:opacity-100 text-[8px] text-green-900 font-bold leading-none">
+              <span className="text-[8px] leading-none font-bold text-green-900 opacity-0 group-hover:opacity-100">
                 +
               </span>
             </button>
           </div>
 
           {/* Title */}
-          <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1.5">
+          <div className="absolute left-1/2 flex -translate-x-1/2 items-center gap-1.5">
             {icon && <span className="text-base">{icon}</span>}
-            <span className="text-[13px] text-gray-700 font-semibold">{title}</span>
+            <span className="text-[13px] font-semibold text-gray-700">{title}</span>
           </div>
         </div>
 
@@ -208,7 +208,7 @@ export function Window({
         {/* Resize Handle */}
         {!isMaximized && (
           <div
-            className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize"
+            className="absolute right-0 bottom-0 h-4 w-4 cursor-se-resize"
             onMouseDown={handleResizeMouseDown}
             style={{
               background: "linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.15) 50%)",

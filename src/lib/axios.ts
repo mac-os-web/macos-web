@@ -1,5 +1,5 @@
-import axios from "axios";
 import type { AxiosError, AxiosRequestConfig } from "axios";
+import axios from "axios";
 import { logger } from "./logger";
 
 export const api = axios.create({

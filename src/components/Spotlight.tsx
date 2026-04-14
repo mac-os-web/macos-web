@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
 import { Search } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 interface SpotlightProps {
@@ -89,7 +89,7 @@ export function Spotlight({ isOpen, onClose, onOpenApp }: SpotlightProps) {
       style={{ animation: "fadeIn 0.15s ease-out" }}
     >
       <div
-        className="w-[90vw] max-w-[620px] rounded-2xl overflow-hidden"
+        className="w-[90vw] max-w-[620px] overflow-hidden rounded-2xl"
         style={{
           background: "rgba(255,255,255,0.82)",
           backdropFilter: "blur(40px) saturate(180%)",
@@ -101,8 +101,8 @@ export function Spotlight({ isOpen, onClose, onOpenApp }: SpotlightProps) {
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Input */}
-        <div className="flex items-center gap-3 px-5 py-4 border-b border-gray-200/50">
-          <Search size={20} className="text-gray-500 flex-shrink-0" />
+        <div className="flex items-center gap-3 border-b border-gray-200/50 px-5 py-4">
+          <Search size={20} className="flex-shrink-0 text-gray-500" />
           <input
             ref={inputRef}
             value={query}
@@ -111,17 +111,17 @@ export function Spotlight({ isOpen, onClose, onOpenApp }: SpotlightProps) {
               setSelected(0);
             }}
             placeholder={t("spotlight.placeholder")}
-            className="flex-1 bg-transparent outline-none text-gray-800 placeholder-gray-400 text-[17px]"
+            className="flex-1 bg-transparent text-[17px] text-gray-800 placeholder-gray-400 outline-none"
           />
         </div>
 
         {/* Results */}
         {filtered.length > 0 && (
-          <div className="py-2 max-h-[50vh] overflow-y-auto">
+          <div className="max-h-[50vh] overflow-y-auto py-2">
             {!query
               ? suggestions.map((section) => (
                   <div key={section.category}>
-                    <div className="px-5 py-1 text-[11px] text-gray-500 uppercase tracking-wider font-semibold">
+                    <div className="px-5 py-1 text-[11px] font-semibold tracking-wider text-gray-500 uppercase">
                       {section.category}
                     </div>
                     {section.items.map((item, i) => {
@@ -129,7 +129,7 @@ export function Spotlight({ isOpen, onClose, onOpenApp }: SpotlightProps) {
                       return (
                         <button
                           key={item.id + i}
-                          className="w-full flex items-center gap-3 px-4 py-2 transition-colors text-left"
+                          className="flex w-full items-center gap-3 px-4 py-2 text-left transition-colors"
                           style={{
                             background:
                               selected === globalIndex ? "rgba(0,106,255,0.85)" : "transparent",
@@ -141,7 +141,7 @@ export function Spotlight({ isOpen, onClose, onOpenApp }: SpotlightProps) {
                             onClose();
                           }}
                         >
-                          <span className="text-2xl w-8 text-center">{item.icon}</span>
+                          <span className="w-8 text-center text-2xl">{item.icon}</span>
                           <span
                             className="text-[14px]"
                             style={{
@@ -158,7 +158,7 @@ export function Spotlight({ isOpen, onClose, onOpenApp }: SpotlightProps) {
               : filtered.map((item, i) => (
                   <button
                     key={item.id + i}
-                    className="w-full flex items-center gap-3 px-4 py-2 transition-colors text-left"
+                    className="flex w-full items-center gap-3 px-4 py-2 text-left transition-colors"
                     style={{
                       background: selected === i ? "rgba(0,106,255,0.85)" : "transparent",
                     }}
@@ -168,7 +168,7 @@ export function Spotlight({ isOpen, onClose, onOpenApp }: SpotlightProps) {
                       onClose();
                     }}
                   >
-                    <span className="text-2xl w-8 text-center">{item.icon}</span>
+                    <span className="w-8 text-center text-2xl">{item.icon}</span>
                     <span
                       className="text-[14px]"
                       style={{ color: selected === i ? "white" : "#1a1a1a" }}
@@ -181,7 +181,7 @@ export function Spotlight({ isOpen, onClose, onOpenApp }: SpotlightProps) {
         )}
 
         {filtered.length === 0 && query && (
-          <div className="py-8 text-center text-gray-500 text-[14px]">
+          <div className="py-8 text-center text-[14px] text-gray-500">
             {t("spotlight.noResults", { query })}
           </div>
         )}

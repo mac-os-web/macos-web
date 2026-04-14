@@ -1,16 +1,16 @@
+import { WifiOff } from "lucide-react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNetwork } from "../contexts/network";
-import { useState } from "react";
-import { WifiOff } from "lucide-react";
 
 function MailOffline() {
   const { t } = useTranslation();
   return (
-    <div className="h-full flex flex-col items-center justify-center text-center p-8 bg-white">
-      <div className="text-6xl mb-4">✉️</div>
-      <WifiOff size={40} className="text-gray-300 mb-4" />
-      <h2 className="text-[18px] font-semibold text-gray-700 mb-2">{t("mail.offline.title")}</h2>
-      <p className="text-[13px] text-gray-500 max-w-sm">{t("mail.offline.description")}</p>
+    <div className="flex h-full flex-col items-center justify-center bg-white p-8 text-center">
+      <div className="mb-4 text-6xl">✉️</div>
+      <WifiOff size={40} className="mb-4 text-gray-300" />
+      <h2 className="mb-2 text-[18px] font-semibold text-gray-700">{t("mail.offline.title")}</h2>
+      <p className="max-w-sm text-[13px] text-gray-500">{t("mail.offline.description")}</p>
     </div>
   );
 }
@@ -68,14 +68,14 @@ export function MailWindow() {
   return (
     <div className="flex h-full">
       <div
-        className="w-52 flex-shrink-0 flex flex-col"
+        className="flex w-52 flex-shrink-0 flex-col"
         style={{
           background: "rgba(238,238,238,0.95)",
           borderRight: "1px solid rgba(0,0,0,0.07)",
         }}
       >
         <div className="px-3 pt-3 pb-2">
-          <p className="text-[10px] text-gray-400 uppercase font-semibold tracking-wider mb-1">
+          <p className="mb-1 text-[10px] font-semibold tracking-wider text-gray-400 uppercase">
             {t("mail.mailboxes")}
           </p>
           {[
@@ -86,52 +86,52 @@ export function MailWindow() {
           ].map((m) => (
             <button
               key={m.name}
-              className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-black/5 transition-colors text-left"
+              className="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left transition-colors hover:bg-black/5"
             >
               <span className="text-base">{m.icon}</span>
               <span className="flex-1 text-[13px] text-gray-700">{m.name}</span>
               {m.count > 0 && (
-                <span className="text-[11px] bg-blue-500 text-white rounded-full px-1.5 py-0.5">
+                <span className="rounded-full bg-blue-500 px-1.5 py-0.5 text-[11px] text-white">
                   {m.count}
                 </span>
               )}
             </button>
           ))}
         </div>
-        <div className="h-px bg-gray-200 mx-3" />
+        <div className="mx-3 h-px bg-gray-200" />
         <div className="flex-1 overflow-y-auto pt-1">
           {emails.map((e, i) => (
             <button
               key={i}
               onClick={() => setSelected(i)}
-              className="w-full text-left px-3 py-2.5 transition-colors"
+              className="w-full px-3 py-2.5 text-left transition-colors"
               style={{
                 background: selected === i ? "rgba(0,100,255,0.1)" : "transparent",
                 borderBottom: "1px solid rgba(0,0,0,0.04)",
               }}
             >
               <div className="flex items-center gap-2">
-                {e.unread && <div className="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0" />}
-                {!e.unread && <div className="w-1.5 h-1.5 flex-shrink-0" />}
-                <span className="text-[13px] font-semibold text-gray-800 flex-1 truncate">
+                {e.unread && <div className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-blue-500" />}
+                {!e.unread && <div className="h-1.5 w-1.5 flex-shrink-0" />}
+                <span className="flex-1 truncate text-[13px] font-semibold text-gray-800">
                   {e.from}
                 </span>
-                <span className="text-[10px] text-gray-400 flex-shrink-0">{e.time}</span>
+                <span className="flex-shrink-0 text-[10px] text-gray-400">{e.time}</span>
               </div>
-              <p className="text-[11px] text-gray-600 truncate pl-3.5">{e.subject}</p>
+              <p className="truncate pl-3.5 text-[11px] text-gray-600">{e.subject}</p>
             </button>
           ))}
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col min-w-0" style={{ background: "white" }}>
+      <div className="flex min-w-0 flex-1 flex-col" style={{ background: "white" }}>
         {emails[selected] && (
           <>
             <div className="px-6 pt-5 pb-4" style={{ borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
-              <h2 className="text-[18px] text-gray-900 mb-3">{emails[selected].subject}</h2>
+              <h2 className="mb-3 text-[18px] text-gray-900">{emails[selected].subject}</h2>
               <div className="flex items-center gap-3">
                 <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-xl flex-shrink-0"
+                  className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full text-xl"
                   style={{ background: "rgba(0,0,0,0.05)" }}
                 >
                   {emails[selected].avatar}
@@ -145,13 +145,13 @@ export function MailWindow() {
                 <span className="text-[11px] text-gray-400">{emails[selected].time}</span>
               </div>
             </div>
-            <div className="flex-1 p-6 overflow-y-auto">
-              <p className="text-[14px] text-gray-700 leading-relaxed whitespace-pre-line">
+            <div className="flex-1 overflow-y-auto p-6">
+              <p className="text-[14px] leading-relaxed whitespace-pre-line text-gray-700">
                 {emails[selected].body}
               </p>
               <div className="mt-6 pt-6" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
                 <button
-                  className="px-4 py-2 rounded-lg text-[13px] text-white font-medium"
+                  className="rounded-lg px-4 py-2 text-[13px] font-medium text-white"
                   style={{ background: "#1d7af5" }}
                 >
                   {t("mail.reply")}

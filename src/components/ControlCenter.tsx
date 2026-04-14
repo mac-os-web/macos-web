@@ -1,18 +1,18 @@
-import { useState } from "react";
 import {
-  Wifi,
-  Moon,
-  Sun,
-  Volume2,
   Airplay,
   Battery,
   Monitor,
+  Moon,
   Music,
-  SkipBack,
-  Play,
-  SkipForward,
   Pause,
+  Play,
+  SkipBack,
+  SkipForward,
+  Sun,
+  Volume2,
+  Wifi,
 } from "lucide-react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNetwork } from "../contexts/network";
 
@@ -33,7 +33,7 @@ function Slider({
   color?: string;
 }) {
   return (
-    <div className="relative w-full h-1.5 bg-black/15 rounded-full">
+    <div className="relative h-1.5 w-full rounded-full bg-black/15">
       <div className="h-full rounded-full" style={{ width: `${value}%`, background: color }} />
       <input
         type="range"
@@ -41,7 +41,7 @@ function Slider({
         max={100}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="absolute inset-0 w-full opacity-0 cursor-pointer"
+        className="absolute inset-0 w-full cursor-pointer opacity-0"
         style={{ height: "100%" }}
       />
     </div>
@@ -65,7 +65,7 @@ export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
     <>
       <div className="fixed inset-0 z-[80]" onClick={onClose} />
       <div
-        className="fixed top-8 right-2 z-[90] w-80 p-3 rounded-2xl"
+        className="fixed top-8 right-2 z-[90] w-80 rounded-2xl p-3"
         style={{
           background: "rgba(245,245,245,0.88)",
           backdropFilter: "blur(40px) saturate(180%)",
@@ -77,14 +77,14 @@ export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
         onClick={(e) => e.stopPropagation()}
       >
         {/* Row 1: WiFi, Bluetooth, AirDrop, Focus */}
-        <div className="grid grid-cols-2 gap-2 mb-2">
+        <div className="mb-2 grid grid-cols-2 gap-2">
           <div className="rounded-xl p-3" style={{ background: "rgba(255,255,255,0.7)" }}>
             <button
               onClick={() => setOnline(!isOnline)}
-              className="flex items-center gap-2.5 w-full mb-2.5"
+              className="mb-2.5 flex w-full items-center gap-2.5"
             >
               <div
-                className="w-8 h-8 rounded-full flex items-center justify-center"
+                className="flex h-8 w-8 items-center justify-center rounded-full"
                 style={{
                   background: isOnline ? "#1d7af5" : "rgba(0,0,0,0.12)",
                 }}
@@ -98,18 +98,18 @@ export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
                 </p>
               </div>
             </button>
-            <div className="h-px bg-gray-200 mb-2.5" />
+            <div className="mb-2.5 h-px bg-gray-200" />
             <button
               onClick={() => setBluetooth(!bluetooth)}
-              className="flex items-center gap-2.5 w-full"
+              className="flex w-full items-center gap-2.5"
             >
               <div
-                className="w-8 h-8 rounded-full flex items-center justify-center"
+                className="flex h-8 w-8 items-center justify-center rounded-full"
                 style={{
                   background: bluetooth ? "#1d7af5" : "rgba(0,0,0,0.12)",
                 }}
               >
-                <svg viewBox="0 0 24 24" className="w-4 h-4" fill={bluetooth ? "white" : "#888"}>
+                <svg viewBox="0 0 24 24" className="h-4 w-4" fill={bluetooth ? "white" : "#888"}>
                   <path
                     d="M6.5 6.5l11 5-5.5 5.5V1l5.5 5.5-11 5"
                     strokeWidth="2"
@@ -130,12 +130,12 @@ export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
           </div>
 
           <div
-            className="rounded-xl p-3 flex flex-col gap-2"
+            className="flex flex-col gap-2 rounded-xl p-3"
             style={{ background: "rgba(255,255,255,0.7)" }}
           >
             <button onClick={() => setAirdrop(!airdrop)} className="flex items-center gap-2.5">
               <div
-                className="w-8 h-8 rounded-full flex items-center justify-center"
+                className="flex h-8 w-8 items-center justify-center rounded-full"
                 style={{
                   background: airdrop ? "#1d7af5" : "rgba(0,0,0,0.12)",
                 }}
@@ -152,7 +152,7 @@ export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
             <div className="h-px bg-gray-200" />
             <button onClick={() => setFocusMode(!focusMode)} className="flex items-center gap-2.5">
               <div
-                className="w-8 h-8 rounded-full flex items-center justify-center"
+                className="flex h-8 w-8 items-center justify-center rounded-full"
                 style={{
                   background: focusMode ? "#30d158" : "rgba(0,0,0,0.12)",
                 }}
@@ -172,9 +172,9 @@ export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
         </div>
 
         {/* Brightness */}
-        <div className="rounded-xl p-3 mb-2" style={{ background: "rgba(255,255,255,0.7)" }}>
-          <div className="flex items-center gap-2 mb-2">
-            <Sun size={14} className="text-gray-500 flex-shrink-0" />
+        <div className="mb-2 rounded-xl p-3" style={{ background: "rgba(255,255,255,0.7)" }}>
+          <div className="mb-2 flex items-center gap-2">
+            <Sun size={14} className="flex-shrink-0 text-gray-500" />
             <span className="text-[12px] font-semibold text-gray-700">
               {t("controlCenter.brightness")}
             </span>
@@ -184,9 +184,9 @@ export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
         </div>
 
         {/* Volume */}
-        <div className="rounded-xl p-3 mb-2" style={{ background: "rgba(255,255,255,0.7)" }}>
-          <div className="flex items-center gap-2 mb-2">
-            <Volume2 size={14} className="text-gray-500 flex-shrink-0" />
+        <div className="mb-2 rounded-xl p-3" style={{ background: "rgba(255,255,255,0.7)" }}>
+          <div className="mb-2 flex items-center gap-2">
+            <Volume2 size={14} className="flex-shrink-0 text-gray-500" />
             <span className="text-[12px] font-semibold text-gray-700">
               {t("controlCenter.sound")}
             </span>
@@ -196,33 +196,33 @@ export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
         </div>
 
         {/* Now Playing */}
-        <div className="rounded-xl p-3 mb-2" style={{ background: "rgba(255,255,255,0.7)" }}>
-          <div className="flex items-center gap-2 mb-2">
+        <div className="mb-2 rounded-xl p-3" style={{ background: "rgba(255,255,255,0.7)" }}>
+          <div className="mb-2 flex items-center gap-2">
             <Music size={12} className="text-gray-400" />
-            <span className="text-[10px] text-gray-400 uppercase tracking-wider">
+            <span className="text-[10px] tracking-wider text-gray-400 uppercase">
               {t("controlCenter.nowPlaying")}
             </span>
           </div>
           <div className="flex items-center gap-3">
             <div
-              className="w-10 h-10 rounded-lg flex items-center justify-center text-xl flex-shrink-0"
+              className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg text-xl"
               style={{
                 background: "linear-gradient(135deg, #ff6b6b, #ffd93d)",
               }}
             >
               🎵
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-[13px] font-semibold text-gray-800 truncate">Dynamite</p>
-              <p className="text-[11px] text-gray-400 truncate">BTS</p>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-[13px] font-semibold text-gray-800">Dynamite</p>
+              <p className="truncate text-[11px] text-gray-400">BTS</p>
             </div>
             <div className="flex items-center gap-2">
-              <button className="text-gray-500 hover:text-gray-800 transition-colors">
+              <button className="text-gray-500 transition-colors hover:text-gray-800">
                 <SkipBack size={14} />
               </button>
               <button
                 onClick={() => setPlaying(!playing)}
-                className="w-7 h-7 rounded-full flex items-center justify-center"
+                className="flex h-7 w-7 items-center justify-center rounded-full"
                 style={{ background: "rgba(0,0,0,0.08)" }}
               >
                 {playing ? (
@@ -231,7 +231,7 @@ export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
                   <Play size={12} className="text-gray-700" />
                 )}
               </button>
-              <button className="text-gray-500 hover:text-gray-800 transition-colors">
+              <button className="text-gray-500 transition-colors hover:text-gray-800">
                 <SkipForward size={14} />
               </button>
             </div>
@@ -242,7 +242,7 @@ export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
         <div className="grid grid-cols-3 gap-2">
           <button
             onClick={() => setDarkMode(!darkMode)}
-            className="rounded-xl p-2 flex flex-col items-center gap-1 transition-colors"
+            className="flex flex-col items-center gap-1 rounded-xl p-2 transition-colors"
             style={{
               background: darkMode ? "rgba(0,0,0,0.7)" : "rgba(255,255,255,0.7)",
             }}
@@ -253,14 +253,14 @@ export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
             </span>
           </button>
           <button
-            className="rounded-xl p-2 flex flex-col items-center gap-1"
+            className="flex flex-col items-center gap-1 rounded-xl p-2"
             style={{ background: "rgba(255,255,255,0.7)" }}
           >
             <Monitor size={16} className="text-gray-600" />
             <span className="text-[10px] text-gray-600">{t("controlCenter.mirroring")}</span>
           </button>
           <button
-            className="rounded-xl p-2 flex flex-col items-center gap-1"
+            className="flex flex-col items-center gap-1 rounded-xl p-2"
             style={{ background: "rgba(255,255,255,0.7)" }}
           >
             <Battery size={16} className="text-green-500" />

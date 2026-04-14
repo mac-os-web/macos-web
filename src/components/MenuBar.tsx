@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Wifi, WifiOff, Battery, Volume2, Search, Globe } from "lucide-react";
+import { Battery, Globe, Search, Volume2, Wifi, WifiOff } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNetwork } from "../contexts/network";
 
@@ -12,7 +12,7 @@ interface MenuBarProps {
 function DropdownMenu({ items }: { items: (string | null)[] }) {
   return (
     <div
-      className="absolute top-full left-0 mt-1 w-52 rounded-xl overflow-hidden py-1"
+      className="absolute top-full left-0 mt-1 w-52 overflow-hidden rounded-xl py-1"
       style={{
         background: "rgba(238,238,238,0.94)",
         backdropFilter: "blur(40px) saturate(200%)",
@@ -23,11 +23,11 @@ function DropdownMenu({ items }: { items: (string | null)[] }) {
     >
       {items.map((item, i) =>
         item === null ? (
-          <div key={i} className="h-px bg-gray-300/70 mx-2 my-1" />
+          <div key={i} className="mx-2 my-1 h-px bg-gray-300/70" />
         ) : (
           <button
             key={i}
-            className="w-full text-left px-4 py-[5px] text-[13px] text-gray-800 flex items-center justify-between hover:bg-blue-500 hover:text-white rounded-sm mx-auto"
+            className="mx-auto flex w-full items-center justify-between rounded-sm px-4 py-[5px] text-left text-[13px] text-gray-800 hover:bg-blue-500 hover:text-white"
             style={{ width: "calc(100% - 4px)", marginLeft: 2 }}
           >
             {item}
@@ -110,7 +110,7 @@ export function MenuBar({ onSpotlight, onControlCenter, activeApp }: MenuBarProp
       {(openMenu || showAppleMenu) && <div className="fixed inset-0 z-40" onClick={closeAll} />}
 
       <div
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-2 h-7"
+        className="fixed top-0 right-0 left-0 z-50 flex h-7 items-center justify-between px-2"
         style={{
           background: "rgba(255,255,255,0.16)",
           backdropFilter: "blur(30px) saturate(180%)",
@@ -123,7 +123,7 @@ export function MenuBar({ onSpotlight, onControlCenter, activeApp }: MenuBarProp
           {/* Apple Logo */}
           <div className="relative">
             <button
-              className="px-2 h-7 flex items-center rounded hover:bg-white/20 transition-colors"
+              className="flex h-7 items-center rounded px-2 transition-colors hover:bg-white/20"
               onClick={(e) => {
                 e.stopPropagation();
                 setShowAppleMenu(!showAppleMenu);
@@ -137,7 +137,7 @@ export function MenuBar({ onSpotlight, onControlCenter, activeApp }: MenuBarProp
             </button>
             {showAppleMenu && (
               <div
-                className="absolute top-full left-0 mt-1 w-56 rounded-xl overflow-hidden py-1 z-[60]"
+                className="absolute top-full left-0 z-[60] mt-1 w-56 overflow-hidden rounded-xl py-1"
                 style={{
                   background: "rgba(238,238,238,0.94)",
                   backdropFilter: "blur(40px) saturate(200%)",
@@ -148,11 +148,11 @@ export function MenuBar({ onSpotlight, onControlCenter, activeApp }: MenuBarProp
               >
                 {appleMenuItems.map((item, i) =>
                   item.divider ? (
-                    <div key={i} className="h-px bg-gray-300/70 mx-2 my-1" />
+                    <div key={i} className="mx-2 my-1 h-px bg-gray-300/70" />
                   ) : (
                     <button
                       key={i}
-                      className="w-full text-left px-4 py-[5px] text-[13px] text-gray-800 hover:bg-blue-500 hover:text-white block"
+                      className="block w-full px-4 py-[5px] text-left text-[13px] text-gray-800 hover:bg-blue-500 hover:text-white"
                       onClick={closeAll}
                     >
                       {item.label}
@@ -164,16 +164,16 @@ export function MenuBar({ onSpotlight, onControlCenter, activeApp }: MenuBarProp
           </div>
 
           {/* Active App Name */}
-          <button className="px-2 h-7 flex items-center rounded hover:bg-white/20 transition-colors text-white text-[13px] font-semibold">
+          <button className="flex h-7 items-center rounded px-2 text-[13px] font-semibold text-white transition-colors hover:bg-white/20">
             {activeApp}
           </button>
 
           {/* App Menus */}
-          <div className="hidden md:flex items-center">
+          <div className="hidden items-center md:flex">
             {currentMenus.map((menu) => (
               <div key={menu} className="relative">
                 <button
-                  className="px-2 h-7 flex items-center rounded text-white text-[13px] transition-colors"
+                  className="flex h-7 items-center rounded px-2 text-[13px] text-white transition-colors"
                   style={{
                     background: openMenu === menu ? "rgba(255,255,255,0.22)" : "transparent",
                   }}
@@ -198,7 +198,7 @@ export function MenuBar({ onSpotlight, onControlCenter, activeApp }: MenuBarProp
         {/* Right side */}
         <div className="flex items-center">
           <button
-            className="hidden sm:flex px-2 h-7 items-center rounded hover:bg-white/20 transition-colors"
+            className="hidden h-7 items-center rounded px-2 transition-colors hover:bg-white/20 sm:flex"
             onClick={(e) => {
               e.stopPropagation();
               closeAll();
@@ -209,7 +209,7 @@ export function MenuBar({ onSpotlight, onControlCenter, activeApp }: MenuBarProp
           </button>
 
           <button
-            className="hidden sm:flex px-2 h-7 items-center rounded hover:bg-white/20 transition-colors"
+            className="hidden h-7 items-center rounded px-2 transition-colors hover:bg-white/20 sm:flex"
             onClick={(e) => {
               e.stopPropagation();
               closeAll();
@@ -226,7 +226,7 @@ export function MenuBar({ onSpotlight, onControlCenter, activeApp }: MenuBarProp
               closeAll();
               onControlCenter();
             }}
-            className="hidden sm:flex items-center gap-1.5 px-2 h-7 rounded hover:bg-white/20 transition-colors"
+            className="hidden h-7 items-center gap-1.5 rounded px-2 transition-colors hover:bg-white/20 sm:flex"
           >
             {isOnline ? (
               <Wifi size={13} className="text-white" />
@@ -238,14 +238,14 @@ export function MenuBar({ onSpotlight, onControlCenter, activeApp }: MenuBarProp
           </button>
 
           <button
-            className="flex items-center px-2 h-7 rounded hover:bg-white/20 transition-colors"
+            className="flex h-7 items-center rounded px-2 transition-colors hover:bg-white/20"
             onClick={(e) => {
               e.stopPropagation();
               closeAll();
               onControlCenter();
             }}
           >
-            <span className="text-white text-[12px] font-medium">
+            <span className="text-[12px] font-medium text-white">
               <span className="hidden sm:inline">{formatDate(now)}&nbsp;&nbsp;</span>
               {formatTime(now)}
             </span>

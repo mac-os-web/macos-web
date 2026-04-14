@@ -1,29 +1,29 @@
-import { useState, useCallback, useRef, useEffect } from "react";
-import { MenuBar } from "./components/MenuBar";
-import { Dock } from "./components/Dock";
-import { Window } from "./components/Window";
-import { Spotlight } from "./components/Spotlight";
-import { ControlCenter } from "./components/ControlCenter";
-import { Widgets, WidgetPicker, type WidgetInstance } from "./components/Widgets";
-import { FinderWindow } from "./components/FinderWindow";
-import { SafariWindow } from "./components/SafariWindow";
-import { NotesWindow } from "./components/NotesWindow";
-import { TerminalWindow } from "./components/TerminalWindow";
-import { MailWindow } from "./components/MailWindow";
-import { AppStoreWindow } from "./components/AppStoreWindow";
 import { Plus } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { AppStoreWindow } from "./components/AppStoreWindow";
+import { ControlCenter } from "./components/ControlCenter";
+import { Dock } from "./components/Dock";
+import { FinderWindow } from "./components/FinderWindow";
+import { MailWindow } from "./components/MailWindow";
+import { MenuBar } from "./components/MenuBar";
+import { NotesWindow } from "./components/NotesWindow";
+import { SafariWindow } from "./components/SafariWindow";
+import { Spotlight } from "./components/Spotlight";
+import { TerminalWindow } from "./components/TerminalWindow";
+import { WidgetPicker, Widgets, type WidgetInstance } from "./components/Widgets";
+import { Window } from "./components/Window";
 
 // ── Dock icon components ────────────────────────────────────────────────────
 function FinderIcon() {
   return (
     <div
-      className="w-full h-full"
+      className="h-full w-full"
       style={{
         background: "linear-gradient(160deg, #7ac6fd 0%, #1568e8 100%)",
       }}
     >
-      <svg viewBox="0 0 100 100" className="w-full h-full p-1">
+      <svg viewBox="0 0 100 100" className="h-full w-full p-1">
         <rect x="8" y="20" width="84" height="65" rx="10" fill="rgba(255,255,255,0.15)" />
         <circle cx="38" cy="45" r="14" fill="rgba(255,255,255,0.9)" />
         <circle cx="62" cy="45" r="14" fill="rgba(255,255,255,0.75)" />
@@ -43,7 +43,7 @@ function FinderIcon() {
 
 function SafariIcon() {
   return (
-    <svg viewBox="0 0 100 100" className="w-full h-full">
+    <svg viewBox="0 0 100 100" className="h-full w-full">
       <defs>
         <linearGradient id="saf2" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#1aa0f0" />
@@ -78,17 +78,17 @@ function SafariIcon() {
 function NotesIcon() {
   return (
     <div
-      className="w-full h-full flex items-center justify-center"
+      className="flex h-full w-full items-center justify-center"
       style={{
         background: "linear-gradient(160deg, #fff9d0, #ffd60a)",
       }}
     >
-      <div className="w-9 h-10 bg-white rounded-md shadow-md flex flex-col p-1.5 gap-0.5 mt-1">
-        <div className="h-1.5 bg-yellow-300 rounded-sm" />
-        <div className="h-px bg-gray-200 rounded" />
-        <div className="h-px bg-gray-200 rounded" />
-        <div className="h-px bg-gray-100 rounded w-3/4" />
-        <div className="h-px bg-gray-100 rounded w-2/3" />
+      <div className="mt-1 flex h-10 w-9 flex-col gap-0.5 rounded-md bg-white p-1.5 shadow-md">
+        <div className="h-1.5 rounded-sm bg-yellow-300" />
+        <div className="h-px rounded bg-gray-200" />
+        <div className="h-px rounded bg-gray-200" />
+        <div className="h-px w-3/4 rounded bg-gray-100" />
+        <div className="h-px w-2/3 rounded bg-gray-100" />
       </div>
     </div>
   );
@@ -97,10 +97,10 @@ function NotesIcon() {
 function TerminalIcon() {
   return (
     <div
-      className="w-full h-full flex items-center justify-center rounded-[22%]"
+      className="flex h-full w-full items-center justify-center rounded-[22%]"
       style={{ background: "#282c34" }}
     >
-      <div className="text-[10px] font-mono leading-tight p-1">
+      <div className="p-1 font-mono text-[10px] leading-tight">
         <div className="text-green-400">$ ls -la</div>
         <div className="text-green-300 opacity-80">drwx------</div>
         <div className="text-green-300 opacity-60">-rw-r--r--</div>
@@ -115,12 +115,12 @@ function TerminalIcon() {
 function AppStoreIcon() {
   return (
     <div
-      className="w-full h-full flex items-center justify-center"
+      className="flex h-full w-full items-center justify-center"
       style={{
         background: "linear-gradient(160deg, #2196f3 0%, #1565c0 100%)",
       }}
     >
-      <svg viewBox="0 0 60 60" className="w-10 h-10">
+      <svg viewBox="0 0 60 60" className="h-10 w-10">
         <text
           x="30"
           y="36"
@@ -149,12 +149,12 @@ function AppStoreIcon() {
 function MailIcon() {
   return (
     <div
-      className="w-full h-full flex items-center justify-center"
+      className="flex h-full w-full items-center justify-center"
       style={{
         background: "linear-gradient(160deg, #42a5f5 0%, #1565c0 100%)",
       }}
     >
-      <svg viewBox="0 0 64 48" className="w-10 h-7">
+      <svg viewBox="0 0 64 48" className="h-7 w-10">
         <rect x="2" y="2" width="60" height="44" rx="6" fill="white" opacity="0.95" />
         <polyline
           points="2,4 32,28 62,4"
@@ -172,12 +172,12 @@ function MailIcon() {
 function TrashIcon() {
   return (
     <div
-      className="w-full h-full flex items-center justify-center"
+      className="flex h-full w-full items-center justify-center"
       style={{
         background: "linear-gradient(160deg, #cfd8dc 0%, #90a4ae 100%)",
       }}
     >
-      <svg viewBox="0 0 50 60" className="w-8 h-9">
+      <svg viewBox="0 0 50 60" className="h-9 w-8">
         <rect x="6" y="14" width="38" height="40" rx="4" fill="rgba(255,255,255,0.7)" />
         <rect x="0" y="10" width="50" height="6" rx="3" fill="rgba(255,255,255,0.9)" />
         <rect x="18" y="4" width="14" height="7" rx="3" fill="rgba(255,255,255,0.9)" />
@@ -396,7 +396,7 @@ export default function App() {
 
   return (
     <div
-      className="relative w-full h-screen overflow-hidden select-none"
+      className="relative h-screen w-full overflow-hidden select-none"
       style={{
         backgroundImage: `url(${WALLPAPER})`,
         backgroundSize: "cover",
@@ -413,7 +413,7 @@ export default function App() {
     >
       {/* Wallpaper overlay */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="pointer-events-none absolute inset-0"
         style={{ background: "rgba(0,0,0,0.06)" }}
       />
 
@@ -436,7 +436,7 @@ export default function App() {
           e.stopPropagation();
           setWidgetPickerOpen((v) => !v);
         }}
-        className="fixed bottom-24 right-4 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-white text-[12px] font-medium shadow-lg hover:scale-105 active:scale-95 transition-transform"
+        className="fixed right-4 bottom-24 z-20 flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-medium text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
         style={{
           background: "rgba(255,255,255,0.2)",
           backdropFilter: "blur(20px)",
@@ -466,11 +466,11 @@ export default function App() {
                   onClick={() => openApp(id)}
                   className="flex flex-col items-center gap-1.5"
                 >
-                  <div className="w-14 h-14 rounded-[22%] overflow-hidden shadow-xl">
+                  <div className="h-14 w-14 overflow-hidden rounded-[22%] shadow-xl">
                     {dockApps.find((a) => a.id === id)?.icon}
                   </div>
                   <span
-                    className="text-white text-[10px] font-medium"
+                    className="text-[10px] font-medium text-white"
                     style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}
                   >
                     {APP_CONFIG[id].title}
@@ -520,7 +520,7 @@ export default function App() {
       {/* Context Menu */}
       {contextMenu && (
         <div
-          className="fixed z-[200] w-56 rounded-xl overflow-hidden py-1"
+          className="fixed z-[200] w-56 overflow-hidden rounded-xl py-1"
           style={{
             left: Math.min(contextMenu.x, window.innerWidth - 230),
             top: Math.min(contextMenu.y, window.innerHeight - 260),
@@ -545,11 +545,11 @@ export default function App() {
             ] as ([string, () => void] | null)[]
           ).map((item, i) =>
             item === null ? (
-              <div key={i} className="h-px bg-gray-300/60 mx-2 my-1" />
+              <div key={i} className="mx-2 my-1 h-px bg-gray-300/60" />
             ) : (
               <button
                 key={i}
-                className="w-full text-left px-4 py-[5px] text-[13px] text-gray-800 hover:bg-blue-500 hover:text-white"
+                className="w-full px-4 py-[5px] text-left text-[13px] text-gray-800 hover:bg-blue-500 hover:text-white"
                 onClick={() => {
                   item[1]();
                   setContextMenu(null);

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 interface Line {
@@ -125,7 +125,7 @@ Public`,
 
   return (
     <div
-      className="h-full flex flex-col p-4 font-mono text-[13px] cursor-text overflow-y-auto"
+      className="flex h-full cursor-text flex-col overflow-y-auto p-4 font-mono text-[13px]"
       style={{ background: "#1e1e1e", color: "#d4d4d4" }}
       onClick={() => inputRef.current?.focus()}
     >
@@ -144,7 +144,7 @@ Public`,
         </div>
       ))}
 
-      <div className="flex items-center leading-6 mt-1">
+      <div className="mt-1 flex items-center leading-6">
         <span style={{ color: "#50fa7b" }}>{userPrompt}</span>
         <span style={{ color: "#bd93f9" }}> ~ </span>
         <span style={{ color: "#8be9fd" }}>% </span>
@@ -154,7 +154,7 @@ Public`,
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="flex-1 bg-transparent outline-none caret-white"
+          className="flex-1 bg-transparent caret-white outline-none"
           style={{ color: "#f8f8f2", caretColor: "#f8f8f2" }}
           spellCheck={false}
         />

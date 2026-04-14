@@ -1,19 +1,19 @@
+import { ChevronLeft, ChevronRight, Lock, Plus, RefreshCw, Share, WifiOff } from "lucide-react";
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, RefreshCw, Lock, Plus, Share, WifiOff } from "lucide-react";
 import { Trans, useTranslation } from "react-i18next";
 import { useNetwork } from "../contexts/network";
 
 function OfflinePage({ url }: { url: string }) {
   const { t } = useTranslation();
   return (
-    <div className="flex flex-col items-center justify-center h-full text-center px-8 py-12 select-none">
-      <div className="text-7xl mb-6" aria-hidden>
+    <div className="flex h-full flex-col items-center justify-center px-8 py-12 text-center select-none">
+      <div className="mb-6 text-7xl" aria-hidden>
         🦖
       </div>
-      <WifiOff size={48} className="text-gray-300 mb-4" />
-      <h2 className="text-[20px] font-semibold text-gray-700 mb-2">{t("safari.offline.title")}</h2>
-      <p className="text-[13px] text-gray-500 mb-1">{t("safari.offline.description")}</p>
-      <p className="text-[12px] text-gray-400 mb-8">
+      <WifiOff size={48} className="mb-4 text-gray-300" />
+      <h2 className="mb-2 text-[20px] font-semibold text-gray-700">{t("safari.offline.title")}</h2>
+      <p className="mb-1 text-[13px] text-gray-500">{t("safari.offline.description")}</p>
+      <p className="mb-8 text-[12px] text-gray-400">
         {t("safari.offline.connectingTo")}{" "}
         <span className="font-mono">{url || t("safari.offline.fallbackServer")}</span>
       </p>
@@ -22,7 +22,7 @@ function OfflinePage({ url }: { url: string }) {
           i18nKey="safari.offline.pressSpace"
           components={{
             1: (
-              <kbd className="px-1.5 py-0.5 rounded border border-gray-300 bg-gray-50 font-mono" />
+              <kbd className="rounded border border-gray-300 bg-gray-50 px-1.5 py-0.5 font-mono" />
             ),
           }}
         />
@@ -78,10 +78,10 @@ export function SafariWindow() {
   ];
 
   return (
-    <div className="flex flex-col h-full" style={{ background: "#f5f5f5" }}>
+    <div className="flex h-full flex-col" style={{ background: "#f5f5f5" }}>
       {/* Tabs */}
       <div
-        className="flex items-center h-9 px-2 gap-0.5 overflow-x-auto"
+        className="flex h-9 items-center gap-0.5 overflow-x-auto px-2"
         style={{
           background: "rgba(228,228,228,0.95)",
           borderBottom: "1px solid rgba(0,0,0,0.08)",
@@ -90,19 +90,17 @@ export function SafariWindow() {
         {tabs.map((tab) => (
           <button
             key={tab.id}
-            onClick={() =>
-              setTabs((prev) => prev.map((x) => ({ ...x, active: x.id === tab.id })))
-            }
-            className="flex items-center gap-1.5 px-3 py-1 rounded-t-lg text-[12px] min-w-[120px] max-w-[180px] flex-shrink-0 transition-colors"
+            onClick={() => setTabs((prev) => prev.map((x) => ({ ...x, active: x.id === tab.id })))}
+            className="flex max-w-[180px] min-w-[120px] flex-shrink-0 items-center gap-1.5 rounded-t-lg px-3 py-1 text-[12px] transition-colors"
             style={{
               background: tab.active ? "rgba(255,255,255,0.9)" : "transparent",
               color: tab.active ? "#333" : "#888",
               boxShadow: tab.active ? "0 1px 0 white" : "none",
             }}
           >
-            <span className="truncate flex-1 text-left">{tab.title}</span>
+            <span className="flex-1 truncate text-left">{tab.title}</span>
             <span
-              className="text-[10px] text-gray-400 hover:text-gray-600 flex-shrink-0"
+              className="flex-shrink-0 text-[10px] text-gray-400 hover:text-gray-600"
               onClick={(e) => {
                 e.stopPropagation();
                 setTabs((prev) => prev.filter((x) => x.id !== tab.id));
@@ -113,7 +111,7 @@ export function SafariWindow() {
           </button>
         ))}
         <button
-          className="p-1 rounded hover:bg-black/10 transition-colors ml-1"
+          className="ml-1 rounded p-1 transition-colors hover:bg-black/10"
           onClick={() =>
             setTabs((prev) => [
               ...prev.map((x) => ({ ...x, active: false })),
@@ -133,25 +131,25 @@ export function SafariWindow() {
           borderBottom: "1px solid rgba(0,0,0,0.08)",
         }}
       >
-        <button className="p-1 rounded hover:bg-black/10 text-gray-400">
+        <button className="rounded p-1 text-gray-400 hover:bg-black/10">
           <ChevronLeft size={16} />
         </button>
-        <button className="p-1 rounded hover:bg-black/10 text-gray-400">
+        <button className="rounded p-1 text-gray-400 hover:bg-black/10">
           <ChevronRight size={16} />
         </button>
-        <button className="p-1 rounded hover:bg-black/10 text-gray-500">
+        <button className="rounded p-1 text-gray-500 hover:bg-black/10">
           <RefreshCw size={14} />
         </button>
 
         <div
-          className="flex-1 flex items-center gap-2 px-3 py-1.5 rounded-lg cursor-text"
+          className="flex flex-1 cursor-text items-center gap-2 rounded-lg px-3 py-1.5"
           style={{
             background: "rgba(255,255,255,0.85)",
             border: "1px solid rgba(0,0,0,0.12)",
           }}
           onClick={() => setIsEditing(true)}
         >
-          <Lock size={11} className="text-gray-400 flex-shrink-0" />
+          <Lock size={11} className="flex-shrink-0 text-gray-400" />
           {isEditing ? (
             <input
               autoFocus
@@ -161,26 +159,26 @@ export function SafariWindow() {
               onKeyDown={(e) => {
                 if (e.key === "Enter") setIsEditing(false);
               }}
-              className="flex-1 bg-transparent outline-none text-[13px] text-gray-700 text-center"
+              className="flex-1 bg-transparent text-center text-[13px] text-gray-700 outline-none"
             />
           ) : (
-            <span className="flex-1 text-[13px] text-gray-700 text-center truncate">
+            <span className="flex-1 truncate text-center text-[13px] text-gray-700">
               {inputUrl}
             </span>
           )}
         </div>
 
-        <button className="p-1 rounded hover:bg-black/10 text-gray-500">
+        <button className="rounded p-1 text-gray-500 hover:bg-black/10">
           <Share size={14} />
         </button>
-        <button className="p-1 rounded hover:bg-black/10 text-gray-500">
+        <button className="rounded p-1 text-gray-500 hover:bg-black/10">
           <Plus size={14} />
         </button>
       </div>
 
       {/* Bookmarks Bar */}
       <div
-        className="flex items-center gap-1 px-3 py-1 overflow-x-auto"
+        className="flex items-center gap-1 overflow-x-auto px-3 py-1"
         style={{
           background: "rgba(235,235,235,0.7)",
           borderBottom: "1px solid rgba(0,0,0,0.06)",
@@ -189,10 +187,10 @@ export function SafariWindow() {
         {bookmarks.map((bm) => (
           <button
             key={bm.name}
-            className="flex items-center gap-1.5 px-2 py-0.5 rounded hover:bg-black/10 transition-colors flex-shrink-0"
+            className="flex flex-shrink-0 items-center gap-1.5 rounded px-2 py-0.5 transition-colors hover:bg-black/10"
           >
             <span className="text-[13px]">{bm.icon}</span>
-            <span className="text-[11px] text-gray-600 hidden sm:block">{bm.name}</span>
+            <span className="hidden text-[11px] text-gray-600 sm:block">{bm.name}</span>
           </button>
         ))}
       </div>
@@ -200,17 +198,17 @@ export function SafariWindow() {
       {/* Content */}
       <div className="flex-1 overflow-y-auto" style={{ background: "white" }}>
         {isOnline ? (
-          <div className="p-6 max-w-3xl mx-auto">
+          <div className="mx-auto max-w-3xl p-6">
             {/* Favorites */}
             <div className="mb-8">
-              <h3 className="text-[14px] text-gray-500 mb-3 font-semibold">
+              <h3 className="mb-3 text-[14px] font-semibold text-gray-500">
                 {t("safari.favorites")}
               </h3>
-              <div className="grid grid-cols-4 sm:grid-cols-6 gap-4">
+              <div className="grid grid-cols-4 gap-4 sm:grid-cols-6">
                 {bookmarks.map((bm) => (
-                  <button key={bm.name} className="flex flex-col items-center gap-1.5 group">
+                  <button key={bm.name} className="group flex flex-col items-center gap-1.5">
                     <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shadow-sm group-hover:shadow-md transition-shadow"
+                      className="flex h-12 w-12 items-center justify-center rounded-xl text-2xl shadow-sm transition-shadow group-hover:shadow-md"
                       style={{ background: "rgba(0,0,0,0.05)" }}
                     >
                       {bm.icon}
@@ -223,15 +221,15 @@ export function SafariWindow() {
 
             {/* Privacy Report */}
             <div
-              className="mb-6 p-4 rounded-xl"
+              className="mb-6 rounded-xl p-4"
               style={{
                 background: "rgba(0,100,255,0.06)",
                 border: "1px solid rgba(0,100,255,0.12)",
               }}
             >
-              <div className="flex items-center gap-2 mb-1">
+              <div className="mb-1 flex items-center gap-2">
                 <Lock size={14} className="text-blue-500" />
-                <span className="text-[13px] text-blue-600 font-semibold">
+                <span className="text-[13px] font-semibold text-blue-600">
                   {t("safari.privacyReport")}
                 </span>
               </div>
@@ -245,26 +243,26 @@ export function SafariWindow() {
 
             {/* News */}
             <div>
-              <h3 className="text-[14px] text-gray-500 mb-3 font-semibold">
+              <h3 className="mb-3 text-[14px] font-semibold text-gray-500">
                 {t("safari.topNews")}
               </h3>
               <div className="space-y-3">
                 {news.map((article) => (
                   <div
                     key={article.title}
-                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 cursor-pointer transition-colors"
+                    className="flex cursor-pointer items-start gap-3 rounded-xl p-3 transition-colors hover:bg-gray-50"
                     style={{ border: "1px solid rgba(0,0,0,0.06)" }}
                   >
                     <div
-                      className="w-12 h-12 rounded-lg flex items-center justify-center text-2xl flex-shrink-0"
+                      className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg text-2xl"
                       style={{ background: "rgba(0,0,0,0.05)" }}
                     >
                       {article.image}
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[13px] text-gray-800 leading-snug">{article.title}</p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <span className="text-[10px] text-blue-500 font-medium">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[13px] leading-snug text-gray-800">{article.title}</p>
+                      <div className="mt-1 flex items-center gap-2">
+                        <span className="text-[10px] font-medium text-blue-500">
                           {article.category}
                         </span>
                         <span className="text-[10px] text-gray-400">{article.time}</span>

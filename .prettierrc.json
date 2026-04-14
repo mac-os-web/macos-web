@@ -4,5 +4,10 @@
   "tabWidth": 2,
   "trailingComma": "es5",
   "printWidth": 100,
-  "endOfLine": "auto"
+  "endOfLine": "auto",
+  "plugins": [
+    "prettier-plugin-organize-imports",
+    "prettier-plugin-packagejson",
+    "prettier-plugin-tailwindcss"
+  ]
 }

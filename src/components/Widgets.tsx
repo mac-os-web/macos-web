@@ -1,9 +1,9 @@
-import { useState, useRef, useEffect } from "react";
-import { X, Plus, Wind, Droplets, Thermometer, Activity, WifiOff } from "lucide-react";
-import { useTranslation } from "react-i18next";
-import { apiGet } from "../lib/axios";
 import { useQuery } from "@tanstack/react-query";
+import { Activity, Droplets, Plus, Thermometer, WifiOff, Wind, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNetwork } from "../contexts/network";
+import { apiGet } from "../lib/axios";
 
 // ─── Draggable Widget Shell ───────────────────────────────────────────────────
 interface WidgetShellProps {
@@ -55,7 +55,7 @@ function WidgetShell({ id, initialX, initialY, children, onRemove }: WidgetShell
   return (
     <div
       style={{ position: "fixed", left: pos.x, top: pos.y, zIndex: 10 }}
-      className="rounded-2xl overflow-hidden shadow-xl cursor-grab active:cursor-grabbing"
+      className="cursor-grab overflow-hidden rounded-2xl shadow-xl active:cursor-grabbing"
       onMouseDown={onMouseDown}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -63,7 +63,7 @@ function WidgetShell({ id, initialX, initialY, children, onRemove }: WidgetShell
       {hovered && (
         <button
           onClick={() => onRemove(id)}
-          className="absolute top-1.5 left-1.5 z-20 w-5 h-5 rounded-full bg-gray-700/80 flex items-center justify-center transition-opacity"
+          className="absolute top-1.5 left-1.5 z-20 flex h-5 w-5 items-center justify-center rounded-full bg-gray-700/80 transition-opacity"
         >
           <X size={10} className="text-white" />
         </button>
@@ -92,7 +92,7 @@ function ClockWidget() {
 
   return (
     <div
-      className="w-36 h-36 flex flex-col items-center justify-center gap-1"
+      className="flex h-36 w-36 flex-col items-center justify-center gap-1"
       style={{
         background: "rgba(30,30,30,0.82)",
         backdropFilter: "blur(20px)",
@@ -151,7 +151,7 @@ function ClockWidget() {
         <circle cx="40" cy="40" r="2.5" fill="white" />
         <circle cx="40" cy="40" r="1.5" fill="#ff3b30" />
       </svg>
-      <p className="text-white text-[11px] opacity-60">
+      <p className="text-[11px] text-white opacity-60">
         {now.toLocaleString(i18n.language, {
           month: "short",
           day: "numeric",
@@ -295,9 +295,9 @@ function WeatherWidget() {
         className="w-72 p-6 text-center"
         style={{ background: "rgba(80,80,80,0.88)", backdropFilter: "blur(20px)" }}
       >
-        <WifiOff size={32} className="text-white/50 mx-auto mb-2" />
-        <p className="text-white/80 text-[13px] font-semibold">{t("widgets.weather.noData")}</p>
-        <p className="text-white/50 text-[11px] mt-1">{t("widgets.weather.noDataDesc")}</p>
+        <WifiOff size={32} className="mx-auto mb-2 text-white/50" />
+        <p className="text-[13px] font-semibold text-white/80">{t("widgets.weather.noData")}</p>
+        <p className="mt-1 text-[11px] text-white/50">{t("widgets.weather.noDataDesc")}</p>
       </div>
     );
   }
@@ -311,47 +311,47 @@ function WeatherWidget() {
       }}
     >
       {!isOnline && (
-        <div className="flex items-center gap-1 text-[10px] text-white/90 bg-black/25 px-2 py-1 mb-2 rounded">
+        <div className="mb-2 flex items-center gap-1 rounded bg-black/25 px-2 py-1 text-[10px] text-white/90">
           <WifiOff size={10} />
           <span>{t("widgets.weather.staleBanner")}</span>
         </div>
       )}
-      <div className="flex items-start justify-between mb-3">
+      <div className="mb-3 flex items-start justify-between">
         <div>
-          <p className="text-white/80 text-[11px] font-medium">{cityName}</p>
-          <span className="text-white text-[52px] leading-none font-thin">
+          <p className="text-[11px] font-medium text-white/80">{cityName}</p>
+          <span className="text-[52px] leading-none font-thin text-white">
             {current ? `${Math.round(current.temperature_2m)}°` : "--°"}
           </span>
-          <p className="text-white text-[13px] opacity-80 mt-0.5">
+          <p className="mt-0.5 text-[13px] text-white opacity-80">
             {current ? (WMO_ICONS[current.weather_code] ?? "☁️") : ""}{" "}
             {daily
               ? `${t("widgets.weather.high")} ${Math.round(daily.temperature_2m_max[0])}° ${t("widgets.weather.low")} ${Math.round(daily.temperature_2m_min[0])}°`
               : ""}
           </p>
         </div>
-        <div className="text-5xl mt-1">
+        <div className="mt-1 text-5xl">
           {current ? (WMO_ICONS[current.weather_code] ?? "☁️") : "⏳"}
         </div>
       </div>
       <div
-        className="flex items-center gap-3 mb-3 p-2 rounded-xl"
+        className="mb-3 flex items-center gap-3 rounded-xl p-2"
         style={{ background: "rgba(255,255,255,0.15)" }}
       >
         <div className="flex items-center gap-1">
           <Wind size={11} className="text-white/70" />
-          <span className="text-white/80 text-[11px]">
+          <span className="text-[11px] text-white/80">
             {current ? `${current.wind_speed_10m} m/s` : "-- m/s"}
           </span>
         </div>
         <div className="flex items-center gap-1">
           <Droplets size={11} className="text-white/70" />
-          <span className="text-white/80 text-[11px]">
+          <span className="text-[11px] text-white/80">
             {current ? `${current.relative_humidity_2m}%` : "--%"}
           </span>
         </div>
         <div className="flex items-center gap-1">
           <Thermometer size={11} className="text-white/70" />
-          <span className="text-white/80 text-[11px]">
+          <span className="text-[11px] text-white/80">
             {t("widgets.weather.feelsLike")}{" "}
             {current ? `${Math.round(current.temperature_2m)}°` : "--°"}
           </span>
@@ -359,10 +359,10 @@ function WeatherWidget() {
       </div>
       <div className="flex gap-2 overflow-x-auto pb-1">
         {hourlyItems.map((h) => (
-          <div key={h.time} className="flex flex-col items-center gap-0.5 flex-shrink-0">
-            <span className="text-white/60 text-[10px]">{h.time}</span>
+          <div key={h.time} className="flex flex-shrink-0 flex-col items-center gap-0.5">
+            <span className="text-[10px] text-white/60">{h.time}</span>
             <span className="text-base">{h.icon}</span>
-            <span className="text-white text-[12px] font-medium">{h.temp}°</span>
+            <span className="text-[12px] font-medium text-white">{h.temp}°</span>
           </div>
         ))}
       </div>
@@ -371,12 +371,12 @@ function WeatherWidget() {
         <div className="mt-3 pt-3" style={{ borderTop: "1px solid rgba(255,255,255,0.15)" }}>
           {dailyItems.map((d) => (
             <div key={d.day} className="flex items-center justify-between py-0.5">
-              <span className="text-white/70 text-[11px] w-8">{d.day}</span>
+              <span className="w-8 text-[11px] text-white/70">{d.day}</span>
               <span className="text-base">{d.icon}</span>
               <div className="flex items-center gap-1">
-                <span className="text-white/50 text-[11px]">{d.low}°</span>
+                <span className="text-[11px] text-white/50">{d.low}°</span>
                 <div
-                  className="w-16 h-1 rounded-full"
+                  className="h-1 w-16 rounded-full"
                   style={{ background: "rgba(255,255,255,0.15)" }}
                 >
                   <div
@@ -387,7 +387,7 @@ function WeatherWidget() {
                     }}
                   />
                 </div>
-                <span className="text-white text-[11px]">{d.high}°</span>
+                <span className="text-[11px] text-white">{d.high}°</span>
               </div>
             </div>
           ))}
@@ -433,20 +433,20 @@ function CalendarWidget() {
         backdropFilter: "blur(20px)",
       }}
     >
-      <div className="flex items-center justify-between mb-3">
+      <div className="mb-3 flex items-center justify-between">
         <div>
-          <p className="text-red-400 text-[11px] font-semibold uppercase tracking-wider">
+          <p className="text-[11px] font-semibold tracking-wider text-red-400 uppercase">
             {today.toLocaleString(i18n.language, { month: "long" })}
           </p>
-          <p className="text-white text-[28px] font-thin leading-none">{date}</p>
+          <p className="text-[28px] leading-none font-thin text-white">{date}</p>
         </div>
-        <p className="text-white/40 text-[11px]">{year}</p>
+        <p className="text-[11px] text-white/40">{year}</p>
       </div>
-      <div className="grid grid-cols-7 gap-0.5 mb-1">
+      <div className="mb-1 grid grid-cols-7 gap-0.5">
         {weekdays.map((d, i) => (
           <div
             key={d + i}
-            className="text-center text-[10px] py-0.5"
+            className="py-0.5 text-center text-[10px]"
             style={{
               color: i === 0 ? "#ff3b30" : "rgba(255,255,255,0.4)",
             }}
@@ -457,10 +457,10 @@ function CalendarWidget() {
       </div>
       <div className="grid grid-cols-7 gap-0.5">
         {days.map((d, i) => (
-          <div key={i} className="aspect-square flex items-center justify-center">
+          <div key={i} className="flex aspect-square items-center justify-center">
             {d !== null && (
               <div
-                className="w-6 h-6 flex items-center justify-center rounded-full text-[11px] relative"
+                className="relative flex h-6 w-6 items-center justify-center rounded-full text-[11px]"
                 style={{
                   background: d === date ? "#ff3b30" : "transparent",
                   color: d === date ? "white" : i % 7 === 0 ? "#ff6b6b" : "rgba(255,255,255,0.75)",
@@ -468,7 +468,7 @@ function CalendarWidget() {
               >
                 {d}
                 {events[d] && d !== date && (
-                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-blue-400" />
+                  <div className="absolute bottom-0 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-blue-400" />
                 )}
               </div>
             )}
@@ -476,14 +476,14 @@ function CalendarWidget() {
         ))}
       </div>
       <div className="mt-3 pt-3" style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}>
-        <p className="text-white/40 text-[10px] mb-1.5">{t("widgets.calendar.upcoming")}</p>
+        <p className="mb-1.5 text-[10px] text-white/40">{t("widgets.calendar.upcoming")}</p>
         {Object.entries(events)
           .filter(([d]) => Number(d) >= date)
           .slice(0, 2)
           .map(([d, name]) => (
-            <div key={d} className="flex items-center gap-2 mb-1">
-              <div className="w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0" />
-              <span className="text-white/70 text-[11px]">
+            <div key={d} className="mb-1 flex items-center gap-2">
+              <div className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-blue-400" />
+              <span className="text-[11px] text-white/70">
                 {month}/{d} · {name}
               </span>
             </div>
@@ -512,7 +512,7 @@ function NotesWidget() {
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
-        className="w-full p-3 bg-transparent outline-none text-[12px] text-yellow-900 resize-none leading-relaxed"
+        className="w-full resize-none bg-transparent p-3 text-[12px] leading-relaxed text-yellow-900 outline-none"
         rows={6}
         onClick={(e) => e.stopPropagation()}
         onMouseDown={(e) => e.stopPropagation()}
@@ -531,7 +531,7 @@ function SystemWidget() {
 
   function Bar({ value, color }: { value: number; color: string }) {
     return (
-      <div className="w-full h-1.5 rounded-full" style={{ background: "rgba(255,255,255,0.1)" }}>
+      <div className="h-1.5 w-full rounded-full" style={{ background: "rgba(255,255,255,0.1)" }}>
         <div className="h-full rounded-full" style={{ width: `${value}%`, background: color }} />
       </div>
     );
@@ -545,9 +545,9 @@ function SystemWidget() {
         backdropFilter: "blur(20px)",
       }}
     >
-      <div className="flex items-center gap-2 mb-3">
+      <div className="mb-3 flex items-center gap-2">
         <Activity size={13} className="text-green-400" />
-        <p className="text-white text-[12px] font-semibold">{t("widgets.system.title")}</p>
+        <p className="text-[12px] font-semibold text-white">{t("widgets.system.title")}</p>
       </div>
       {[
         { label: "CPU", value: cpu, color: "#30d158", unit: "%" },
@@ -556,9 +556,9 @@ function SystemWidget() {
         { label: t("widgets.system.network"), value: net, color: "#ff9f0a", unit: "MB/s" },
       ].map((item) => (
         <div key={item.label} className="mb-2.5">
-          <div className="flex justify-between mb-1">
-            <span className="text-white/60 text-[10px]">{item.label}</span>
-            <span className="text-white/80 text-[10px]">
+          <div className="mb-1 flex justify-between">
+            <span className="text-[10px] text-white/60">{item.label}</span>
+            <span className="text-[10px] text-white/80">
               {item.value}
               {item.unit}
             </span>
@@ -567,20 +567,20 @@ function SystemWidget() {
         </div>
       ))}
       <div
-        className="mt-3 pt-2.5 flex justify-between"
+        className="mt-3 flex justify-between pt-2.5"
         style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
       >
         <div className="text-center">
-          <p className="text-white/40 text-[9px]">{t("widgets.system.disk")}</p>
-          <p className="text-white text-[11px]">256 GB</p>
+          <p className="text-[9px] text-white/40">{t("widgets.system.disk")}</p>
+          <p className="text-[11px] text-white">256 GB</p>
         </div>
         <div className="text-center">
-          <p className="text-white/40 text-[9px]">{t("widgets.system.chipset")}</p>
-          <p className="text-white text-[11px]">M4</p>
+          <p className="text-[9px] text-white/40">{t("widgets.system.chipset")}</p>
+          <p className="text-[11px] text-white">M4</p>
         </div>
         <div className="text-center">
-          <p className="text-white/40 text-[9px]">{t("widgets.system.memory")}</p>
-          <p className="text-white text-[11px]">16 GB</p>
+          <p className="text-[9px] text-white/40">{t("widgets.system.memory")}</p>
+          <p className="text-[11px] text-white">16 GB</p>
         </div>
       </div>
     </div>
@@ -617,7 +617,7 @@ export function WidgetPicker({ isOpen, onClose, onAdd, active }: WidgetPickerPro
     <>
       <div className="fixed inset-0 z-[60]" onClick={onClose} />
       <div
-        className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[70] p-4 rounded-2xl w-80"
+        className="fixed bottom-24 left-1/2 z-[70] w-80 -translate-x-1/2 rounded-2xl p-4"
         style={{
           background: "rgba(40,40,40,0.92)",
           backdropFilter: "blur(40px)",
@@ -627,7 +627,7 @@ export function WidgetPicker({ isOpen, onClose, onAdd, active }: WidgetPickerPro
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <p className="text-white text-[14px] font-semibold mb-3">{t("widgets.addWidget")}</p>
+        <p className="mb-3 text-[14px] font-semibold text-white">{t("widgets.addWidget")}</p>
         <div className="space-y-1.5">
           {WIDGET_DEFS.map((w) => {
             const isActive = active.includes(w.id);
@@ -635,24 +635,24 @@ export function WidgetPicker({ isOpen, onClose, onAdd, active }: WidgetPickerPro
               <button
                 key={w.id}
                 onClick={() => onAdd(w.id)}
-                className="w-full flex items-center gap-3 p-3 rounded-xl transition-all text-left"
+                className="flex w-full items-center gap-3 rounded-xl p-3 text-left transition-all"
                 style={{
                   background: isActive ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.08)",
                 }}
               >
                 <span className="text-2xl">{w.icon}</span>
                 <div className="flex-1">
-                  <p className="text-white text-[13px] font-medium">{w.name}</p>
-                  <p className="text-white/50 text-[11px]">{w.desc}</p>
+                  <p className="text-[13px] font-medium text-white">{w.name}</p>
+                  <p className="text-[11px] text-white/50">{w.desc}</p>
                 </div>
                 <div
-                  className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
+                  className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full"
                   style={{
                     background: isActive ? "rgba(255,255,255,0.15)" : "rgba(48,209,88,1)",
                   }}
                 >
                   {isActive ? (
-                    <span className="text-white/50 text-[14px]">✓</span>
+                    <span className="text-[14px] text-white/50">✓</span>
                   ) : (
                     <Plus size={13} className="text-white" />
                   )}
