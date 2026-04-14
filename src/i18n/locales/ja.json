@@ -157,6 +157,13 @@
     "time": {
       "hoursAgo": "{{count}}時間前",
       "yesterday": "昨日"
+    },
+    "offline": {
+      "title": "インターネットに接続されていません",
+      "description": "コンピュータがインターネットに接続されていないため、Safariはページを開けません。",
+      "connectingTo": "次のサーバーに接続できませんでした:",
+      "fallbackServer": "サーバー",
+      "pressSpace": "<1>Space</1>キーでプレイ"
     }
   },
   "notes": {
@@ -232,6 +239,10 @@
         "subject": "今週の新着コンテンツ",
         "body": "今週Netflixに追加された新しいコンテンツをチェックしましょう。"
       }
+    },
+    "offline": {
+      "title": "オフラインです",
+      "description": "新しいメッセージを取得できません。再接続時に表示されます。"
     }
   },
   "appStore": {
@@ -262,7 +273,11 @@
       "music": "ミュージック",
       "utility": "ユーティリティ"
     },
-    "free": "無料"
+    "free": "無料",
+    "offline": {
+      "title": "App Storeに接続できません",
+      "description": "インターネット接続が必要です。Wi-Fiを確認してもう一度お試しください。"
+    }
   },
   "widgets": {
     "addWidget": "ウィジェットを追加",
@@ -279,7 +294,10 @@
       "high": "最高",
       "low": "最低",
       "feelsLike": "体感",
-      "now": "現在"
+      "now": "現在",
+      "staleBanner": "天気情報が最新ではない可能性があります",
+      "noData": "天気情報がありません",
+      "noDataDesc": "インターネットに接続すると天気情報を取得します。"
     },
     "calendar": {
       "name": "カレンダー",

@@ -157,6 +157,13 @@
     "time": {
       "hoursAgo": "{{count}}시간 전",
       "yesterday": "어제"
+    },
+    "offline": {
+      "title": "인터넷에 연결되어 있지 않습니다",
+      "description": "Safari가 인터넷에 연결되지 않아 페이지를 열 수 없습니다.",
+      "connectingTo": "다음 서버에 연결할 수 없음:",
+      "fallbackServer": "서버",
+      "pressSpace": "<1>Space</1> 키로 플레이"
     }
   },
   "notes": {
@@ -232,6 +239,10 @@
         "subject": "이번 주 새로운 콘텐츠",
         "body": "이번 주 Netflix에 추가된 새로운 콘텐츠를 확인하세요."
       }
+    },
+    "offline": {
+      "title": "오프라인 상태입니다",
+      "description": "새 메시지를 받을 수 없습니다. 다시 연결되면 표시됩니다."
     }
   },
   "appStore": {
@@ -262,7 +273,11 @@
       "music": "음악",
       "utility": "유틸리티"
     },
-    "free": "무료"
+    "free": "무료",
+    "offline": {
+      "title": "App Store에 연결할 수 없음",
+      "description": "인터넷 연결이 필요합니다. Wi-Fi를 확인하고 다시 시도하세요."
+    }
   },
   "widgets": {
     "addWidget": "위젯 추가",
@@ -279,7 +294,10 @@
       "high": "최고",
       "low": "최저",
       "feelsLike": "체감",
-      "now": "지금"
+      "now": "지금",
+      "staleBanner": "날씨 정보가 최신이 아닐 수 있습니다",
+      "noData": "날씨 정보 없음",
+      "noDataDesc": "인터넷에 연결하면 날씨 정보를 불러옵니다."
     },
     "calendar": {
       "name": "달력",

@@ -157,6 +157,13 @@
     "time": {
       "hoursAgo": "{{count}}h ago",
       "yesterday": "Yesterday"
+    },
+    "offline": {
+      "title": "You are offline",
+      "description": "Safari can't open the page because your computer isn't connected to the Internet.",
+      "connectingTo": "Could not connect to",
+      "fallbackServer": "the server",
+      "pressSpace": "Press <1>Space</1> to play"
     }
   },
   "notes": {
@@ -232,6 +239,10 @@
         "subject": "New content this week",
         "body": "Check out the new content added to Netflix this week."
       }
+    },
+    "offline": {
+      "title": "You're offline",
+      "description": "New messages can't be fetched. You'll see them when you reconnect."
     }
   },
   "appStore": {
@@ -262,7 +273,11 @@
       "music": "Music",
       "utility": "Utilities"
     },
-    "free": "Free"
+    "free": "Free",
+    "offline": {
+      "title": "Cannot connect to App Store",
+      "description": "An Internet connection is required. Check your Wi-Fi and try again."
+    }
   },
   "widgets": {
     "addWidget": "Add Widget",
@@ -279,7 +294,10 @@
       "high": "H",
       "low": "L",
       "feelsLike": "Feels like",
-      "now": "Now"
+      "now": "Now",
+      "staleBanner": "Weather may be out of date",
+      "noData": "No Weather Data",
+      "noDataDesc": "Connect to the Internet to load weather."
     },
     "calendar": {
       "name": "Calendar",

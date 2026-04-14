@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from "react";
-import { X, Plus, Wind, Droplets, Thermometer, Activity } from "lucide-react";
+import { X, Plus, Wind, Droplets, Thermometer, Activity, WifiOff } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { apiGet } from "../lib/axios";
+import { useQuery } from '@tanstack/react-query';
+import { useNetwork } from '../contexts/network';
 
 // ─── Draggable Widget Shell ───────────────────────────────────────────────────
 interface WidgetShellProps {
@@ -194,12 +196,10 @@ interface WeatherData {
 
 // ─── Weather Widget ───────────────────────────────────────────────────────────
 function WeatherWidget() {
+  const { isOnline } = useNetwork();
   const { t, i18n } = useTranslation();
   const [coords, setCoords] = useState<{ lat: number; lon: number } | null>(null);
-  const [weather, setWeather] = useState<WeatherData | null>(null);
-  const [cityName, setCityName] = useState(t("widgets.weather.location"));
 
-  // 位置情報を取得（ソウルをフォールバック）
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (pos) => setCoords({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
@@ -207,33 +207,45 @@ function WeatherWidget() {
     );
   }, []);
 
-  // 天気データを取得
-  useEffect(() => {
-    if (!coords) return;
+  const { data: weather } = useQuery<WeatherData>({
+    queryKey: ["weather", coords?.lat, coords?.lon],
+    queryFn: () =>
+      apiGet<WeatherData>("https://api.open-meteo.com/v1/forecast", {
+        params: {
+          latitude: coords!.lat,
+          longitude: coords!.lon,
+          current: "temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m",
+          daily: "temperature_2m_max,temperature_2m_min,weather_code",
+          hourly: "temperature_2m,weather_code",
+          timezone: "auto",
+          forecast_days: 5,
+          forecast_hours: 6,
+        },
+      }),
+    enabled: !!coords && isOnline,
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 60 * 24,
+  });
 
-    apiGet<WeatherData>("https://api.open-meteo.com/v1/forecast", {
-      params: {
-        latitude: coords.lat,
-        longitude: coords.lon,
-        current: "temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m",
-        daily: "temperature_2m_max,temperature_2m_min,weather_code",
-        hourly: "temperature_2m,weather_code",
-        timezone: "auto",
-        forecast_days: 5,
-        forecast_hours: 6,
-      },
-    }).then(setWeather).catch(console.error);
+  const { data: cityData } = useQuery({
+    queryKey: ["city", coords?.lat, coords?.lon, i18n.language],
+    queryFn: () =>
+      apiGet<{ city: string; locality: string }>(
+        "https://api.bigdatacloud.net/data/reverse-geocode-client",
+        {
+          params: {
+            latitude: coords!.lat,
+            longitude: coords!.lon,
+            localityLanguage: i18n.language,
+          },
+        }
+      ),
+    enabled: !!coords && isOnline,
+    staleTime: Infinity,
+  });
 
-    // 逆ジオコーディングで都市名を取得（BigDataCloud、無料・キー不要）
-    apiGet<{ city: string; locality: string }>(
-      "https://api.bigdatacloud.net/data/reverse-geocode-client",
-      { params: { latitude: coords.lat, longitude: coords.lon, localityLanguage: i18n.language } }
-    ).then((data) => {
-      setCityName(data.city || data.locality);
-    }).catch(() => {});
-  }, [coords, i18n.language]);
+  const cityName = cityData?.city || cityData?.locality || t("widgets.weather.location");
 
-  // データがない場合はローディング表示
   const current = weather?.current;
   const daily = weather?.daily;
   const hourlyData = weather?.hourly;
@@ -262,6 +274,23 @@ function WeatherWidget() {
       })
     : [];
 
+  if (!weather && !isOnline) {
+    return (
+      <div
+        className="w-72 p-6 text-center"
+        style={{ background: "rgba(80,80,80,0.88)", backdropFilter: "blur(20px)" }}
+      >
+        <WifiOff size={32} className="text-white/50 mx-auto mb-2" />
+        <p className="text-white/80 text-[13px] font-semibold">
+          {t("widgets.weather.noData")}
+        </p>
+        <p className="text-white/50 text-[11px] mt-1">
+          {t("widgets.weather.noDataDesc")}
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div
       className="w-72 p-4"
@@ -270,6 +299,13 @@ function WeatherWidget() {
         backdropFilter: "blur(20px)",
       }}
     >
+      
+      {!isOnline && (
+        <div className="flex items-center gap-1 text-[10px] text-white/90 bg-black/25 px-2 py-1 mb-2 rounded">
+      <WifiOff size={10} />
+      <span>{t("widgets.weather.staleBanner")}</span>
+    </div>
+  )}
       <div className="flex items-start justify-between mb-3">
         <div>
           <p className="text-white/80 text-[11px] font-medium">{cityName}</p>

@@ -14,6 +14,9 @@ import {
   Pause,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useNetwork } from "../contexts/network";
+
+const DEMO_SSID = "HomeNetwork_5G";
 
 interface ControlCenterProps {
   isOpen: boolean;
@@ -69,7 +72,7 @@ function Slider({
 }
 
 export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
-  const [wifi, setWifi] = useState(true);
+  const { isOnline, setOnline } = useNetwork();
   const [bluetooth, setBluetooth] = useState(true);
   const [airdrop, setAirdrop] = useState(false);
   const [focusMode, setFocusMode] = useState(false);
@@ -100,21 +103,21 @@ export function ControlCenter({ isOpen, onClose }: ControlCenterProps) {
         <div className="grid grid-cols-2 gap-2 mb-2">
           <div className="rounded-xl p-3" style={{ background: "rgba(255,255,255,0.7)" }}>
             <button
-              onClick={() => setWifi(!wifi)}
+              onClick={() => setOnline(!isOnline)}
               className="flex items-center gap-2.5 w-full mb-2.5"
             >
               <div
                 className="w-8 h-8 rounded-full flex items-center justify-center"
                 style={{
-                  background: wifi ? "#1d7af5" : "rgba(0,0,0,0.12)",
+                  background: isOnline ? "#1d7af5" : "rgba(0,0,0,0.12)",
                 }}
               >
-                <Wifi size={14} className={wifi ? "text-white" : "text-gray-500"} />
+                <Wifi size={14} className={isOnline ? "text-white" : "text-gray-500"} />
               </div>
               <div className="text-left">
                 <p className="text-[12px] font-semibold text-gray-800">Wi-Fi</p>
                 <p className="text-[10px] text-gray-500">
-                  {wifi ? "HomeNetwork_5G" : t("controlCenter.off")}
+                  {isOnline ? DEMO_SSID : t("controlCenter.off")}
                 </p>
               </div>
             </button>
