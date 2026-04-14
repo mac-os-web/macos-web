@@ -43,12 +43,12 @@ function shouldLog(level: LogLevel): boolean {
 
 // ─── タイムスタンプフォーマット設定 ─────────────────────────────────────────
 const TIMESTAMP_LOCALE = "en-US";
-const TIMESTAMP_OPTIONS = {
+const TIMESTAMP_OPTIONS: Intl.DateTimeFormatOptions = {
   hour: "2-digit",
   minute: "2-digit",
   second: "2-digit",
   hour12: false,
-} as const;
+};
 
 // ─── タイムスタンプ ──────────────────────────────────────────────────────────
 function timestamp(): string {

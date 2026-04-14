@@ -124,11 +124,11 @@ export function Spotlight({ isOpen, onClose, onOpenApp }: SpotlightProps) {
                     <div className="px-5 py-1 text-[11px] font-semibold tracking-wider text-gray-500 uppercase">
                       {section.category}
                     </div>
-                    {section.items.map((item, i) => {
+                    {section.items.map((item) => {
                       const globalIndex = allItems.findIndex((a) => a === item);
                       return (
                         <button
-                          key={item.id + i}
+                          key={item.id}
                           className="flex w-full items-center gap-3 px-4 py-2 text-left transition-colors"
                           style={{
                             background:
@@ -157,7 +157,7 @@ export function Spotlight({ isOpen, onClose, onOpenApp }: SpotlightProps) {
                 ))
               : filtered.map((item, i) => (
                   <button
-                    key={item.id + i}
+                    key={item.id}
                     className="flex w-full items-center gap-3 px-4 py-2 text-left transition-colors"
                     style={{
                       background: selected === i ? "rgba(0,106,255,0.85)" : "transparent",

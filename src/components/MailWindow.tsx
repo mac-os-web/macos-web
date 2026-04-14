@@ -67,13 +67,7 @@ export function MailWindow() {
 
   return (
     <div className="flex h-full">
-      <div
-        className="flex w-52 flex-shrink-0 flex-col"
-        style={{
-          background: "rgba(238,238,238,0.95)",
-          borderRight: "1px solid rgba(0,0,0,0.07)",
-        }}
-      >
+      <div className="flex w-52 flex-shrink-0 flex-col border-r border-black/[0.07] bg-neutral-200/95">
         <div className="px-3 pt-3 pb-2">
           <p className="mb-1 text-[10px] font-semibold tracking-wider text-gray-400 uppercase">
             {t("mail.mailboxes")}
