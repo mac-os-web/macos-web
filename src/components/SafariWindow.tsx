@@ -238,12 +238,13 @@ export function SafariWindow() {
                   {t("safari.privacyReport")}
                 </span>
               </div>
-              <p
-                className="text-[12px] text-gray-500"
-                dangerouslySetInnerHTML={{
-                  __html: t("safari.privacyText", { count: 148 }),
-                }}
-              />
+              <p className="text-[12px] text-gray-500">
+                <Trans
+                  i18nKey="safari.privacyText"
+                  values={{ count: 148 }}
+                  components={{ 1: <strong /> }}
+                />
+              </p>
             </div>
 
             {/* News */}

@@ -140,7 +140,7 @@
     "newTab": "新規タブ",
     "favorites": "お気に入り",
     "privacyReport": "プライバシーレポート",
-    "privacyText": "過去30日間でSafariは<strong>{{count}}個</strong>のトラッカーをブロックしました。",
+    "privacyText": "過去30日間でSafariは<1>{{count}}個</1>のトラッカーをブロックしました。",
     "topNews": "トップニュース",
     "news": {
       "m4chip": "Apple、新型M4チップを発表 — 史上最強のプロセッサ",

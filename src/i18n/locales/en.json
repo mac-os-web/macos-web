@@ -140,7 +140,7 @@
     "newTab": "New Tab",
     "favorites": "Favorites",
     "privacyReport": "Privacy Report",
-    "privacyText": "In the past 30 days, Safari has blocked <strong>{{count}}</strong> trackers.",
+    "privacyText": "In the past 30 days, Safari has blocked <1>{{count}}</1> trackers.",
     "topNews": "Top Stories",
     "news": {
       "m4chip": "Apple Unveils New M4 Chip — Most Powerful Processor Ever",

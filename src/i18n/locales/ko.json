@@ -140,7 +140,7 @@
     "newTab": "새 탭",
     "favorites": "즐겨찾기",
     "privacyReport": "개인 정보 보호 리포트",
-    "privacyText": "지난 30일 동안 Safari가 <strong>{{count}}개</strong>의 추적기를 차단했습니다.",
+    "privacyText": "지난 30일 동안 Safari가 <1>{{count}}개</1>의 추적기를 차단했습니다.",
     "topNews": "주요 기사",
     "news": {
       "m4chip": "Apple, 새로운 M4 칩 공개 - 역대 가장 강력한 프로세서",
