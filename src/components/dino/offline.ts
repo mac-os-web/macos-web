@@ -23,16 +23,6 @@ import {CollisionBox, GAME_TYPE, spriteDefinitionByType} from './offline_sprite_
 import {Status as TrexStatus, Trex} from './trex.js';
 import {getTimeStamp} from './utils.js';
 
-enum A11yStrings {
-  ARIA_LABEL = 'dinoGameA11yAriaLabel',
-  DESCRIPTION = 'dinoGameA11yDescription',
-  GAME_OVER = 'dinoGameA11yGameOver',
-  HIGH_SCORE = 'dinoGameA11yHighScore',
-  JUMP = 'dinoGameA11yJump',
-  STARTED = 'dinoGameA11yStartGame',
-  SPEED_LABEL = 'dinoGameA11ySpeedToggle',
-}
-
 const defaultBaseConfig: BaseConfig = {
   audiocueProximityThreshold: 190,
   audiocueProximityThresholdMobileA11y: 250,
@@ -136,6 +126,9 @@ enum RunnerEvents {
 
 const ARCADE_MODE_URL: string = 'chrome://dino/';
 
+/** 툴팁 등 외부 UI 갱신용 상태. */
+export type GameState = 'idle'|'playing'|'gameOver';
+
 const RESOURCE_POSTFIX: string = 'offline-resources-';
 
 /**
@@ -149,7 +142,6 @@ export class Runner implements ImageSpriteProvider, GameStateProvider,
   private touchController: HTMLElement|null = null;
   private canvas: HTMLCanvasElement|null = null;
   private canvasCtx: CanvasRenderingContext2D|null = null;
-  private a11yStatusEl: HTMLElement|null = null;
   private slowSpeedCheckboxLabel: HTMLElement|null = null;
   private slowSpeedCheckbox: HTMLInputElement|null = null;
   private slowSpeedToggleEl: HTMLElement|null = null;
@@ -226,9 +218,15 @@ export class Runner implements ImageSpriteProvider, GameStateProvider,
   private controller = new AbortController();
   /** True once destroy() has been called — guards late async callbacks. */
   private destroyed: boolean = false;
+  /** Game state change callback — 툴팁 등 React 쪽 UI 갱신용. */
+  private onStateChange?: (state: GameState) => void;
 
-  constructor(outerContainerElement: HTMLElement, configParam?: Config) {
+  constructor(
+      outerContainerElement: HTMLElement,
+      onStateChange?: (state: GameState) => void,
+      configParam?: Config) {
     this.outerContainerEl = outerContainerElement;
+    this.onStateChange = onStateChange;
 
     this.config =
         configParam || Object.assign({}, defaultBaseConfig, normalModeConfig);
@@ -502,44 +500,23 @@ export class Runner implements ImageSpriteProvider, GameStateProvider,
     // Hide the static icon.
     iconElement.style.visibility = 'hidden';
 
-    if (this.isArcadeMode()) {
-      document.title =
-          document.title + ' - ' + getA11yString(A11yStrings.ARIA_LABEL);
-    }
-
     this.adjustDimensions();
     this.setSpeed();
 
-    const ariaLabel = getA11yString(A11yStrings.ARIA_LABEL);
     this.containerEl = document.createElement('div');
-    this.containerEl.setAttribute('role', IS_MOBILE ? 'button' : 'application');
     this.containerEl.setAttribute('tabindex', '0');
-    this.containerEl.setAttribute(
-        'title', getA11yString(A11yStrings.DESCRIPTION));
-    this.containerEl.setAttribute('aria-label', ariaLabel);
-
     this.containerEl.className = RunnerClasses.CONTAINER;
 
     // Player canvas container.
     this.canvas = createCanvas(
         this.containerEl, this.dimensions.width, this.dimensions.height);
 
-    // Live region for game status updates.
-    this.a11yStatusEl = document.createElement('span');
-    this.a11yStatusEl.className = 'offline-runner-live-region';
-    this.a11yStatusEl.setAttribute('aria-live', 'assertive');
-    this.a11yStatusEl.textContent = '';
-
     // Add checkbox to slow down the game.
     this.slowSpeedCheckboxLabel = document.createElement('label');
     this.slowSpeedCheckboxLabel.className = 'slow-speed-option hidden';
-    this.slowSpeedCheckboxLabel.textContent =
-        getA11yString(A11yStrings.SPEED_LABEL);
 
     this.slowSpeedCheckbox = document.createElement('input');
     this.slowSpeedCheckbox.setAttribute('type', 'checkbox');
-    this.slowSpeedCheckbox.setAttribute(
-        'title', getA11yString(A11yStrings.SPEED_LABEL));
     this.slowSpeedCheckbox.setAttribute('tabindex', '0');
     this.slowSpeedCheckbox.setAttribute('checked', 'checked');
 
@@ -548,12 +525,6 @@ export class Runner implements ImageSpriteProvider, GameStateProvider,
 
     this.slowSpeedCheckboxLabel.appendChild(this.slowSpeedCheckbox);
     this.slowSpeedCheckboxLabel.appendChild(this.slowSpeedToggleEl);
-
-    if (IS_IOS) {
-      this.outerContainerEl.appendChild(this.a11yStatusEl);
-    } else {
-      this.containerEl.appendChild(this.a11yStatusEl);
-    }
 
     const canvasContext = this.canvas.getContext('2d');
     assert(canvasContext);
@@ -593,6 +564,8 @@ export class Runner implements ImageSpriteProvider, GameStateProvider,
     darkModeMediaQuery.addEventListener('change', (e) => {
       this.isDarkMode = e.matches;
     }, { signal: this.controller.signal });
+
+    this.onStateChange?.('idle');
   }
 
   /**
@@ -722,7 +695,6 @@ export class Runner implements ImageSpriteProvider, GameStateProvider,
     if (this.hasAudioCuesInternal) {
       this.getGeneratedSoundFx().background();
     }
-    this.containerEl.setAttribute('title', getA11yString(A11yStrings.JUMP));
 
     // Handle tabbing off the page. Pause the current game.
     const opts = { signal: this.controller.signal };
@@ -730,6 +702,8 @@ export class Runner implements ImageSpriteProvider, GameStateProvider,
     document.addEventListener(RunnerEvents.VISIBILITY, onVis, opts);
     window.addEventListener(RunnerEvents.BLUR, onVis, opts);
     window.addEventListener(RunnerEvents.FOCUS, onVis, opts);
+
+    this.onStateChange?.('playing');
   }
 
   private clearCanvas() {
@@ -1372,25 +1346,11 @@ export class Runner implements ImageSpriteProvider, GameStateProvider,
 
     if (this.hasAudioCuesInternal) {
       this.getGeneratedSoundFx().stopAll();
-      assert(this.containerEl);
-      this.announcePhrase(
-          getA11yString(A11yStrings.GAME_OVER)
-              .replace(
-                  '$1',
-                  this.distanceMeter.getActualDistance(this.distanceRan)
-                      .toString()) +
-          ' ' +
-          getA11yString(A11yStrings.HIGH_SCORE)
-              .replace(
-                  '$1',
-
-                  this.distanceMeter.getActualDistance(this.highestScore)
-                      .toString()));
     }
-    this.containerEl.setAttribute(
-        'title', getA11yString(A11yStrings.ARIA_LABEL));
     this.showSpeedToggle();
     this.disableSpeedToggle(false);
+
+    this.onStateChange?.('gameOver');
   }
 
   stop() {
@@ -1443,7 +1403,6 @@ export class Runner implements ImageSpriteProvider, GameStateProvider,
     this.containerEl?.remove();
     this.slowSpeedCheckboxLabel?.remove();
     this.touchController?.remove();
-    if (IS_IOS) this.a11yStatusEl?.remove();
   }
 
   play() {
@@ -1492,8 +1451,7 @@ export class Runner implements ImageSpriteProvider, GameStateProvider,
       if (this.hasAudioCuesInternal) {
         this.getGeneratedSoundFx().background();
       }
-      this.containerEl.setAttribute('title', getA11yString(A11yStrings.JUMP));
-      this.announcePhrase(getA11yString(A11yStrings.STARTED));
+      this.onStateChange?.('playing');
     }
   }
 
@@ -1589,17 +1547,6 @@ export class Runner implements ImageSpriteProvider, GameStateProvider,
     } else {
       this.inverted =
           htmlEl.classList.toggle(RunnerClasses.INVERTED, this.invertTrigger);
-    }
-  }
-
-  /**
-   * For screen readers make an announcement to the live region.
-   * @param phrase Sentence to speak.
-   */
-  private announcePhrase(phrase: string) {
-    if (this.a11yStatusEl) {
-      this.a11yStatusEl.textContent = '';
-      this.a11yStatusEl.textContent = phrase;
     }
   }
 
@@ -1714,16 +1661,6 @@ function updateCanvasScaling(
     canvas.style.height = canvas.height + 'px';
   }
   return false;
-}
-
-
-/**
- * Returns a string from loadTimeData data object.
- */
-function getA11yString(stringName: string): string {
-  return loadTimeData.valueExists(stringName) ?
-      loadTimeData.getString(stringName) :
-      '';
 }
 
 

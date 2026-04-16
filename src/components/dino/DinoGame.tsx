@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react";
-import { Runner } from "./offline";
+import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Runner, type GameState } from "./offline";
 import "./runner.css";
 
 function ensureSharedDom() {
@@ -37,15 +38,17 @@ interface DinoGameProps {
 }
 
 export function DinoGame({ isActive }: DinoGameProps) {
+  const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const runnerRef = useRef<Runner | null>(null);
+  const [gameState, setGameState] = useState<GameState>("idle");
 
   // 첫 activation 시점에 Runner 생성 (display:none 상태에서 init하면 dimensions이 0이라
   // 탭이 보이게 된 이후 lazy init). 이후 isActive 변화는 lock/unlock으로만 처리.
   useEffect(() => {
     if (!isActive || runnerRef.current || !containerRef.current) return;
     ensureSharedDom();
-    runnerRef.current = new Runner(containerRef.current);
+    runnerRef.current = new Runner(containerRef.current, setGameState);
   }, [isActive]);
 
   // 활성 상태 변화 → lock/unlock.
@@ -66,6 +69,7 @@ export function DinoGame({ isActive }: DinoGameProps) {
   return (
     <div
       ref={containerRef}
+      title={t(`safari.offline.dinoTooltip.${gameState}`)}
       className="relative mx-auto h-[150px] w-full max-w-[600px]"
     />
   );

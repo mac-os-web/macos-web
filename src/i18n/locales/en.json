@@ -161,9 +161,12 @@
     "offline": {
       "title": "You are offline",
       "description": "Safari can't open the page because your computer isn't connected to the Internet.",
-      "connectingTo": "Could not connect to",
-      "fallbackServer": "the server",
-      "pressSpace": "Press <1>Space</1> to play"
+      "pressSpace": "Press <1>Space</1> to play",
+      "dinoTooltip": {
+        "idle": "Dinosaur game. A pixel-style T-Rex runs through the wasteland dodging cacti and pterosaurs. Press Space to jump over obstacles.",
+        "playing": "Jump",
+        "gameOver": "Dinosaur game. Press Space to play again."
+      }
     }
   },
   "notes": {

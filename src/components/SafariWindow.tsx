@@ -5,11 +5,9 @@ import { useNetwork } from "../contexts/network";
 import { DinoGame } from "./dino/DinoGame";
 
 function OfflinePage({
-  url,
   isActive,
   visible,
 }: {
-  url: string;
   isActive: boolean;
   visible: boolean;
 }) {
@@ -31,10 +29,6 @@ function OfflinePage({
         </h2>
         <p className="mb-1 text-[13px] leading-relaxed text-gray-600">
           {t("safari.offline.description")}
-        </p>
-        <p className="text-[12px] text-gray-400">
-          {t("safari.offline.connectingTo")}{" "}
-          <span className="font-mono">{url || t("safari.offline.fallbackServer")}</span>
         </p>
         <p className="mt-4 text-[11px] text-gray-400">
           <Trans
@@ -311,7 +305,6 @@ export function SafariWindow({ activeApp }: SafariWindowProps = {}) {
           tabs.map((tab) => (
             <OfflinePage
               key={tab.id}
-              url={inputUrl}
               isActive={activeApp === "Safari" && tab.active && !isEditing}
               visible={tab.active}
             />
