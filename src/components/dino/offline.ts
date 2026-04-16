@@ -422,7 +422,7 @@ export class Runner
     this.origImageSprite = this.getRunnerImageSprite();
 
     // Disable the alt game mode if the sprites can't be loaded.
-    if (!this.getRunnerAltGameImageSprite() === null || this.getAltCommonImageSprite() === null) {
+    if (this.getRunnerAltGameImageSprite() === null || this.getAltCommonImageSprite() === null) {
       this.altGameAssetsFailedToLoad = true;
       this.altGameModeActive = false;
     }

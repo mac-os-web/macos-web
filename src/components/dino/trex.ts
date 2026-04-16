@@ -256,8 +256,8 @@ export class Trex {
 
     // Update Trex config
     this.config.gravity = tRexSpriteDefinition.gravity || this.config.gravity;
-    ((this.config.height = tRexSpriteDefinition.running1.h),
-      (this.config.initialJumpVelocity = tRexSpriteDefinition.initialJumpVelocity));
+    this.config.height = tRexSpriteDefinition.running1.h;
+    this.config.initialJumpVelocity = tRexSpriteDefinition.initialJumpVelocity;
     this.config.maxJumpHeight = tRexSpriteDefinition.maxJumpHeight;
     this.config.minJumpHeight = tRexSpriteDefinition.minJumpHeight;
     this.config.width = tRexSpriteDefinition.running1.w;

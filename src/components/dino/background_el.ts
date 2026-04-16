@@ -149,10 +149,10 @@ export class BackgroundEl {
   update(speed: number) {
     if (!this.remove) {
       if (this.spriteConfig.fixed) {
-        const globalConfig = getGlobalConfig();
-        assert(globalConfig.msPerFrame);
+        const cfg = getGlobalConfig();
+        assert(cfg.msPerFrame);
         this.animTimer += speed;
-        if (this.animTimer > globalConfig.msPerFrame) {
+        if (this.animTimer > cfg.msPerFrame) {
           this.animTimer = 0;
           this.switchFrames = !this.switchFrames;
         }
