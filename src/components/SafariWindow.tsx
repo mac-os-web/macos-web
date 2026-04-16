@@ -307,11 +307,12 @@ export function SafariWindow({ activeApp }: SafariWindowProps = {}) {
         ) : (
           // 탭별 독립 DinoGame 인스턴스 — 각 탭의 점수/상태를 유지.
           // 비활성 탭은 display:none으로 숨기되 mount는 유지.
+          // URL 바 편집 중(isEditing)엔 키 충돌 방지를 위해 게임 lock.
           tabs.map((tab) => (
             <OfflinePage
               key={tab.id}
               url={inputUrl}
-              isActive={activeApp === "Safari" && tab.active}
+              isActive={activeApp === "Safari" && tab.active && !isEditing}
               visible={tab.active}
             />
           ))

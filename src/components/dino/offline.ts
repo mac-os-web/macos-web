@@ -224,10 +224,6 @@ export class Runner implements ImageSpriteProvider, GameStateProvider,
 
   /** AbortController for all DOM listeners — aborted in destroy(). */
   private controller = new AbortController();
-  /** True once init() has finished creating the canvas/container. */
-  private ready: boolean = false;
-  /** Pending focus request from before init() completed. */
-  private wantsFocus: boolean = false;
   /** True once destroy() has been called — guards late async callbacks. */
   private destroyed: boolean = false;
 
@@ -597,12 +593,6 @@ export class Runner implements ImageSpriteProvider, GameStateProvider,
     darkModeMediaQuery.addEventListener('change', (e) => {
       this.isDarkMode = e.matches;
     }, { signal: this.controller.signal });
-
-    this.ready = true;
-    if (this.wantsFocus) {
-      this.containerEl.focus();
-      this.wantsFocus = false;
-    }
   }
 
   /**
@@ -1029,9 +1019,9 @@ export class Runner implements ImageSpriteProvider, GameStateProvider,
 
   /**
    * Bind relevant key / mouse / touch listeners.
-   * 웹 포트: Chromium 원본은 document 전역에 등록했지만, 멀티 인스턴스 지원을
-   * 위해 컨테이너/캔버스 단위로 스코프. tabindex=0인 containerEl이 포커스를
-   * 가졌을 때만 키 이벤트를 받음.
+   * 웹 포트: document 전역에 등록 (Chromium 원본 동일). 멀티 인스턴스에서는
+   * onKeyDown/onKeyUp 맨 앞의 externallyLocked 체크로 비활성 탭의 Runner가
+   * 키를 무시. URL 바 편집 중에도 React 쪽에서 lock을 걸어 키를 차단.
    */
   private startListening() {
     assert(this.containerEl);
@@ -1050,14 +1040,14 @@ export class Runner implements ImageSpriteProvider, GameStateProvider,
     this.canvas.addEventListener(
         RunnerEvents.KEYUP, this.preventScrolling.bind(this), opts);
 
-    // Keys — canvas-scoped instead of document-scoped.
-    this.containerEl.addEventListener(RunnerEvents.KEYDOWN, this, opts);
-    this.containerEl.addEventListener(RunnerEvents.KEYUP, this, opts);
+    // Keys.
+    document.addEventListener(RunnerEvents.KEYDOWN, this, opts);
+    document.addEventListener(RunnerEvents.KEYUP, this, opts);
 
-    // Touch / pointer — container-scoped.
+    // Touch / pointer.
     this.containerEl.addEventListener(RunnerEvents.TOUCHSTART, this, opts);
-    this.containerEl.addEventListener(RunnerEvents.POINTERDOWN, this, opts);
-    this.containerEl.addEventListener(RunnerEvents.POINTERUP, this, opts);
+    document.addEventListener(RunnerEvents.POINTERDOWN, this, opts);
+    document.addEventListener(RunnerEvents.POINTERUP, this, opts);
 
     if (this.isArcadeMode()) {
       // Gamepad
@@ -1435,18 +1425,6 @@ export class Runner implements ImageSpriteProvider, GameStateProvider,
   }
 
   /**
-   * 컨테이너에 포커스를 줘서 키 입력을 받도록 함.
-   * init()이 비동기라 아직 DOM이 없으면 ready 시점까지 플래그로 대기.
-   */
-  focus() {
-    if (this.ready && this.containerEl) {
-      this.containerEl.focus();
-    } else {
-      this.wantsFocus = true;
-    }
-  }
-
-  /**
    * Runner 전체 해제. 탭 닫기/언마운트 시 호출.
    * AbortController로 모든 리스너 제거, RAF 취소, DOM 제거.
    */
@@ -1473,7 +1451,12 @@ export class Runner implements ImageSpriteProvider, GameStateProvider,
     if (this.crashed || !this.tRex) return;
     this.setPlayStatus(true);
     this.paused = false;
-    this.tRex.update(0, TrexStatus.RUNNING);
+    // 웹 포트: 점프/덕 중에 lock → resume 시 status를 RUNNING으로 강제하면
+    // updateJump가 RUNNING의 msPerFrame(1000/12)을 쓰게 돼 중력 적용이
+    // 5배 느려지는 "깃털 낙하" 버그 발생. 공중/덕 상태일 땐 status 유지.
+    if (!this.tRex.jumping && !this.tRex.ducking) {
+      this.tRex.update(0, TrexStatus.RUNNING);
+    }
     this.time = getTimeStamp();
     this.update();
     if (this.hasAudioCuesInternal) {

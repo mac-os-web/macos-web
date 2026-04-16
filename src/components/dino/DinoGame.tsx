@@ -48,12 +48,11 @@ export function DinoGame({ isActive }: DinoGameProps) {
     runnerRef.current = new Runner(containerRef.current);
   }, [isActive]);
 
-  // 활성 상태 변화 → lock/unlock + focus 이동.
+  // 활성 상태 변화 → lock/unlock.
   useEffect(() => {
     const runner = runnerRef.current;
     if (!runner) return;
     runner.setExternallyLocked(!isActive);
-    if (isActive) runner.focus();
   }, [isActive]);
 
   // 언마운트 시 Runner 해제 (탭 닫기 대응).
