@@ -493,34 +493,6 @@ function CalendarWidget() {
   );
 }
 
-// ─── Notes Widget ─────────────────────────────────────────────────────────────
-function NotesWidget() {
-  const { t } = useTranslation();
-  const [text, setText] = useState(t("widgets.notes.defaultContent"));
-
-  return (
-    <div
-      className="w-52"
-      style={{
-        background: "rgba(255,242,120,0.92)",
-        backdropFilter: "blur(10px)",
-      }}
-    >
-      <div className="px-4 py-2.5" style={{ borderBottom: "1px solid rgba(0,0,0,0.08)" }}>
-        <p className="text-[12px] font-semibold text-yellow-900">{t("widgets.notes.header")}</p>
-      </div>
-      <textarea
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        className="w-full resize-none bg-transparent p-3 text-[12px] leading-relaxed text-yellow-900 outline-none"
-        rows={6}
-        onClick={(e) => e.stopPropagation()}
-        onMouseDown={(e) => e.stopPropagation()}
-      />
-    </div>
-  );
-}
-
 // ─── System Stats Widget ──────────────────────────────────────────────────────
 function SystemWidget() {
   const { t } = useTranslation();
@@ -607,7 +579,6 @@ export function WidgetPicker({ isOpen, onClose, onAdd, active }: WidgetPickerPro
       icon: "📅",
       desc: t("widgets.calendar.desc"),
     },
-    { id: "notes", name: t("widgets.notes.name"), icon: "📝", desc: t("widgets.notes.desc") },
     { id: "system", name: t("widgets.system.name"), icon: "📊", desc: t("widgets.system.desc") },
   ];
 
@@ -688,8 +659,6 @@ export function Widgets({ widgets, onRemove }: WidgetsProps) {
         return <WeatherWidget />;
       case "calendar":
         return <CalendarWidget />;
-      case "notes":
-        return <NotesWidget />;
       case "system":
         return <SystemWidget />;
       default:
