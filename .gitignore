@@ -33,3 +33,6 @@ docs/todo.md
 lighthouse-report.*
 lighthouse-*.html
 lighthouse-*.json
+
+# Experimental sandboxes
+dino-game/

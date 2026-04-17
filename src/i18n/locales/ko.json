@@ -161,9 +161,12 @@
     "offline": {
       "title": "인터넷에 연결되어 있지 않습니다",
       "description": "Safari가 인터넷에 연결되지 않아 페이지를 열 수 없습니다.",
-      "connectingTo": "다음 서버에 연결할 수 없음:",
-      "fallbackServer": "서버",
-      "pressSpace": "<1>Space</1> 키로 플레이"
+      "pressSpace": "<1>Space</1> 키로 플레이",
+      "dinoTooltip": {
+        "idle": "공룡 게임입니다. 픽셀 스타일의 공룡이 선인장과 프테로사우루스를 피하며 달려갑니다. Space 키를 눌러 장애물을 뛰어넘으세요.",
+        "playing": "점프하세요",
+        "gameOver": "공룡 게임입니다, Space 키로 다시 플레이하세요"
+      }
     }
   },
   "notes": {

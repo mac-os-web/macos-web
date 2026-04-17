@@ -1,0 +1,47 @@
+/* Minimal runner styles extracted from Chromium's neterror.css. */
+
+.runner-container {
+  position: relative;
+  width: 44px;
+  height: 150px;
+  max-width: 600px;
+  overflow: hidden;
+  direction: ltr;
+}
+
+.runner-container canvas {
+  display: block;
+  width: 600px;
+  height: 150px;
+}
+
+.runner-container:focus {
+  outline: none;
+}
+
+.runner-canvas {
+  height: 150px;
+  display: block;
+}
+
+.icon-offline {
+  display: none;
+}
+
+.arcade-mode {
+  background-color: #fff;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.snackbar,
+.slow-speed-option {
+  display: none;
+}
+
+.inverted {
+  filter: invert(1);
+  background-color: #fff;
+}

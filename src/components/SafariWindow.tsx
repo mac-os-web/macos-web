@@ -1,32 +1,38 @@
-import { ChevronLeft, ChevronRight, Lock, Plus, RefreshCw, Share, WifiOff } from "lucide-react";
+import { ChevronLeft, ChevronRight, Lock, Plus, RefreshCw, Share } from "lucide-react";
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useNetwork } from "../contexts/network";
+import { DinoGame } from "./dino/DinoGame";
 
-function OfflinePage({ url }: { url: string }) {
+function OfflinePage({ isActive, visible }: { isActive: boolean; visible: boolean }) {
   const { t } = useTranslation();
   return (
-    <div className="flex h-full flex-col items-center justify-center px-8 py-12 text-center select-none">
-      <div className="mb-6 text-7xl" aria-hidden>
-        🦖
+    <div
+      className="flex h-full flex-col items-center bg-white px-12 py-8 select-none"
+      style={{ display: visible ? "flex" : "none" }}
+    >
+      <div className="flex w-full max-w-[600px] flex-col items-center text-center">
+        {/* 게임 영역 (공룡) */}
+        <div className="mb-8 w-full">
+          <DinoGame isActive={isActive} />
+        </div>
+
+        {/* 오프라인 안내 문구 */}
+        <h2 className="mb-3 text-[22px] font-normal text-gray-800">{t("safari.offline.title")}</h2>
+        <p className="mb-1 text-[13px] leading-relaxed text-gray-600">
+          {t("safari.offline.description")}
+        </p>
+        <p className="mt-4 text-[11px] text-gray-400">
+          <Trans
+            i18nKey="safari.offline.pressSpace"
+            components={{
+              1: (
+                <kbd className="rounded border border-gray-300 bg-gray-50 px-1.5 py-0.5 font-mono" />
+              ),
+            }}
+          />
+        </p>
       </div>
-      <WifiOff size={48} className="mb-4 text-gray-300" />
-      <h2 className="mb-2 text-[20px] font-semibold text-gray-700">{t("safari.offline.title")}</h2>
-      <p className="mb-1 text-[13px] text-gray-500">{t("safari.offline.description")}</p>
-      <p className="mb-8 text-[12px] text-gray-400">
-        {t("safari.offline.connectingTo")}{" "}
-        <span className="font-mono">{url || t("safari.offline.fallbackServer")}</span>
-      </p>
-      <p className="text-[11px] text-gray-400">
-        <Trans
-          i18nKey="safari.offline.pressSpace"
-          components={{
-            1: (
-              <kbd className="rounded border border-gray-300 bg-gray-50 px-1.5 py-0.5 font-mono" />
-            ),
-          }}
-        />
-      </p>
     </div>
   );
 }
@@ -40,7 +46,12 @@ const bookmarks = [
   { name: "News", url: "news.apple.com", icon: "📰" },
 ];
 
-export function SafariWindow() {
+interface SafariWindowProps {
+  /** 현재 활성 앱 이름 (예: "Safari") — DinoGame pause/resume에 사용 */
+  activeApp?: string;
+}
+
+export function SafariWindow({ activeApp }: SafariWindowProps) {
   const [inputUrl, setInputUrl] = useState("apple.com");
   const [isEditing, setIsEditing] = useState(false);
   const [tabs, setTabs] = useState([
@@ -280,7 +291,16 @@ export function SafariWindow() {
             </div>
           </div>
         ) : (
-          <OfflinePage url={inputUrl} />
+          // 탭별 독립 DinoGame 인스턴스 — 각 탭의 점수/상태를 유지.
+          // 비활성 탭은 display:none으로 숨기되 mount는 유지.
+          // URL 바 편집 중(isEditing)엔 키 충돌 방지를 위해 게임 lock.
+          tabs.map((tab) => (
+            <OfflinePage
+              key={tab.id}
+              isActive={activeApp === "Safari" && tab.active && !isEditing}
+              visible={tab.active}
+            />
+          ))
         )}
       </div>
     </div>

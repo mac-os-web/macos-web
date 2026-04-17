@@ -161,9 +161,12 @@
     "offline": {
       "title": "インターネットに接続されていません",
       "description": "コンピュータがインターネットに接続されていないため、Safariはページを開けません。",
-      "connectingTo": "次のサーバーに接続できませんでした:",
-      "fallbackServer": "サーバー",
-      "pressSpace": "<1>Space</1>キーでプレイ"
+      "pressSpace": "<1>Space</1>キーでプレイ",
+      "dinoTooltip": {
+        "idle": "恐竜ゲームです。ピクセルスタイルの恐竜がサボテンや翼竜を避けて荒野を駆け抜けます。Spaceキーで障害物を飛び越えましょう。",
+        "playing": "ジャンプ",
+        "gameOver": "恐竜ゲームです。Spaceキーでもう一度プレイしましょう。"
+      }
     }
   },
   "notes": {

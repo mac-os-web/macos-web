@@ -9,6 +9,8 @@ interface WindowProps {
   initialY?: number;
   initialW?: number;
   initialH?: number;
+  minW?: number;
+  minH?: number;
   isActive: boolean;
   isMinimized: boolean;
   zIndex: number;
@@ -26,6 +28,8 @@ export function Window({
   initialY = 60,
   initialW = 700,
   initialH = 480,
+  minW = 300,
+  minH = 200,
   isActive,
   isMinimized,
   zIndex,
@@ -93,8 +97,8 @@ export function Window({
         const dx = me.clientX - resizeStart.current.x;
         const dy = me.clientY - resizeStart.current.y;
         setSize({
-          w: Math.max(300, resizeStart.current.w + dx),
-          h: Math.max(200, resizeStart.current.h + dy),
+          w: Math.max(minW, resizeStart.current.w + dx),
+          h: Math.max(minH, resizeStart.current.h + dy),
         });
       };
       const onUp = () => {
@@ -105,7 +109,7 @@ export function Window({
       window.addEventListener("mousemove", onMove);
       window.addEventListener("mouseup", onUp);
     },
-    [size]
+    [size, minW, minH]
   );
 
   const handleMaximize = () => {
@@ -125,8 +129,8 @@ export function Window({
         width: isMaximized ? "100%" : size.w,
         height: isMaximized ? "calc(100% - 28px)" : size.h,
         zIndex,
-        minWidth: 300,
-        minHeight: 200,
+        minWidth: minW,
+        minHeight: minH,
         transform: show ? "scale(1)" : "scale(0.9)",
         opacity: show ? 1 : 0,
         transition: "transform 0.2s ease-out, opacity 0.2s ease-out",
