@@ -13,6 +13,8 @@ import { Spotlight } from "./components/Spotlight";
 import { TerminalWindow } from "./components/TerminalWindow";
 import { WidgetPicker, Widgets, type WidgetInstance } from "./components/Widgets";
 import { Window } from "./components/Window";
+import { StickyNote } from "./components/stickies/StickyNote";
+import { useStickies } from "./hooks/useStickies";
 
 // ── Dock icon components ────────────────────────────────────────────────────
 function FinderIcon() {
@@ -263,6 +265,8 @@ export default function App() {
     { id: "clock-1", type: "clock", ...WIDGET_POSITIONS.clock },
     { id: "weather-1", type: "weather", ...WIDGET_POSITIONS.weather },
   ]);
+  const { stickies, addSticky, updateSticky, deleteSticky, getNextZ: getStickyZ } = useStickies();
+  const [stickyZMap, setStickyZMap] = useState<Record<string, number>>({});
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -436,6 +440,18 @@ export default function App() {
       {/* Desktop Widgets */}
       <Widgets widgets={widgets} onRemove={removeWidget} />
 
+      {/* Stickies */}
+      {stickies.map((s) => (
+        <StickyNote
+          key={s.id}
+          sticky={s}
+          onUpdate={updateSticky}
+          onDelete={deleteSticky}
+          onFocus={(id) => setStickyZMap((prev) => ({ ...prev, [id]: getStickyZ() }))}
+          zIndex={stickyZMap[s.id] ?? 50}
+        />
+      ))}
+
       {/* Add Widget Button */}
       <button
         onClick={(e) => {
@@ -547,6 +563,7 @@ export default function App() {
               [t("contextMenu.changeWallpaper"), () => {}],
               null,
               [t("contextMenu.addWidget"), () => setWidgetPickerOpen(true)],
+              [t("contextMenu.newSticky"), () => addSticky()],
               [t("contextMenu.spotlightSearch"), () => setSpotlightOpen(true)],
               null,
               [t("contextMenu.preferences"), () => {}],
