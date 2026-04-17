@@ -969,7 +969,7 @@ export class Runner
         this.hasSlowdownInternal = this.slowSpeedCheckbox.checked;
         const updatedConfig = this.hasSlowdown ? slowModeConfig : normalModeConfig;
 
-        this.config = Object.assign(defaultBaseConfig, updatedConfig);
+        this.config = Object.assign({}, defaultBaseConfig, updatedConfig);
         this.currentSpeed = updatedConfig.speed;
         this.tRex.enableSlowConfig();
         this.horizon.adjustObstacleSpeed();
@@ -1552,8 +1552,6 @@ export class Runner
     if (document.hidden || e.type === "blur" || document.visibilityState !== "visible") {
       this.stop();
     } else if (!this.crashed && !this.externallyLocked) {
-      assert(this.tRex);
-      this.tRex.reset();
       this.play();
     }
   }

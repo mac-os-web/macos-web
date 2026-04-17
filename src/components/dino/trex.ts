@@ -199,7 +199,7 @@ export class Trex {
     this.canvasCtx = canvasContext;
     this.spritePos = spritePos;
     this.resourceProvider = resourceProvider;
-    this.config = Object.assign(defaultTrexConfig, normalJumpConfig);
+    this.config = { ...defaultTrexConfig, ...normalJumpConfig };
 
     const runnerDefaultDimensions = DEFAULT_DIMENSIONS;
     const runnerBottomPadding = this.resourceProvider.getConfig().bottomPad;
@@ -219,7 +219,7 @@ export class Trex {
    */
   enableSlowConfig() {
     const jumpConfig = this.resourceProvider.hasSlowdown ? slowJumpConfig : normalJumpConfig;
-    this.config = Object.assign(defaultTrexConfig, jumpConfig);
+    this.config = { ...defaultTrexConfig, ...jumpConfig };
 
     this.adjustAltGameConfigForSlowSpeed();
   }

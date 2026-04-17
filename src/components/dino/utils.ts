@@ -12,5 +12,5 @@ export function getRandomNum(min: number, max: number): number {
  * Return the current timestamp.
  */
 export function getTimeStamp(): number {
-  return IS_IOS ? new Date().getTime() : performance.now();
+  return IS_IOS ? Temporal.Now.instant().epochMilliseconds : performance.now();
 }

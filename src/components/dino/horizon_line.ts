@@ -109,7 +109,7 @@ export class HorizonLine {
   /**
    * Update the x position of an individual piece of the line.
    */
-  updatexPos(pos: 0 | 1, increment: number) {
+  updateXPos(pos: 0 | 1, increment: number) {
     const line1 = pos;
     const line2 = pos === 0 ? 1 : 0;
 
@@ -129,7 +129,7 @@ export class HorizonLine {
   update(deltaTime: number, speed: number) {
     const increment = Math.floor(speed * (FPS / 1000) * deltaTime);
 
-    this.updatexPos(this.xPos[0] <= 0 ? 0 : 1, increment);
+    this.updateXPos(this.xPos[0] <= 0 ? 0 : 1, increment);
     this.draw();
   }
 

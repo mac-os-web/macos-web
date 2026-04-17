@@ -287,10 +287,11 @@ export class DistanceMeter {
     let y = 0;
 
     if (e instanceof TouchEvent) {
-      // Bounds for touch differ from pointer.
+      const touch = e.touches[0] ?? e.changedTouches[0];
+      if (!touch) return false;
       const canvasBounds = this.canvas.getBoundingClientRect();
-      x = e.touches[0]!.clientX - canvasBounds.left;
-      y = e.touches[0]!.clientY - canvasBounds.top;
+      x = touch.clientX - canvasBounds.left;
+      y = touch.clientY - canvasBounds.top;
     } else if (e instanceof MouseEvent) {
       x = e.offsetX;
       y = e.offsetY;
