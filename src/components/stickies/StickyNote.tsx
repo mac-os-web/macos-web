@@ -224,7 +224,6 @@ export function StickyNote({ sticky, onUpdate, onDelete, onFocus, zIndex }: Stic
         ref={textRef}
         defaultValue={sticky.content}
         onChange={(e) => handleContentChange(e.target.value)}
-        onMouseDown={(e) => e.stopPropagation()}
         placeholder="..."
         className="flex-1 resize-none rounded-b-lg border-none p-2 text-[13px] leading-relaxed text-gray-800 outline-none placeholder:text-gray-400/50"
         style={{ background: colors.bg }}

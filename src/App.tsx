@@ -312,9 +312,7 @@ export default function App() {
       setWindows((prev) => {
         const ex = prev.find((w) => w.id === id);
         if (ex)
-          return prev.map((w) =>
-            w.id === id ? { ...w, isOpen: true, isMinimized: false } : w
-          );
+          return prev.map((w) => (w.id === id ? { ...w, isOpen: true, isMinimized: false } : w));
         return [...prev, { id, isOpen: true, isMinimized: false }];
       });
       setActiveApp(APP_CONFIG[id].title);
