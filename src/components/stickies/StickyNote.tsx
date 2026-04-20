@@ -100,8 +100,12 @@ export function StickyNote({ sticky, onUpdate, onDelete, onFocus, zIndex }: Stic
 
     const onMove = (me: MouseEvent) => {
       if (!dragRef.current.dragging) return;
-      lastX = Math.max(0, dragRef.current.px + me.clientX - dragRef.current.startX);
-      lastY = Math.max(28, dragRef.current.py + me.clientY - dragRef.current.startY);
+      const maxX = window.innerWidth - size.w;
+      const maxY = window.innerHeight - size.h;
+      const nx = dragRef.current.px + me.clientX - dragRef.current.startX;
+      const ny = dragRef.current.py + me.clientY - dragRef.current.startY;
+      lastX = Math.min(maxX, Math.max(0, nx));
+      lastY = Math.min(maxY, Math.max(28, ny));
       setPos({ x: lastX, y: lastY });
     };
     const onUp = () => {
@@ -126,22 +130,19 @@ export function StickyNote({ sticky, onUpdate, onDelete, onFocus, zIndex }: Stic
       sh: size.h,
     };
 
+    const clampW = (w: number) => Math.min(window.innerWidth - pos.x, Math.max(MIN_WIDTH, w));
+    const clampH = (h: number) => Math.min(window.innerHeight - pos.y, Math.max(MIN_HEIGHT, h));
+
     const onMove = (me: MouseEvent) => {
       if (!resizeRef.current.resizing) return;
-      const nw = Math.max(MIN_WIDTH, resizeRef.current.sw + me.clientX - resizeRef.current.startX);
-      const nh = Math.max(MIN_HEIGHT, resizeRef.current.sh + me.clientY - resizeRef.current.startY);
+      const nw = clampW(resizeRef.current.sw + me.clientX - resizeRef.current.startX);
+      const nh = clampH(resizeRef.current.sh + me.clientY - resizeRef.current.startY);
       setSize({ w: nw, h: nh });
     };
     const onUp = (me: MouseEvent) => {
       resizeRef.current.resizing = false;
-      const finalW = Math.max(
-        MIN_WIDTH,
-        resizeRef.current.sw + me.clientX - resizeRef.current.startX
-      );
-      const finalH = Math.max(
-        MIN_HEIGHT,
-        resizeRef.current.sh + me.clientY - resizeRef.current.startY
-      );
+      const finalW = clampW(resizeRef.current.sw + me.clientX - resizeRef.current.startX);
+      const finalH = clampH(resizeRef.current.sh + me.clientY - resizeRef.current.startY);
       saveSize(finalW, finalH);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseup", onUp);

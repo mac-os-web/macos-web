@@ -1,5 +1,5 @@
 import { Plus } from "lucide-react";
-import { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
+import { Suspense, lazy, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ControlCenter } from "./components/ControlCenter";
 import { Dock } from "./components/Dock";
@@ -233,10 +233,11 @@ type AppId = "finder" | "safari" | "notes" | "terminal" | "appstore" | "mail";
 
 interface AppWindow {
   id: AppId;
-  zIndex: number;
   isOpen: boolean;
   isMinimized: boolean;
 }
+
+const BASE_Z = 100;
 
 const APP_CONFIG: Record<
   AppId,
@@ -265,7 +266,7 @@ const WALLPAPER =
 export default function App() {
   const { t } = useTranslation();
   const [windows, setWindows] = useState<AppWindow[]>([]);
-  const zCounter = useRef(100);
+  const [focusOrder, setFocusOrder] = useState<string[]>([]);
   const [spotlightOpen, setSpotlightOpen] = useState(false);
   const [controlCenterOpen, setControlCenterOpen] = useState(false);
   const [widgetPickerOpen, setWidgetPickerOpen] = useState(false);
@@ -278,8 +279,20 @@ export default function App() {
     { id: "clock-1", type: "clock", ...WIDGET_POSITIONS.clock },
     { id: "weather-1", type: "weather", ...WIDGET_POSITIONS.weather },
   ]);
-  const { stickies, addSticky, updateSticky, deleteSticky, getNextZ: getStickyZ } = useStickies();
-  const [stickyZMap, setStickyZMap] = useState<Record<string, number>>({});
+  const { stickies, addSticky, updateSticky, deleteSticky } = useStickies();
+
+  const bringToFront = useCallback((id: string) => {
+    setFocusOrder((prev) => [...prev.filter((x) => x !== id), id]);
+  }, []);
+
+  const removeFromFocus = useCallback((id: string) => {
+    setFocusOrder((prev) => prev.filter((x) => x !== id));
+  }, []);
+
+  const getZ = (id: string) => {
+    const idx = focusOrder.indexOf(id);
+    return idx === -1 ? BASE_Z : BASE_Z + idx;
+  };
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -293,30 +306,30 @@ export default function App() {
     return () => window.removeEventListener("keydown", handler);
   }, []);
 
-  const getTopZ = () => {
-    zCounter.current += 1;
-    return zCounter.current;
+  const openApp = useCallback(
+    (id: AppId) => {
+      bringToFront(id);
+      setWindows((prev) => {
+        const ex = prev.find((w) => w.id === id);
+        if (ex)
+          return prev.map((w) =>
+            w.id === id ? { ...w, isOpen: true, isMinimized: false } : w
+          );
+        return [...prev, { id, isOpen: true, isMinimized: false }];
+      });
+      setActiveApp(APP_CONFIG[id].title);
+    },
+    [bringToFront]
+  );
+
+  const closeApp = (id: AppId) => {
+    setWindows((prev) => prev.filter((w) => w.id !== id));
+    removeFromFocus(id);
   };
-
-  const openApp = useCallback((id: AppId) => {
-    const z = getTopZ();
-    setWindows((prev) => {
-      const ex = prev.find((w) => w.id === id);
-      if (ex)
-        return prev.map((w) =>
-          w.id === id ? { ...w, isOpen: true, isMinimized: false, zIndex: z } : w
-        );
-      return [...prev, { id, zIndex: z, isOpen: true, isMinimized: false }];
-    });
-    setActiveApp(APP_CONFIG[id].title);
-  }, []);
-
-  const closeApp = (id: AppId) => setWindows((prev) => prev.filter((w) => w.id !== id));
   const minimizeApp = (id: AppId) =>
     setWindows((prev) => prev.map((w) => (w.id === id ? { ...w, isMinimized: true } : w)));
   const focusApp = (id: AppId) => {
-    const z = getTopZ();
-    setWindows((prev) => prev.map((w) => (w.id === id ? { ...w, zIndex: z } : w)));
+    bringToFront(id);
     setActiveApp(APP_CONFIG[id].title);
   };
 
@@ -462,9 +475,12 @@ export default function App() {
           key={s.id}
           sticky={s}
           onUpdate={updateSticky}
-          onDelete={deleteSticky}
-          onFocus={(id) => setStickyZMap((prev) => ({ ...prev, [id]: getStickyZ() }))}
-          zIndex={stickyZMap[s.id] ?? 50}
+          onDelete={(id) => {
+            deleteSticky(id);
+            removeFromFocus(id);
+          }}
+          onFocus={bringToFront}
+          zIndex={getZ(s.id)}
         />
       ))}
 
@@ -521,12 +537,17 @@ export default function App() {
       )}
 
       {/* Windows */}
-      {windows
-        .filter((w) => w.isOpen && !w.isMinimized)
-        .map((win) => {
+      {(() => {
+        const openWins = windows.filter((w) => w.isOpen && !w.isMinimized);
+        const topWindowId = (() => {
+          for (let i = focusOrder.length - 1; i >= 0; i--) {
+            if (openWins.some((w) => w.id === focusOrder[i])) return focusOrder[i];
+          }
+          return null;
+        })();
+        return openWins.map((win) => {
           const cfg = APP_CONFIG[win.id];
           const mv = typeof window !== "undefined" && window.innerWidth < 640;
-          const topWin = windows.reduce((max, w) => (w.zIndex > max.zIndex ? w : max), windows[0]);
           return (
             <Window
               key={win.id}
@@ -538,9 +559,9 @@ export default function App() {
               initialH={mv ? window.innerHeight - 108 : cfg.h}
               minW={cfg.minW}
               minH={cfg.minH}
-              isActive={topWin?.id === win.id}
+              isActive={topWindowId === win.id}
               isMinimized={win.isMinimized}
-              zIndex={win.zIndex}
+              zIndex={getZ(win.id)}
               onFocus={() => focusApp(win.id)}
               onClose={() => closeApp(win.id)}
               onMinimize={() => minimizeApp(win.id)}
@@ -548,7 +569,8 @@ export default function App() {
               {renderContent(win.id)}
             </Window>
           );
-        })}
+        });
+      })()}
 
       {/* Spotlight */}
       <Spotlight
@@ -579,7 +601,13 @@ export default function App() {
               [t("contextMenu.changeWallpaper"), () => {}],
               null,
               [t("contextMenu.addWidget"), () => setWidgetPickerOpen(true)],
-              [t("contextMenu.newSticky"), () => addSticky()],
+              [
+                t("contextMenu.newSticky"),
+                () => {
+                  const id = addSticky();
+                  bringToFront(id);
+                },
+              ],
               [t("contextMenu.spotlightSearch"), () => setSpotlightOpen(true)],
               null,
               [t("contextMenu.preferences"), () => {}],
