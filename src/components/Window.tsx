@@ -121,7 +121,11 @@ export function Window({
 
   return (
     <div
-      onMouseDown={onFocus}
+      data-keep-focus
+      onMouseDown={(e) => {
+        e.stopPropagation();
+        onFocus();
+      }}
       style={{
         position: "fixed",
         left: isMaximized ? 0 : pos.x,
@@ -147,17 +151,19 @@ export function Window({
       >
         {/* Title Bar */}
         <div
-          className="relative flex h-11 flex-shrink-0 items-center px-3 select-none"
+          className="relative flex h-11 flex-shrink-0 items-center px-4 select-none"
           style={{
-            background: isActive ? "rgba(230,230,230,0.95)" : "rgba(210,210,210,0.9)",
-            backdropFilter: "blur(20px)",
-            borderBottom: "1px solid rgba(0,0,0,0.1)",
+            background: isActive ? "rgba(245,245,245,0.92)" : "rgba(225,225,225,0.88)",
+            backdropFilter: "blur(24px) saturate(180%)",
+            WebkitBackdropFilter: "blur(24px) saturate(180%)",
+            borderBottom: "1px solid rgba(0,0,0,0.06)",
+            boxShadow: "inset 0 0.5px 0 rgba(255,255,255,0.6)",
           }}
           onMouseDown={handleTitleMouseDown}
           onDoubleClick={handleMaximize}
         >
           {/* Traffic Lights */}
-          <div className="group z-10 flex items-center gap-1.5">
+          <div className="group z-10 flex items-center gap-2">
             <button
               className="flex h-3 w-3 items-center justify-center rounded-full"
               style={{ background: "#FF5F57" }}

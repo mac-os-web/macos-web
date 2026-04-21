@@ -270,7 +270,6 @@ export default function App() {
   const [spotlightOpen, setSpotlightOpen] = useState(false);
   const [controlCenterOpen, setControlCenterOpen] = useState(false);
   const [widgetPickerOpen, setWidgetPickerOpen] = useState(false);
-  const [activeApp, setActiveApp] = useState("Finder");
   const [contextMenu, setContextMenu] = useState<{
     x: number;
     y: number;
@@ -294,6 +293,22 @@ export default function App() {
     return idx === -1 ? BASE_Z : BASE_Z + idx;
   };
 
+  // Topmost open (non-minimized) window — derived from focusOrder.
+  // Returns null if desktop is the most recent focus, or if no open window.
+  const topWindowId = (() => {
+    const openIds = new Set(
+      windows.filter((w) => w.isOpen && !w.isMinimized).map((w) => w.id)
+    );
+    for (let i = focusOrder.length - 1; i >= 0; i--) {
+      const id = focusOrder[i];
+      if (id === "desktop") return null;
+      if (openIds.has(id as AppId)) return id as AppId;
+    }
+    return null;
+  })();
+
+  const activeApp = topWindowId ? t(APP_CONFIG[topWindowId].titleKey) : "Finder";
+
   // Keyboard shortcuts
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -315,9 +330,8 @@ export default function App() {
           return prev.map((w) => (w.id === id ? { ...w, isOpen: true, isMinimized: false } : w));
         return [...prev, { id, isOpen: true, isMinimized: false }];
       });
-      setActiveApp(t(APP_CONFIG[id].titleKey));
     },
-    [bringToFront, t]
+    [bringToFront]
   );
 
   const closeApp = (id: AppId) => {
@@ -328,7 +342,6 @@ export default function App() {
     setWindows((prev) => prev.map((w) => (w.id === id ? { ...w, isMinimized: true } : w)));
   const focusApp = (id: AppId) => {
     bringToFront(id);
-    setActiveApp(t(APP_CONFIG[id].titleKey));
   };
 
   const isDockOpen = (id: AppId) => windows.some((w) => w.id === id && w.isOpen);
@@ -439,6 +452,11 @@ export default function App() {
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
+      onMouseDown={(e) => {
+        const target = e.target as HTMLElement;
+        if (target.closest("[data-keep-focus]")) return;
+        bringToFront("desktop");
+      }}
       onClick={() => {
         setContextMenu(null);
         setControlCenterOpen(false);
@@ -537,12 +555,6 @@ export default function App() {
       {/* Windows */}
       {(() => {
         const openWins = windows.filter((w) => w.isOpen && !w.isMinimized);
-        const topWindowId = (() => {
-          for (let i = focusOrder.length - 1; i >= 0; i--) {
-            if (openWins.some((w) => w.id === focusOrder[i])) return focusOrder[i];
-          }
-          return null;
-        })();
         return openWins.map((win) => {
           const cfg = APP_CONFIG[win.id];
           const mv = typeof window !== "undefined" && window.innerWidth < 640;
