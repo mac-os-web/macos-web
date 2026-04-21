@@ -5,6 +5,7 @@ import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
+import { AuthProvider } from "./contexts/auth";
 import { NetworkProvider } from "./contexts/network";
 import "./i18n";
 import "./index.css";
@@ -39,9 +40,11 @@ createRoot(document.getElementById("root")!).render(
       client={queryClient}
       persistOptions={{ persister, maxAge: ONE_DAY_MS }}
     >
-      <NetworkProvider>
-        <App />
-      </NetworkProvider>
+      <AuthProvider>
+        <NetworkProvider>
+          <App />
+        </NetworkProvider>
+      </AuthProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </PersistQueryClientProvider>
   </StrictMode>

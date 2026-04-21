@@ -8,7 +8,9 @@ import { Spotlight } from "./components/Spotlight";
 import { WidgetPicker, Widgets, type WidgetInstance } from "./components/Widgets";
 import { Window } from "./components/Window";
 import { StickyNote } from "./components/stickies/StickyNote";
+import { useAuth } from "./contexts/auth";
 import { useStickies } from "./hooks/useStickies";
+import { LockScreen } from "./pages/LockScreen";
 
 const FinderWindow = lazy(() =>
   import("./components/FinderWindow").then((m) => ({ default: m.FinderWindow }))
@@ -264,6 +266,7 @@ const WALLPAPER =
 
 // ── Main App ────────────────────────────────────────────────────────────────
 export default function App() {
+  const { state: authState } = useAuth();
   const { t } = useTranslation();
   const [windows, setWindows] = useState<AppWindow[]>([]);
   const [focusOrder, setFocusOrder] = useState<string[]>([]);
@@ -445,6 +448,8 @@ export default function App() {
   const activeWidgetTypes = widgets.map((w) => w.type);
 
   const isMobileView = typeof window !== "undefined" && window.innerWidth < 640;
+
+  if (authState.status !== "authenticated") return <LockScreen />;
 
   return (
     <div

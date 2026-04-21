@@ -1,10 +1,19 @@
 import { execSync, spawn } from "child_process";
 import { launch } from "chrome-launcher";
 import lighthouse from "lighthouse";
+import puppeteer from "puppeteer-core";
 import config from "../lighthouse.config.js";
 
 const PORT = 4173;
 const BASE = `http://localhost:${PORT}`;
+
+// Auth state injected before each page load so Lighthouse measures the
+// authenticated home screen (not the lock screen).
+const AUTH_STORAGE_KEY = "macos-web-auth";
+const AUTH_SEED = {
+  status: "authenticated",
+  user: { name: "Lighthouse", email: "lighthouse@test", picture: null },
+};
 
 // 테스트할 페이지 목록 - 여기에 추가하면 됨
 const PAGES = [
@@ -38,21 +47,35 @@ const chrome = await launch({
   chromeFlags: ["--headless", "--no-sandbox", "--disable-gpu", "--window-size=1920,1080"],
 });
 
+// Connect puppeteer to the same Chrome so we can inject auth into localStorage
+// before each Lighthouse run. Lighthouse accepts a puppeteer Page as 4th arg.
+const browser = await puppeteer.connect({ browserURL: `http://localhost:${chrome.port}` });
+
 const fs = await import("fs");
 const results = [];
 
-for (const page of PAGES) {
-  const url = `${BASE}${page.path}`;
-  console.log(`Testing: ${page.name} (${url})`);
+for (const pageInfo of PAGES) {
+  const url = `${BASE}${pageInfo.path}`;
+  console.log(`Testing: ${pageInfo.name} (${url})`);
 
-  const result = await lighthouse(url, { port: chrome.port, output: ["html", "json"], logLevel: "error" }, config);
+  const page = await browser.newPage();
+  await page.evaluateOnNewDocument(
+    (key, state) => {
+      localStorage.setItem(key, JSON.stringify(state));
+    },
+    AUTH_STORAGE_KEY,
+    AUTH_SEED,
+  );
+
+  const result = await lighthouse(url, { output: ["html", "json"], logLevel: "error" }, config, page);
+  await page.close();
   if (!result) { console.error(`  FAILED\n`); continue; }
 
   const { lhr } = result;
   const get = (key) => lhr.audits[key]?.displayValue || "-";
 
   results.push({
-    name: page.name,
+    name: pageInfo.name,
     score: lhr.categories.performance.score !== null ? Math.round(lhr.categories.performance.score * 100) : "N/A",
     fcp: get("first-contentful-paint"),
     si: get("speed-index"),
@@ -62,11 +85,12 @@ for (const page of PAGES) {
   });
 
   // Save individual reports
-  const slug = page.name.toLowerCase().replace(/\s+/g, "-");
+  const slug = pageInfo.name.toLowerCase().replace(/\s+/g, "-");
   fs.writeFileSync(`lighthouse-${slug}.html`, result.report[0]);
   fs.writeFileSync(`lighthouse-${slug}.json`, result.report[1]);
 }
 
+try { await browser.disconnect(); } catch {}
 try { await chrome.kill(); } catch {}
 server.kill();
 
