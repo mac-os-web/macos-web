@@ -89,6 +89,7 @@ export function Spotlight({ isOpen, onClose, onOpenApp }: SpotlightProps) {
       style={{ animation: "fadeIn 0.15s ease-out" }}
     >
       <div
+        data-keep-focus
         className="w-[90vw] max-w-[620px] overflow-hidden rounded-2xl"
         style={{
           background: "rgba(255,255,255,0.82)",

@@ -404,9 +404,10 @@ export default function App() {
   const handleDockClick = (id: string) => {
     if (["sep1", "sep2", "trash"].includes(id)) return;
     const win = windows.find((w) => w.id === id);
-    if (win?.isMinimized)
+    if (win?.isMinimized) {
       setWindows((prev) => prev.map((w) => (w.id === id ? { ...w, isMinimized: false } : w)));
-    else if (win?.isOpen) focusApp(id as AppId);
+      bringToFront(id);
+    } else if (win?.isOpen) focusApp(id as AppId);
     else openApp(id as AppId);
   };
 

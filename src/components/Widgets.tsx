@@ -357,7 +357,7 @@ function WeatherWidget() {
           </span>
         </div>
       </div>
-      <div className="flex gap-2 overflow-x-auto pb-1">
+      <div className="flex items-center justify-between pb-1">
         {hourlyItems.map((h) => (
           <div key={h.time} className="flex flex-shrink-0 flex-col items-center gap-0.5">
             <span className="text-[10px] text-white/60">{h.time}</span>
@@ -588,6 +588,7 @@ export function WidgetPicker({ isOpen, onClose, onAdd, active }: WidgetPickerPro
     <>
       <div className="fixed inset-0 z-[910]" onClick={onClose} />
       <div
+        data-keep-focus
         className="fixed bottom-24 left-1/2 z-[911] w-80 -translate-x-1/2 rounded-2xl p-4"
         style={{
           background: "rgba(40,40,40,0.92)",

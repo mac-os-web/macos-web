@@ -54,7 +54,7 @@ function DockItem({ app, onClick }: { app: DockApp; onClick: () => void }) {
 
 export function Dock({ apps, onAppClick }: DockProps) {
   return (
-    <div className="fixed bottom-2 left-1/2 z-[1000] -translate-x-1/2 px-2">
+    <div data-keep-focus className="fixed bottom-2 left-1/2 z-[1000] -translate-x-1/2 px-2">
       <div
         className="flex items-end gap-1 rounded-2xl px-2 py-1.5"
         style={{
