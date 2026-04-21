@@ -1,73 +1,91 @@
-# React + TypeScript + Vite
+# macos-web
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[🇯🇵 日本語](./README.md) · [🇰🇷 한국어](./README.ko.md) · [🇺🇸 English](./README.en.md)
 
-Currently, two official plugins are available:
+ウェブ上で動作する macOS デスクトップのクローン。React 19 + TypeScript + Vite ベース。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 主な機能
 
-## React Compiler
+- **Dock** - Finder、Safari、メモ、ターミナル、App Store、Mail アプリを起動
+- **Window** - ドラッグ、リサイズ、最小化、フォーカス(z-index) 管理
+- **Spotlight** - アプリの検索と起動
+- **MenuBar / Control Center** - 上部メニューバーとコントロールセンター
+- **Widgets** - 時計、天気、カレンダーなどのデスクトップウィジェット
+- **Stickies** - ドラッグ/リサイズ/色変更が可能な付箋メモ (localStorage に保存)
+- **i18n** - 韓国語 / 英語 / 日本語 対応
+- **モバイルビュー** - 640px 以下で iOS ホーム画面スタイルのグリッド表示
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 技術スタック
 
-## Expanding the ESLint configuration
+### コア
+- react ^19.2.4 / react-dom ^19.2.4
+- typescript ~6.0.2
+- vite ^8.0.4
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### スタイリング
+- tailwindcss ^4.2.2
+- @tailwindcss/vite ^4.2.2
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 状態管理 / ルーティング
+- @tanstack/react-query ^5.99.0
+- @tanstack/react-query-persist-client ^5.99.0
+- @tanstack/query-async-storage-persister ^5.99.0
+- @tanstack/react-router ^1.168.10
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### インタラクション / UI
+- @dnd-kit/core ^6.3.1
+- @dnd-kit/sortable ^10.0.0
+- @dnd-kit/utilities ^3.2.2
+- lucide-react ^1.7.0
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 国際化 / ユーティリティ
+- i18next ^26.0.4
+- react-i18next ^17.0.2
+- @js-temporal/polyfill ^0.5.1
+- axios ^1.15.0
+
+### ターミナル / MDX
+- @xterm/xterm ^6.0.0
+- @xterm/addon-fit ^0.11.0
+- @mdx-js/react ^3.1.1
+- @mdx-js/rollup ^3.1.1
+
+### 品質管理 / 計測
+- oxlint ^1.59.0
+- prettier ^3.8.1 (※ oxformat への移行予定)
+- vitest ^4.1.3
+- lighthouse ^13.1.0
+- chrome-launcher ^1.2.1
+
+> **プロジェクトの方針**: oxc ベースのエコシステム (oxlint / oxformat 等) を全面採用し、
+> Rust 製ツールによる高速なフロントエンド開発環境の実用性を検証することも目的の一つ。
+> テストは vitest を使用予定。
+
+## 開発
+
+```bash
+pnpm install
+pnpm dev          # 開発サーバー
+pnpm build        # 本番ビルド
+pnpm lint         # oxlint
+pnpm format       # prettier
+pnpm lighthouse   # Lighthouse 計測
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## プロジェクト構成
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+src/
+  components/    # Dock、Window、Spotlight、各アプリウィンドウ
+  hooks/         # useStickies などのカスタムフック
+  contexts/      # React Context
+  i18n/          # 翻訳リソース
+  lib/           # ユーティリティ
+apps/api/        # Hono ベースの BFF (予定)
+docs/            # 作業計画ドキュメント
+```
+
+## パフォーマンス
+
+Lighthouse 100 点 / バンドルサイズ最適化のため、Dock のアプリは `React.lazy` で遅延読み込み。
+Lighthouse の計測は CPU 4 倍スロットリング (`cpuSlowdownMultiplier: 4`) で実施。
