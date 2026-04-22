@@ -9,9 +9,7 @@ if (!(globalThis as any).Temporal) {
 
 // Lazy-load locale JSON on demand. Only the active language bundle is downloaded.
 i18n
-  .use(
-    resourcesToBackend((language: string) => import(`./locales/${language}.json`))
-  )
+  .use(resourcesToBackend((language: string) => import(`./locales/${language}.json`)))
   .use(initReactI18next)
   .init({
     lng: "ko",

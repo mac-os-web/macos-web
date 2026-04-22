@@ -263,7 +263,6 @@ const WIDGET_POSITIONS: Record<string, { x: number; y: number }> = {
   system: { x: 330, y: 280 },
 };
 
-
 // ── Home page ──────────────────────────────────────────────────────────────
 export function Home() {
   const { t } = useTranslation();
