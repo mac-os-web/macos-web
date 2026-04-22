@@ -2,12 +2,14 @@ import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persi
 import { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
+import { RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
+import { AuthProvider } from "./contexts/auth";
 import { NetworkProvider } from "./contexts/network";
 import "./i18n";
 import "./index.css";
+import { router } from "./router";
 
 const ONE_DAY_MS = 1000 * 60 * 60 * 24; // 24 hours in milliseconds
 
@@ -39,9 +41,11 @@ createRoot(document.getElementById("root")!).render(
       client={queryClient}
       persistOptions={{ persister, maxAge: ONE_DAY_MS }}
     >
-      <NetworkProvider>
-        <App />
-      </NetworkProvider>
+      <AuthProvider>
+        <NetworkProvider>
+          <RouterProvider router={router} />
+        </NetworkProvider>
+      </AuthProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </PersistQueryClientProvider>
   </StrictMode>

@@ -28,7 +28,7 @@
 
 ===========================================================================
   Date: 2026-04-17
-  Note: dino game 추가 후 번들 656KB → SI 1.4s로 증가, 점수 98로 하락
+  Note: Dino game added, bundle grew to 656KB -> SI jumped to 1.4s, score dropped to 98
   Page         Score       FCP        SI       LCP       TBT       CLS
 ---------------------------------------------------------------------------
   Home            98     0.6 s     1.4 s     0.6 s      0 ms         0
@@ -36,7 +36,7 @@
 
 ===========================================================================
   Date: 2026-04-17
-  Note: lazy load 적용 (656KB → 500KB), 점수 100 복귀
+  Note: Applied lazy loading (656KB -> 500KB), score recovered to 100
   Page         Score       FCP        SI       LCP       TBT       CLS
 ---------------------------------------------------------------------------
   Home           100     0.6 s     0.8 s     0.6 s     20 ms         0
@@ -44,8 +44,31 @@
 
 ===========================================================================
   Date: 2026-04-21
-  Note: home redesign (menubar/notch/overlays) 적용 후에도 점수 유지
+  Note: Score preserved after home redesign (menubar / notch / overlays)
   Page         Score       FCP        SI       LCP       TBT       CLS
 ---------------------------------------------------------------------------
   Home           100     0.5 s     0.7 s     0.5 s      0 ms         0
+===========================================================================
+
+===========================================================================
+  Date: 2026-04-21
+  Note: LockScreen + AuthProvider + Lighthouse localStorage injection.
+        Conditional rendering still bundles LockScreen into main -> score dipped.
+        Route split + lazy route planned as the next step.
+  Page         Score       FCP        SI       LCP       TBT       CLS
+---------------------------------------------------------------------------
+  Home            96     1.0 s     1.3 s     1.0 s     20 ms     0.001
+===========================================================================
+
+===========================================================================
+  Date: 2026-04-22
+  Note: TanStack Router + WidgetPicker split + Home chunk preload
+        + wallpaper WebP + preload hint (without fetchpriority)
+        + i18n locale lazy (resources-to-backend).
+        Best of multiple runs. Home at 99 is a structural SI ceiling
+        driven by the complex desktop UI.
+  Page         Score       FCP        SI       LCP       TBT       CLS
+---------------------------------------------------------------------------
+  Login          100     0.4 s     0.4 s     0.4 s      0 ms         0
+  Home            99     0.6 s     0.9 s     0.6 s      0 ms     0.001
 ===========================================================================

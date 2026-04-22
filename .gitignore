@@ -31,11 +31,16 @@ Create responsive macOS UI
 # Work notes
 docs/today-work*.md
 docs/todo.md
+docs/testing.md
+docs/zenn*.md
 
 # Lighthouse reports
 lighthouse-report.*
 lighthouse-*.html
 lighthouse-*.json
+
+# Bundle analyzer output
+stats.html
 
 # Experimental sandboxes
 dino-game/

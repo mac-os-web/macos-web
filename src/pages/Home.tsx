@@ -1,32 +1,36 @@
 import { Plus } from "lucide-react";
 import { Suspense, lazy, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ControlCenter } from "./components/ControlCenter";
-import { Dock } from "./components/Dock";
-import { MenuBar } from "./components/MenuBar";
-import { Spotlight } from "./components/Spotlight";
-import { WidgetPicker, Widgets, type WidgetInstance } from "./components/Widgets";
-import { Window } from "./components/Window";
-import { StickyNote } from "./components/stickies/StickyNote";
-import { useStickies } from "./hooks/useStickies";
+import { ControlCenter } from "../components/ControlCenter";
+import { Dock } from "../components/Dock";
+import { MenuBar } from "../components/MenuBar";
+import { Spotlight } from "../components/Spotlight";
+import { Widgets, type WidgetInstance } from "../components/Widgets";
+import { Window } from "../components/Window";
+import { StickyNote } from "../components/stickies/StickyNote";
+import { useStickies } from "../hooks/useStickies";
+import { WALLPAPER } from "../lib/wallpaper";
 
 const FinderWindow = lazy(() =>
-  import("./components/FinderWindow").then((m) => ({ default: m.FinderWindow }))
+  import("../components/FinderWindow").then((m) => ({ default: m.FinderWindow }))
 );
 const SafariWindow = lazy(() =>
-  import("./components/SafariWindow").then((m) => ({ default: m.SafariWindow }))
+  import("../components/SafariWindow").then((m) => ({ default: m.SafariWindow }))
 );
 const NotesWindow = lazy(() =>
-  import("./components/NotesWindow").then((m) => ({ default: m.NotesWindow }))
+  import("../components/NotesWindow").then((m) => ({ default: m.NotesWindow }))
 );
 const TerminalWindow = lazy(() =>
-  import("./components/TerminalWindow").then((m) => ({ default: m.TerminalWindow }))
+  import("../components/TerminalWindow").then((m) => ({ default: m.TerminalWindow }))
 );
 const AppStoreWindow = lazy(() =>
-  import("./components/AppStoreWindow").then((m) => ({ default: m.AppStoreWindow }))
+  import("../components/AppStoreWindow").then((m) => ({ default: m.AppStoreWindow }))
 );
 const MailWindow = lazy(() =>
-  import("./components/MailWindow").then((m) => ({ default: m.MailWindow }))
+  import("../components/MailWindow").then((m) => ({ default: m.MailWindow }))
+);
+const WidgetPicker = lazy(() =>
+  import("../components/WidgetPicker").then((m) => ({ default: m.WidgetPicker }))
 );
 
 // ── Dock icon components ────────────────────────────────────────────────────
@@ -259,11 +263,8 @@ const WIDGET_POSITIONS: Record<string, { x: number; y: number }> = {
   system: { x: 330, y: 280 },
 };
 
-const WALLPAPER =
-  "https://images.unsplash.com/photo-1729892382697-96b7892e1278?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYWNvcyUyMG1vbnRlcmV5JTIwd2FsbHBhcGVyJTIwbW91bnRhaW5zJTIwZ3JhZGllbnR8ZW58MXx8fHwxNzc1NjI3ODQ4fDA&ixlib=rb-4.1.0&q=80&w=1080";
-
-// ── Main App ────────────────────────────────────────────────────────────────
-export default function App() {
+// ── Home page ──────────────────────────────────────────────────────────────
+export function Home() {
   const { t } = useTranslation();
   const [windows, setWindows] = useState<AppWindow[]>([]);
   const [focusOrder, setFocusOrder] = useState<string[]>([]);
@@ -520,12 +521,14 @@ export default function App() {
       </button>
 
       {/* Widget Picker */}
-      <WidgetPicker
-        isOpen={widgetPickerOpen}
-        onClose={() => setOverlay(null)}
-        onAdd={addWidget}
-        active={activeWidgetTypes}
-      />
+      <Suspense fallback={null}>
+        <WidgetPicker
+          isOpen={widgetPickerOpen}
+          onClose={() => setOverlay(null)}
+          onAdd={addWidget}
+          active={activeWidgetTypes}
+        />
+      </Suspense>
 
       {/* Mobile grid */}
       {isMobileView && (
