@@ -19,5 +19,5 @@
       }
     }
   ],
-  "ignorePatterns": ["dist", "node_modules", "apps/api/dist", "scripts"]
+  "ignorePatterns": ["dist", "node_modules", "apps/api/dist", "scripts", "**/*.gen.ts"]
 }
