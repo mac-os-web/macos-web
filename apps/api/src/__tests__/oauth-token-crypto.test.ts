@@ -1,9 +1,18 @@
-import { describe, it } from "node:test";
+import { before, after, describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { randomBytes } from "node:crypto";
 
-// env must be set before module is first imported (tokenKey() is lazy)
-process.env.GMAIL_TOKEN_ENCRYPTION_KEY = randomBytes(32).toString("base64");
+const TEST_KEY = randomBytes(32).toString("base64");
+let originalKey: string | undefined;
+
+before(() => {
+  originalKey = process.env.GMAIL_TOKEN_ENCRYPTION_KEY;
+  process.env.GMAIL_TOKEN_ENCRYPTION_KEY = TEST_KEY;
+});
+
+after(() => {
+  process.env.GMAIL_TOKEN_ENCRYPTION_KEY = originalKey;
+});
 
 const { encryptToken, decryptToken } = await import("../lib/oauth-token-crypto.js");
 
@@ -38,9 +47,9 @@ describe("encryptToken / decryptToken", () => {
   });
 
   it("throws on tampered ciphertext (auth tag mismatch)", () => {
-    const encrypted = encryptToken("secret") as string;
+    const encrypted = encryptToken("secret");
+    assert.ok(encrypted !== null, "encrypted should not be null");
     const parts = encrypted.split(".");
-    // flip one byte in the ciphertext part
     const tampered = parts[3]!.split("");
     tampered[0] = tampered[0] === "A" ? "B" : "A";
     const tamperedPayload = [...parts.slice(0, 3), tampered.join("")].join(".");

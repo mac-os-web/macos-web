@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import "../types/google-gsi";
 import type { ApiResult } from "../lib/api";
 import { normalizeBase } from "../lib/api";
 

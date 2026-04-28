@@ -63,7 +63,9 @@ const GMAIL_OAUTH_SCOPES = (process.env.GMAIL_OAUTH_SCOPES ?? "https://www.googl
   .filter(Boolean);
 const SESSION_COOKIE_NAME = "session";
 const COOKIE_SECURE = process.env.COOKIE_SECURE === "true";
-const SESSION_TTL_SECONDS = parseInt(process.env.SESSION_TTL_SECONDS ?? "", 10) || 60 * 60 * 24 * 7;
+const _parsedTtl = parseInt(process.env.SESSION_TTL_SECONDS ?? "", 10);
+const SESSION_TTL_SECONDS =
+  Number.isInteger(_parsedTtl) && _parsedTtl > 0 ? _parsedTtl : 60 * 60 * 24 * 7;
 const GMAIL_STATE_TTL_SECONDS = 60 * 10;
 const IS_PROD = process.env.NODE_ENV === "production";
 
@@ -512,19 +514,20 @@ app.get("/health", (c) =>
   })
 );
 
-// DB ヘルスチェック
 app.get("/health/db", async (c) => {
   try {
     const result = await checkDbConnection();
 
     if (!result.ok) {
-      return c.json({ status: "ng", reason: result.reason }, 500);
+      if (!IS_PROD) {
+        return c.json({ status: "ng", reason: result.reason }, 500);
+      }
+      return c.json({ status: "ng" }, 500);
     }
 
     return c.json({ status: "ok" });
-  } catch (error) {
-    const reason = error instanceof Error ? error.message : "Unknown error";
-    return c.json({ status: "ng", reason }, 500);
+  } catch {
+    return c.json({ status: "ng" }, 500);
   }
 });
 
