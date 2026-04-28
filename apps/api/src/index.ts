@@ -528,7 +528,8 @@ app.get("/health/db", async (c) => {
     }
 
     return c.json({ status: "ok" });
-  } catch {
+  } catch (error) {
+    console.error("[/health/db]", error);
     return c.json({ status: "ng" }, 500);
   }
 });
