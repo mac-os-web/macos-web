@@ -1,26 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-
-declare global {
-  interface Window {
-    google?: {
-      accounts?: {
-        id?: {
-          initialize: (options: {
-            client_id: string;
-            callback: (response: { credential: string }) => void;
-          }) => void;
-          renderButton: (element: HTMLElement, options: Record<string, unknown>) => void;
-        };
-      };
-    };
-  }
-}
-
-type ApiResult = {
-  ok: boolean;
-  status: number;
-  data: unknown;
-};
+import type { ApiResult } from "../lib/api";
+import { normalizeBase } from "../lib/api";
 
 type SafariAuthTestPageProps = {
   defaultApiBase: string;
@@ -32,9 +12,6 @@ function pageHostApiBase(defaultApiBase: string) {
   return normalizeBase(defaultApiBase);
 }
 
-function normalizeBase(url: string) {
-  return (url || "").replace(/\/+$/, "");
-}
 
 function isLoopbackHost(host: string) {
   return host === "localhost" || host === "127.0.0.1";

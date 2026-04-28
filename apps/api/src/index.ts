@@ -63,13 +63,18 @@ const GMAIL_OAUTH_SCOPES = (process.env.GMAIL_OAUTH_SCOPES ?? "https://www.googl
   .filter(Boolean);
 const SESSION_COOKIE_NAME = "session";
 const COOKIE_SECURE = process.env.COOKIE_SECURE === "true";
-const SESSION_TTL_SECONDS = Number(process.env.SESSION_TTL_SECONDS ?? 60 * 60 * 24 * 7);
+const _envTtl = (process.env.SESSION_TTL_SECONDS ?? "").trim();
+const SESSION_TTL_SECONDS =
+  /^\d+$/.test(_envTtl) && parseInt(_envTtl, 10) > 0
+    ? parseInt(_envTtl, 10)
+    : 60 * 60 * 24 * 7;
 const GMAIL_STATE_TTL_SECONDS = 60 * 10;
 const IS_PROD = process.env.NODE_ENV === "production";
 
 const googleClient = new OAuth2Client();
 const rateLimitStore = new Map<string, number[]>();
 const gmailOAuthStateStore = new Map<string, { userId: string; expiresAt: number }>();
+const gmailOAuthStateByUser = new Map<string, string>(); // userId → state (중복 연결 방지)
 
 // Prune IPs that have had no requests in the last minute to prevent unbounded growth.
 setInterval(() => {
@@ -87,6 +92,7 @@ setInterval(() => {
   for (const [state, entry] of gmailOAuthStateStore) {
     if (entry.expiresAt <= now) {
       gmailOAuthStateStore.delete(state);
+      gmailOAuthStateByUser.delete(entry.userId);
     }
   }
 }, 5 * 60_000).unref();
@@ -172,10 +178,14 @@ function base64Url(input: string) {
     .replace(/=+$/g, "");
 }
 
+function sanitizeMimeHeader(value: string): string {
+  return value.replace(/[\r\n]/g, "");
+}
+
 function buildMimeMessage(payload: { to: string; subject: string; text?: string; html?: string }) {
   const lines = [
-    `To: ${payload.to}`,
-    `Subject: ${payload.subject}`,
+    `To: ${sanitizeMimeHeader(payload.to)}`,
+    `Subject: ${sanitizeMimeHeader(payload.subject)}`,
     "MIME-Version: 1.0",
     payload.html
       ? 'Content-Type: text/html; charset="UTF-8"'
@@ -506,19 +516,21 @@ app.get("/health", (c) =>
   })
 );
 
-// DB ヘルスチェック
 app.get("/health/db", async (c) => {
   try {
     const result = await checkDbConnection();
 
     if (!result.ok) {
-      return c.json({ status: "ng", reason: result.reason }, 500);
+      if (!IS_PROD) {
+        return c.json({ status: "ng", reason: result.reason }, 500);
+      }
+      return c.json({ status: "ng" }, 500);
     }
 
     return c.json({ status: "ok" });
   } catch (error) {
-    const reason = error instanceof Error ? error.message : "Unknown error";
-    return c.json({ status: "ng", reason }, 500);
+    console.error("[/health/db]", error);
+    return c.json({ status: "ng" }, 500);
   }
 });
 
@@ -685,10 +697,17 @@ app.post("/gmail/connect/start", async (c) => {
     const oauthClient = createGoogleOAuthClient();
     const state = randomUUID();
 
+    // 이전 미완료 state가 있으면 제거 (버튼 중복 클릭 방지)
+    const prevState = gmailOAuthStateByUser.get(session.id);
+    if (prevState) {
+      gmailOAuthStateStore.delete(prevState);
+    }
+
     gmailOAuthStateStore.set(state, {
       userId: session.id,
       expiresAt: Date.now() + GMAIL_STATE_TTL_SECONDS * 1000,
     });
+    gmailOAuthStateByUser.set(session.id, state);
 
     const authUrl = oauthClient.generateAuthUrl({
       access_type: "offline",
@@ -719,6 +738,8 @@ app.get("/gmail/callback", async (c) => {
   if (!stateEntry || stateEntry.expiresAt <= Date.now()) {
     return c.html("<h3>Gmail 연결 실패: state 검증 실패 (만료되었거나 유효하지 않음)</h3>", 400);
   }
+
+  gmailOAuthStateByUser.delete(stateEntry.userId);
 
   try {
     const oauthClient = createGoogleOAuthClient();

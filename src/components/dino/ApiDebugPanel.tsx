@@ -1,23 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-
-declare global {
-  interface Window {
-    google?: {
-      accounts?: {
-        id?: {
-          initialize: (options: { client_id: string; callback: (response: { credential: string }) => void }) => void;
-          renderButton: (element: HTMLElement, options: Record<string, unknown>) => void;
-        };
-      };
-    };
-  }
-}
-
-type ApiResult = {
-  ok: boolean;
-  status: number;
-  data: unknown;
-};
+import type { ApiResult } from "../../lib/api";
+import { normalizeBase } from "../../lib/api";
 
 const CFG_KEY = "dino-api-debug-config";
 
@@ -28,10 +11,6 @@ function detectDefaultApiBase() {
 
   const host = window.location.hostname || "localhost";
   return `http://${host}:8080`;
-}
-
-function normalizeBase(url: string) {
-  return url.replace(/\/+$/, "");
 }
 
 export function ApiDebugPanel() {

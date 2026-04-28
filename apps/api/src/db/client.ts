@@ -8,27 +8,27 @@ const usesSsl =
   /sslmode=require/i.test(databaseUrl) ||
   databaseUrl.includes("supabase.co");
 
+const rejectUnauthorized = process.env.DATABASE_SSL_REJECT_UNAUTHORIZED !== "false";
+
 const pool = databaseUrl
   ? new Pool({
       connectionString: databaseUrl,
-      ssl: usesSsl ? { rejectUnauthorized: false } : undefined,
+      ssl: usesSsl ? { rejectUnauthorized } : undefined,
     })
   : null;
 
 export const db = pool ? drizzle(pool, { schema }) : null;
 
-// DB 接続の確認
-export async function checkDbConnection() {
+export async function checkDbConnection(): Promise<{ ok: boolean; reason?: string }> {
   if (!pool) {
-    return {
-      ok: false,
-      reason: "DATABASE_URL is not configured",
-    };
+    return { ok: false, reason: "DATABASE_URL is not configured" };
   }
 
-  await pool.query("select 1");
-
-  return {
-    ok: true,
-  };
+  try {
+    await pool.query("select 1");
+    return { ok: true };
+  } catch (error) {
+    console.error("[checkDbConnection]", error);
+    return { ok: false, reason: "Database connection failed" };
+  }
 }
