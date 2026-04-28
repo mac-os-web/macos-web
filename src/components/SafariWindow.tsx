@@ -1,7 +1,9 @@
 import { ChevronLeft, ChevronRight, Lock, Plus, RefreshCw, Share } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useNetwork } from "../contexts/network";
+import { ApiDebugPanel } from "./dino/ApiDebugPanel";
+import { SafariAuthTestPage } from "./SafariAuthTestPage";
 import { DinoGame } from "./dino/DinoGame";
 
 function OfflinePage({ isActive, visible }: { isActive: boolean; visible: boolean }) {
@@ -32,6 +34,8 @@ function OfflinePage({ isActive, visible }: { isActive: boolean; visible: boolea
             }}
           />
         </p>
+
+        <ApiDebugPanel />
       </div>
     </div>
   );
@@ -60,6 +64,16 @@ export function SafariWindow({ activeApp }: SafariWindowProps) {
   ]);
   const { t } = useTranslation();
   const { isOnline } = useNetwork();
+
+  const currentPage = useMemo(() => {
+    const normalized = inputUrl.trim().toLowerCase();
+    if (normalized.includes("auth.test") || normalized.includes("login.test")) {
+      return "auth-test";
+    }
+    return "home";
+  }, [inputUrl]);
+
+  const apiBaseDefault = "/api";
 
   const news = [
     {
@@ -214,82 +228,86 @@ export function SafariWindow({ activeApp }: SafariWindowProps) {
       {/* Content */}
       <div className="flex-1 overflow-y-auto" style={{ background: "white" }}>
         {isOnline ? (
-          <div className="mx-auto max-w-3xl p-6">
-            {/* Favorites */}
-            <div className="mb-8">
-              <h3 className="mb-3 text-[14px] font-semibold text-gray-500">
-                {t("safari.favorites")}
-              </h3>
-              <div className="grid grid-cols-4 gap-4 sm:grid-cols-6">
-                {bookmarks.map((bm) => (
-                  <button key={bm.name} className="group flex flex-col items-center gap-1.5">
-                    <div
-                      className="flex h-12 w-12 items-center justify-center rounded-xl text-2xl shadow-sm transition-shadow group-hover:shadow-md"
-                      style={{ background: "rgba(0,0,0,0.05)" }}
-                    >
-                      {bm.icon}
-                    </div>
-                    <span className="text-[11px] text-gray-600">{bm.name}</span>
-                  </button>
-                ))}
+          currentPage === "auth-test" ? (
+            <SafariAuthTestPage defaultApiBase={apiBaseDefault} />
+          ) : (
+            <div className="mx-auto max-w-3xl p-6">
+              {/* Favorites */}
+              <div className="mb-8">
+                <h3 className="mb-3 text-[14px] font-semibold text-gray-500">
+                  {t("safari.favorites")}
+                </h3>
+                <div className="grid grid-cols-4 gap-4 sm:grid-cols-6">
+                  {bookmarks.map((bm) => (
+                    <button key={bm.name} className="group flex flex-col items-center gap-1.5">
+                      <div
+                        className="flex h-12 w-12 items-center justify-center rounded-xl text-2xl shadow-sm transition-shadow group-hover:shadow-md"
+                        style={{ background: "rgba(0,0,0,0.05)" }}
+                      >
+                        {bm.icon}
+                      </div>
+                      <span className="text-[11px] text-gray-600">{bm.name}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
 
-            {/* Privacy Report */}
-            <div
-              className="mb-6 rounded-xl p-4"
-              style={{
-                background: "rgba(0,100,255,0.06)",
-                border: "1px solid rgba(0,100,255,0.12)",
-              }}
-            >
-              <div className="mb-1 flex items-center gap-2">
-                <Lock size={14} className="text-blue-500" />
-                <span className="text-[13px] font-semibold text-blue-600">
-                  {t("safari.privacyReport")}
-                </span>
+              {/* Privacy Report */}
+              <div
+                className="mb-6 rounded-xl p-4"
+                style={{
+                  background: "rgba(0,100,255,0.06)",
+                  border: "1px solid rgba(0,100,255,0.12)",
+                }}
+              >
+                <div className="mb-1 flex items-center gap-2">
+                  <Lock size={14} className="text-blue-500" />
+                  <span className="text-[13px] font-semibold text-blue-600">
+                    {t("safari.privacyReport")}
+                  </span>
+                </div>
+                <p className="text-[12px] text-gray-500">
+                  <Trans
+                    i18nKey="safari.privacyText"
+                    values={{ count: 148 }}
+                    components={{ 1: <strong /> }}
+                  />
+                </p>
               </div>
-              <p className="text-[12px] text-gray-500">
-                <Trans
-                  i18nKey="safari.privacyText"
-                  values={{ count: 148 }}
-                  components={{ 1: <strong /> }}
-                />
-              </p>
-            </div>
 
-            {/* News */}
-            <div>
-              <h3 className="mb-3 text-[14px] font-semibold text-gray-500">
-                {t("safari.topNews")}
-              </h3>
-              <div className="space-y-3">
-                {news.map((article) => (
-                  <div
-                    key={article.title}
-                    className="flex cursor-pointer items-start gap-3 rounded-xl p-3 transition-colors hover:bg-gray-50"
-                    style={{ border: "1px solid rgba(0,0,0,0.06)" }}
-                  >
+              {/* News */}
+              <div>
+                <h3 className="mb-3 text-[14px] font-semibold text-gray-500">
+                  {t("safari.topNews")}
+                </h3>
+                <div className="space-y-3">
+                  {news.map((article) => (
                     <div
-                      className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg text-2xl"
-                      style={{ background: "rgba(0,0,0,0.05)" }}
+                      key={article.title}
+                      className="flex cursor-pointer items-start gap-3 rounded-xl p-3 transition-colors hover:bg-gray-50"
+                      style={{ border: "1px solid rgba(0,0,0,0.06)" }}
                     >
-                      {article.image}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-[13px] leading-snug text-gray-800">{article.title}</p>
-                      <div className="mt-1 flex items-center gap-2">
-                        <span className="text-[10px] font-medium text-blue-500">
-                          {article.category}
-                        </span>
-                        <span className="text-[10px] text-gray-400">{article.time}</span>
+                      <div
+                        className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg text-2xl"
+                        style={{ background: "rgba(0,0,0,0.05)" }}
+                      >
+                        {article.image}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[13px] leading-snug text-gray-800">{article.title}</p>
+                        <div className="mt-1 flex items-center gap-2">
+                          <span className="text-[10px] font-medium text-blue-500">
+                            {article.category}
+                          </span>
+                          <span className="text-[10px] text-gray-400">{article.time}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+          )
         ) : (
           // 탭별 독립 DinoGame 인스턴스 — 각 탭의 점수/상태를 유지.
           // 비활성 탭은 display:none으로 숨기되 mount는 유지.
